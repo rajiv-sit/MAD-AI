@@ -30,6 +30,30 @@ The repo currently includes a working end-to-end prototype with:
   - a Bahamas real-data workflow with aircraft and vessel state ingestion from `.asc` flight data
   - a combined NOAA-only / NOAA-plus-anomaly Cesium viewer for the Bahamas example
   - a linked four-view Bahamas realtime dashboard with strip chart, vessel range comparison, synchronized globe, and along-track residual profile
+  - a first-pass magnetic vessel tracking path with estimated-versus-true vessel comparison views
+
+## Current Capability Vs Gap
+
+What the repo can do today:
+
+- use NOAA/WMM-style magnetic baseline modeling as the reference field
+- take real Bahamas aircraft magnetometer readings at specific aircraft locations
+- score whether those readings look anomalous relative to the baseline
+- initialize a first-pass vessel track estimate from magnetic residuals and aircraft geometry
+- run a first-pass vessel tracker and compare the estimated vessel path against the true/reference vessel path
+- visualize the aircraft track, true vessel track, and estimated magnetic vessel track in the linked dashboard and 3D globe
+
+What is not yet done to an operational standard:
+
+- the full-file Bahamas path is still mainly exercised with the `analytic` backend rather than full practical `WMM`
+- anomaly calibration still needs stronger real labeled evidence
+- the first-pass magnetic tracker is still weak on the full Bahamas run, with mean tracking error still around `13 km`
+- the current system is best described as a working prototype and evaluation workflow, not a validated operational tracker
+
+Short version:
+
+- concept requirement: largely done
+- validated operational-quality requirement: not yet
 
 ## Repo Layout
 
@@ -243,9 +267,11 @@ How to use the Bahamas dashboard:
 
 Important interpretation note:
 
-- in the current Bahamas workflow, the vessel path displayed in the viewer comes from the dataset reference navigation fields
 - the anomaly signal comes from aircraft-borne magnetometer residuals against the magnetic baseline
-- this is currently an anomaly-review workflow with known vessel reference, not yet magnetometer-only vessel tracking
+- the dashboard shows both:
+  - the true/reference vessel path from the dataset
+  - the estimated magnetic vessel track produced by the first-pass tracker
+- the current tracker is still experimental and should be treated as an inverse-tracking prototype, not an operational vessel-tracking solution
 
 ### Observed Anomaly Globe
 
@@ -317,8 +343,9 @@ For the real Bahamas aircraft plus vessel dataset:
 
 ```powershell
 python scripts\score_bahamas_realtime_anomalies.py inspection\external_mad_repo\data\raw\mad_data.asc data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json analytic stable_window
-python scripts\build_bahamas_noaa_combined_viewer.py outputs\viewer\cesium_bahamas_noaa_combined.html data\processed\global_noaa\global_wmm_grid.csv data\processed\bahamas\bahamas_mad_scored.csv
-python scripts\build_bahamas_realtime_dashboard.py data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json outputs\viewer\bahamas_realtime_dashboard.html cesium_bahamas_noaa_combined.html
+python scripts\evaluate_bahamas_tracking.py data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_tracking_metrics_multi.json outputs\evaluation\bahamas_tracking_estimates_multi.csv multi
+python scripts\build_bahamas_noaa_combined_viewer.py outputs\viewer\cesium_bahamas_noaa_combined.html data\processed\global_noaa\global_wmm_grid.csv data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_tracking_estimates_multi.csv
+python scripts\build_bahamas_realtime_dashboard.py data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json outputs\viewer\bahamas_realtime_dashboard.html cesium_bahamas_noaa_combined.html outputs\evaluation\bahamas_tracking_estimates_multi.csv
 python scripts\serve_cesium_viewer.py
 ```
 
@@ -327,27 +354,29 @@ Main outputs:
 - [outputs/viewer/cesium_bahamas_noaa_combined.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_bahamas_noaa_combined.html)
 - [outputs/viewer/bahamas_realtime_dashboard.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/bahamas_realtime_dashboard.html)
 - [outputs/evaluation/bahamas_mad_summary.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/bahamas_mad_summary.json)
+- [outputs/evaluation/bahamas_tracking_metrics_multi.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/bahamas_tracking_metrics_multi.json)
 
 What this workflow does today:
 
 - loads aircraft-borne magnetometer readings from the Bahamas `.asc` dataset
 - computes magnetic baseline, residual, and anomaly scores along the aircraft track
-- shows the provided vessel track from the dataset as a reference overlay
+- runs a first-pass vessel tracker from magnetic residuals and aircraft geometry
+- shows both the provided vessel-reference track and the estimated magnetic vessel track
 - links strip-chart, range-to-vessel, globe, and along-track views through a shared time cursor
 
 Important current limitation:
 
-- the vessel path in the viewer comes from the dataset ship-navigation fields
-- the anomaly signal comes from magnetometer residuals
-- vessel tracking is not yet estimated from magnetic measurements alone
+- the anomaly signal comes from magnetometer residuals against the baseline
+- the reference vessel path is still used as truth for evaluation and visual comparison
+- the estimated vessel track is first-pass only and is not yet accurate enough for operational claims
 
 That means the current Bahamas path is:
 
-- anomaly detection with known vessel reference
+- anomaly detection with first-pass inverse vessel tracking and known vessel truth for evaluation
 
-and not yet:
+- but not yet:
 
-- inverse vessel tracking from magnetometer measurements
+- validated operational-quality inverse vessel tracking from magnetometer measurements
 
 ### Larger Real Batch Scaling Workflow
 
@@ -430,9 +459,11 @@ Current settings:
 - `python scripts\launch_visualizer.py`
   - generates the broader visualizer artifact pack
 - `python scripts\build_bahamas_noaa_combined_viewer.py [output_html] [global_grid_csv] [scored_csv]`
-  - generates the combined Bahamas NOAA-only / NOAA-plus-anomaly globe
-- `python scripts\build_bahamas_realtime_dashboard.py [scored_csv] [summary_json] [output_html] [globe_html]`
-  - generates the linked four-view Bahamas realtime review dashboard
+  - generates the combined Bahamas NOAA-only / NOAA-plus-anomaly globe, optionally with tracking estimates
+- `python scripts\evaluate_bahamas_tracking.py [scored_csv] [output_json] [estimated_csv] [tracker_mode]`
+  - evaluates the first-pass magnetic vessel tracker against the reference vessel path
+- `python scripts\build_bahamas_realtime_dashboard.py [scored_csv] [summary_json] [output_html] [globe_html] [tracking_estimates_csv]`
+  - generates the linked Bahamas review dashboard with estimated-versus-true vessel comparison
 
 ### Specialized Globe Variants
 
@@ -489,4 +520,4 @@ Important output areas:
 - The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.
 - The large real-batch scaling config is designed to run quickly by using the analytic backend instead of WMM.
 - The NOAA/WMM-backed workflow remains the correct path for real magnetic baseline interpretation.
-- The current Bahamas workflow visualizes anomaly against a known vessel reference path; it does not yet estimate vessel track from magnetometer measurements alone.
+- The current Bahamas workflow now includes first-pass inverse vessel tracking, but it is still prototype-quality rather than operational-quality tracking.

@@ -32,13 +32,20 @@ Status meanings:
 - `[done]` Bahamas linked four-view dashboard:
   strip chart, vessel range comparison, synchronized globe, and along-track residual profile
 - `[done]` docs updated to explain that the current Bahamas workflow is anomaly review with known vessel reference
+- `[done]` first-pass magnetic vessel tracking package:
+  vessel state types, dipole forward model, initialization logic, single-track and multi-hypothesis trackers
+- `[done]` Bahamas tracking evaluation artifacts and estimated-versus-true vessel comparison views
+- `[done]` globe and dashboard overlays for:
+  aircraft track, true vessel track, and estimated magnetic vessel track
 
 ### Important Current Limitations
 
 - `[active]` the full Bahamas workflow is practical with the `analytic` backend, but not yet practical end to end with full-file `WMM`
 - `[active]` the Bahamas vessel path shown in the viewer comes from the dataset ship-navigation fields
 - `[active]` anomaly is computed from aircraft magnetometer residuals against the baseline
-- `[active]` vessel tracking is not yet estimated from magnetic measurements alone
+- `[active]` vessel tracking is now estimated from magnetic measurements and aircraft geometry, but only with a first-pass dipole approximation
+- `[active]` current magnetic tracking accuracy is still weak:
+  Bahamas mean tracking error is still roughly `13 km`
 - `[blocked]` real abnormal labels or confirmed anomaly windows are still limited
 
 ### Highest-Priority Next Work
@@ -46,8 +53,7 @@ Status meanings:
 1. `[next]` replace bundled example evidence with larger real nominal and abnormal datasets plus documented split definitions
 2. `[next]` calibrate thresholds on larger real nominal data and save explicit false-positive analysis
 3. `[next]` produce reproducible real-data evaluation artifacts and baseline-only versus fused comparisons
-4. `[next]` define the first inverse magnetic tracking interfaces:
-   vessel state model, magnetic forward model, and initialization logic
+4. `[next]` improve magnetic vessel tracking quality beyond the current first-pass implementation
 5. `[next]` make at least one larger real workflow practical with the `WMM` backend
 
 ## Working Rules
@@ -153,32 +159,50 @@ Dependencies:
 - real dataset availability
 - calibrated thresholds
 
-### 4. Magnetic Tracking From Measurements `[next]`
+### 4. Magnetic Tracking From Measurements `[active]`
 
 Why this matters:
 
 - the current Bahamas workflow visualizes anomaly with a known vessel reference path
-- it does not yet solve inverse vessel tracking from magnetometer measurements
+- the repo now has a first-pass inverse tracking implementation, but it is not yet accurate enough to treat as operational tracking
 
 Current state:
 
 - `[done]` aircraft magnetometer residuals are scored
 - `[done]` the viewer shows the provided vessel-reference path
-- `[active]` the repo supports anomaly review, not magnetometer-only vessel tracking
+- `[done]` vessel state types, forward-model interfaces, and initialization logic exist
+- `[done]` single-track and multi-hypothesis magnetic vessel trackers exist
+- `[done]` estimated vessel tracks can be compared against the provided reference vessel track
+- `[done]` the dashboard and Cesium globe now show the estimated magnetic vessel track against the true vessel track
+- `[active]` the current tracker is a first-pass dipole-based inverse tracker with weak full-flight accuracy
+- `[active]` the current evaluation result is still only about `13 km` mean tracking error on the Bahamas run
 
-Required next steps:
+Done so far:
 
-- [ ] Define an explicit vessel state model such as `x`, `y`, `vx`, `vy` or position, heading, and speed.
-- [ ] Define a magnetic forward model that predicts the aircraft magnetic disturbance caused by a candidate vessel state.
-- [ ] Initialize candidate vessel states from measurement geometry, anomaly peaks, and closest-approach structure.
-- [ ] Run a state estimator over time such as EKF, UKF, particle filter, or multi-hypothesis tracking.
-- [ ] Compare the estimated vessel track against the provided ship-navigation track.
-- [ ] Document where tracking confidence is strong, weak, or ambiguous.
+- explicit vessel state model and tracking observation types
+- dipole magnetic forward model plus geometry-aware variant
+- magnetic-bearing-grid initialization from anomaly geometry
+- constant-velocity magnetic tracker
+- multi-hypothesis magnetic tracker
+- estimated-versus-reference vessel evaluation artifacts
+- linked visual comparison of true vessel track versus estimated magnetic track
+
+Remaining work:
+
+- [ ] Improve the magnetic forward model beyond the current scalar dipole approximation.
+- [ ] Add stronger relative-geometry constraints from aircraft motion and closest-approach structure.
+- [ ] Estimate vessel heading and speed more robustly instead of relying on simple propagation.
+- [ ] Score and compare tracking quality by segment, not only whole-flight mean error.
+- [ ] Identify where tracking confidence is strong, weak, or ambiguous and surface that in artifacts.
+- [ ] Test whether WMM-backed baseline features materially improve inverse tracking quality.
+- [ ] Compare against stronger estimator families if the current beam tracker plateaus:
+  EKF, UKF, particle filter, or more structured multi-hypothesis tracking.
 
 Exit criteria:
 
 - The repo can produce a vessel-track estimate from magnetic measurements and aircraft state without directly consuming the reference vessel track as the track solution.
 - Estimated vessel-track quality is evaluated against the provided ship-reference path.
+- Tracking error is materially below the current first-pass result and is good enough to support the intended review story.
 
 Dependencies:
 
@@ -356,8 +380,9 @@ Recommended near-term sprint:
 2. Re-run real-batch calibration on those datasets and save explicit false-positive analysis.
 3. Produce per-dataset real-data evaluation artifacts and baseline-only versus fused comparisons.
 4. Define the first vessel state model and magnetic forward-model interface for inverse tracking.
-5. Run one larger workflow with the WMM backend and record runtime and bottlenecks.
-6. Add the highest-value missing tests around config parsing, inference branches, and WMM fallback behavior.
+5. Improve the first-pass magnetic tracker and reduce the current Bahamas tracking error materially below the present `~13 km` mean.
+6. Run one larger workflow with the WMM backend and record runtime and bottlenecks.
+7. Add the highest-value missing tests around config parsing, inference branches, and WMM fallback behavior.
 
 ## Deferred Until Needed `[later]`
 
