@@ -32,6 +32,9 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("altitudeLabel", text)
             self.assertIn("selectionInfo", text)
             self.assertIn("Click the earth surface to inspect magnetic details.", text)
+            self.assertIn("colorLegend", text)
+            self.assertIn("colorLegendMin", text)
+            self.assertIn("colorLegendMax", text)
             self.assertIn("Play", text)
             self.assertIn("worldGeoJson", text)
             self.assertIn("worldTexturePath", text)
@@ -50,6 +53,7 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("updateSurfaceSelection", text)
             self.assertIn("ScreenSpaceEventHandler", text)
             self.assertIn("pickEllipsoid", text)
+            self.assertIn("refreshColorLegend", text)
 
     def test_cesium_viewer_builder_supports_custom_observed_components(self) -> None:
         raw = make_sample_sensor_data(8)
@@ -76,6 +80,7 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("Residual Total", text)
             self.assertIn("Final Anomaly Score", text)
             self.assertIn("anomalyScore", text)
+            self.assertIn("colorLegendTitle", text)
 
     def test_cesium_viewer_builder_renders_track_paths_when_track_ids_exist(self) -> None:
         raw = make_tracked_sensor_data(track_count=2, samples_per_track=5)

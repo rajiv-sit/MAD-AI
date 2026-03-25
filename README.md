@@ -20,6 +20,8 @@ The repo currently includes a working end-to-end prototype with:
   - full-earth magnetic overlay
   - altitude slider
   - click-on-surface magnetic inspection
+  - overlay legend showing the active value range
+  - observed anomaly globe generation from CSV inputs
 
 ## Repo Layout
 
@@ -119,6 +121,7 @@ If you already have the local server running, you can just reopen that URL in th
 - earth rotation
 - day/night lighting
 - click-on-surface inspection of magnetic values
+- live min/mid/max legend for the active overlay
 
 ### How To Use It
 
@@ -147,6 +150,31 @@ http://127.0.0.1:8765/cesium_global_magnetic_globe.html
 - use the altitude slider to move between `0`, `1000`, `5000`, and `10000 m`
 - click anywhere on the earth surface to inspect the nearest magnetic sample on the active altitude/time layer
 - use `Pause Earth Spin` if you want a fixed globe view
+- read the legend beneath the inspector to understand the current overlay scale
+
+### Observed Anomaly Globe
+
+To score a real observed CSV and build an anomaly-aware globe:
+
+```powershell
+python scripts\score_observed_csv_anomalies.py data\raw\sample_sensor.csv
+python scripts\build_observed_anomaly_cesium_viewer.py data\raw\sample_sensor.csv
+```
+
+Outputs:
+
+- [data/processed/observed_scored/observed_anomaly_scored.csv](c:/Users/MrSit/source/repos/MAD-AI/data/processed/observed_scored/observed_anomaly_scored.csv)
+- [outputs/evaluation/observed_anomaly_summary.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/observed_anomaly_summary.json)
+- [outputs/viewer/cesium_observed_anomaly_globe.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_observed_anomaly_globe.html)
+
+The observed anomaly globe supports:
+
+- observed total field
+- baseline total field
+- residual total field
+- spatial anomaly score
+- temporal anomaly score
+- final anomaly score
 
 ### Current Global Viewer Data
 
@@ -157,7 +185,7 @@ The current global magnetic surface is built from:
 
 Current settings:
 
-- global grid resolution: `5 deg x 5 deg`
+- global grid resolution: `2 deg x 2 deg`
 - altitude layers: `0`, `1000`, `5000`, `10000 m`
 - timestamp: `2026-03-24T00:00:00`
 
@@ -235,6 +263,6 @@ Important output areas:
 
 ## Notes
 
-- The global viewer is currently optimized for a `5 deg` global grid because denser full-earth builds become expensive with the current WMM query path.
+- The global viewer currently runs from a `2 deg` global grid across four altitude layers.
 - The interactive globe is best run through `localhost`, not by double-clicking the HTML file.
 - The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.

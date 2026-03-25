@@ -36,6 +36,8 @@ Completed so far:
 - altitude-aware global magnetic overlays for `0`, `1000`, `5000`, and `10000 m`
 - earth rotation and day/night lighting in the interactive globe
 - click-on-surface magnetic inspection using the active altitude and time layer
+- observed CSV anomaly scoring exported to processed CSV and evaluation summary artifacts
+- overlay legend support for active magnetic and anomaly components
 
 Current limitations:
 
@@ -43,12 +45,13 @@ Current limitations:
 - the spatial and temporal models now use trainable PyTorch autoencoder baselines, but they still need stronger architecture tuning and evaluation
 - the visualizer is now interactive through a local Cesium globe, but it is browser-based rather than a richer native desktop review tool
 - the real-data path currently supports CSV ingestion; broader source handling and schema normalization are still limited
-- full-earth global builds denser than the current `5 deg x 5 deg` grid are still expensive with the current WMM query path
+- denser full-earth builds are now practical at the current `2 deg x 2 deg` grid, but further scaling still needs care
+- observed anomaly scoring currently works from CSV workflows, but broader real-sensor connectors are still pending
 
 Immediate next steps:
 
 1. tune the CNN and LSTM architectures on real or larger datasets
-2. optimize global WMM generation so `3 deg` or `2 deg` full-earth overlays become practical
+2. expand observed-data anomaly workflows beyond CSV into richer real sensor sources
 3. extend the real-data path beyond CSV to richer schemas and additional sources
 4. improve threshold calibration and evaluation on labeled or semi-labeled real datasets
 5. add a native desktop review layer or a richer browser-side UI around the current Cesium globe
@@ -321,6 +324,7 @@ Progress update:
 - `scripts/launch_visualizer.py` exports baseline-map, residual-map, timeline, and anomaly-event review artifacts
 - `scripts/generate_global_noaa_visualizations.py` generates global 2D/3D visual products
 - the Cesium globe now visualizes full-earth magnetic overlays over OpenStreetMap
+- the globe now exposes anomaly overlay modes when anomaly columns are present
 
 Acceptance criteria:
 
@@ -353,7 +357,8 @@ Progress update:
 - `src/mad_ai/datasets/builders.py` implements spatial-grid and temporal-sequence builders
 - processed dataset artifacts can now be persisted to disk
 - a CSV-based build path exists for real sensor inputs
-- the global NOAA dataset currently ships as a multi-altitude grid with `5 deg x 5 deg` spacing
+- the global NOAA dataset currently ships as a multi-altitude grid with `2 deg x 2 deg` spacing
+- observed anomaly scoring can now persist anomaly-enriched CSV artifacts for globe review
 
 Acceptance criteria:
 
@@ -446,6 +451,8 @@ Progress update:
 - calibrated thresholds can be saved and reused from `outputs/calibration/thresholds.json`
 - `scripts/run_inference.py` runs end to end on sample data and can load saved calibration output
 - `scripts/evaluate_models.py` saves nominal-vs-anomalous comparison artifacts
+- `scripts/score_global_noaa_anomalies.py` now writes global anomaly scores back into the global NOAA dataset
+- `scripts/score_observed_csv_anomalies.py` persists anomaly-scored observed CSV outputs
 
 Acceptance criteria:
 
@@ -481,6 +488,8 @@ Progress update:
 - `src/mad_ai/visualizer/cesium_viewer.py` now provides an interactive Cesium globe
 - the globe supports OpenStreetMap earth imagery, day/night lighting, earth rotation, altitude selection, and full-earth magnetic overlays
 - the globe no longer depends on persistent magnetic sample markers for the global field view; users can click the earth surface to inspect magnetic details
+- the globe now supports anomaly overlay modes and an active overlay legend/color scale
+- observed anomaly CSV workflows can now generate a dedicated anomaly-aware observed globe
 - richer desktop-native drill-down UI is still pending
 
 Acceptance criteria:
@@ -489,6 +498,7 @@ Acceptance criteria:
 - The visualizer can show baseline, observed, and residual data without rerunning training.
 - The application remains responsive for normal review-sized datasets.
 - The globe can inspect magnetic values from the surface overlay at the active altitude and time setting.
+- The globe can expose anomaly overlays and observed-data anomaly results from saved artifacts.
 
 ## Suggested Technical Outputs
 
@@ -550,6 +560,9 @@ Latest local verification completed on March 24, 2026:
 - `python scripts\launch_visualizer.py` generated baseline-map, residual-map, timeline, and anomaly-event outputs
 - `python scripts\build_global_noaa_grid.py` built the multi-altitude global NOAA dataset
 - `python scripts\generate_global_noaa_visualizations.py` generated the current global globe and overlay assets
+- `python scripts\score_global_noaa_anomalies.py` wrote anomaly fields into the global NOAA dataset
+- `python scripts\score_observed_csv_anomalies.py data\raw\sample_sensor.csv` generated an observed scored CSV and summary
+- `python scripts\build_observed_anomaly_cesium_viewer.py data\raw\sample_sensor.csv` generated the observed anomaly globe
 
 ## Success Metric
 

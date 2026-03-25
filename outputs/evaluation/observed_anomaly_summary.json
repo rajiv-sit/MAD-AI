@@ -1,0 +1,10 @@
+{
+  "input_csv": "data\\raw\\sample_sensor.csv",
+  "output_csv": "data\\processed\\observed_scored\\observed_anomaly_scored.csv",
+  "rows": 3,
+  "spatial_score": 0.08717592805624008,
+  "temporal_score_mean": 0.14461234211921692,
+  "final_score_mean": 0.08683549240231514,
+  "anomaly_count": 0,
+  "threshold": 0.35
+}

@@ -125,6 +125,28 @@ class CesiumGlobeViewerBuilder:
       margin-top: 8px; margin-right: 6px; padding: 6px 10px; border-radius: 8px; border: 0;
       background: #1f7ae0; color: white; cursor: pointer;
     }}
+    #colorLegend {{
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }}
+    #colorLegendTitle {{
+      font-size: 12px;
+      margin-bottom: 6px;
+    }}
+    #colorLegendBar {{
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #30123b 0%, #4666dd 20%, #35b779 50%, #fde725 75%, #a50026 100%);
+      border: 1px solid rgba(255,255,255,0.16);
+    }}
+    #colorLegendScale {{
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      margin-top: 6px;
+      color: #c6d5e6;
+    }}
   </style>
 </head>
 <body>
@@ -150,6 +172,15 @@ class CesiumGlobeViewerBuilder:
     </div>
     <div class="time-row">
       <div id="selectionInfo">Click the earth surface to inspect magnetic details.</div>
+    </div>
+    <div id="colorLegend">
+      <div id="colorLegendTitle">Overlay Scale</div>
+      <div id="colorLegendBar"></div>
+      <div id="colorLegendScale">
+        <span id="colorLegendMin">min</span>
+        <span id="colorLegendMid">mid</span>
+        <span id="colorLegendMax">max</span>
+      </div>
     </div>
     <div class="legend">
       <span><span class="swatch" style="background:#4fc3f7"></span> Magnetic overlay</span>
@@ -245,6 +276,7 @@ class CesiumGlobeViewerBuilder:
         rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
       }}));
       magneticOverlayLayer.alpha = 0.52;
+      refreshColorLegend();
     }}
 
     if (worldGeoJson) {{
@@ -273,6 +305,30 @@ class CesiumGlobeViewerBuilder:
 
     function getComponentValue(point) {{
       return point.components[currentComponent] ?? point.baseline;
+    }}
+
+    function refreshColorLegend() {{
+      const activePoints = getActivePoints();
+      const values = activePoints
+        .map((point) => Number(getComponentValue(point)))
+        .filter((value) => Number.isFinite(value));
+      const titleEl = document.getElementById("colorLegendTitle");
+      const minEl = document.getElementById("colorLegendMin");
+      const midEl = document.getElementById("colorLegendMid");
+      const maxEl = document.getElementById("colorLegendMax");
+      titleEl.textContent = `${{currentComponent}} Scale`;
+      if (values.length === 0) {{
+        minEl.textContent = "n/a";
+        midEl.textContent = "n/a";
+        maxEl.textContent = "n/a";
+        return;
+      }}
+      const minValue = Math.min(...values);
+      const maxValue = Math.max(...values);
+      const midValue = (minValue + maxValue) / 2.0;
+      minEl.textContent = minValue.toFixed(2);
+      midEl.textContent = midValue.toFixed(2);
+      maxEl.textContent = maxValue.toFixed(2);
     }}
 
     function spinCamera(clock) {{
@@ -368,6 +424,7 @@ class CesiumGlobeViewerBuilder:
       clearDynamicEntities();
       buildTracks();
       document.getElementById("timeLabel").textContent = timeKeys[currentTimeIndex];
+      refreshColorLegend();
     }}
 
     function describePointForPanel(point, clickedLat, clickedLon) {{
