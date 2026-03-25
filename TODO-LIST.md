@@ -17,13 +17,14 @@ The repo is already feature-complete enough for pipeline demos. The remaining wo
 1. Real data scale and provenance
 2. Calibration credibility
 3. Evaluation quality
-4. Magnetic backend fidelity at scale
-5. Model quality tuning
-6. Visualizer hardening
-7. Coverage and CI hardening
-8. Source connectors only where needed
-9. Global baseline scaling
-10. Production hardening if the project leaves research mode
+4. Magnetic tracking from measurements
+5. Magnetic backend fidelity at scale
+6. Model quality tuning
+7. Visualizer hardening
+8. Coverage and CI hardening
+9. Source connectors only where needed
+10. Global baseline scaling
+11. Production hardening if the project leaves research mode
 
 ## Phase 1: Evidence Foundation
 
@@ -99,11 +100,48 @@ Dependencies:
 - real dataset availability
 - calibrated thresholds
 
+### 4. Magnetic Tracking From Measurements
+
+Goal: move from anomaly visualization with known vessel reference to inverse vessel-state estimation from magnetic measurements alone.
+
+Current status:
+
+- The Bahamas viewer currently shows vessel location from the dataset ship-navigation fields.
+- The anomaly signal comes from aircraft magnetometer residuals against the magnetic baseline.
+- Vessel tracking is not yet estimated from magnetometer measurements alone.
+
+Required next steps:
+
+- [ ] Define an explicit vessel state model such as `x`, `y`, `vx`, `vy` or position, heading, and speed.
+- [ ] Define a magnetic forward model that predicts the aircraft magnetic disturbance caused by a candidate vessel state.
+- [ ] Initialize candidate vessel states from measurement geometry, anomaly peaks, and closest-approach structure.
+- [ ] Run a state estimator over time such as EKF, UKF, particle filter, or multi-hypothesis tracking.
+- [ ] Compare the estimated vessel track against the provided ship-navigation track.
+- [ ] Document where tracking confidence is strong, weak, or ambiguous.
+
+Primary outputs:
+
+- vessel-state definition
+- magnetic forward-model notes and implementation
+- tracking initialization logic
+- filter-based vessel-track estimate
+- estimated-versus-reference vessel-track comparison artifacts
+
+Exit criteria:
+
+- The repo can produce a vessel-track estimate from magnetic measurements and aircraft state without directly consuming the reference vessel track as the track solution.
+- Estimated vessel-track quality is evaluated against the provided ship-reference path.
+
+Dependencies:
+
+- real datasets with aircraft state, magnetometer observations, and reference vessel track for validation
+- a usable WMM-backed or otherwise defensible baseline path
+
 ## Phase 2: Scale The Reference Path
 
 Goal: prove that the physically meaningful WMM-backed path remains practical once the data gets larger.
 
-### 4. Magnetic Backend Fidelity
+### 5. Magnetic Backend Fidelity
 
 - [ ] Run the larger workflows with the NOAA/WMM-backed baseline, not only the analytic backend.
 - [ ] Benchmark WMM runtime on larger observed, real-batch, and global workflows.
@@ -126,7 +164,7 @@ Dependencies:
 
 - real larger datasets
 
-### 5. Model Quality
+### 6. Model Quality
 
 - [ ] Tune the CNN architecture beyond the current baseline autoencoder.
 - [ ] Tune the LSTM architecture beyond the current baseline autoencoder.
@@ -154,12 +192,14 @@ Dependencies:
 
 Goal: make the review path usable on larger real scored datasets without overbuilding the UI.
 
-### 6. Visualizer Hardening
+### 7. Visualizer Hardening
 
 - [ ] Validate the viewer on larger real scored datasets and record where it slows down or becomes confusing.
 - [ ] Improve the review UX only where analyst workflows actually struggle.
 - [ ] Add stronger export or report flows if analyst handoff requires them.
 - [ ] Add clearer legends, threshold explanations, and overlay help text.
+- [ ] Keep the linked Bahamas four-view dashboard aligned with the Cesium globe as the real-data review path evolves.
+- [ ] Make current-time synchronization and anomaly-color interpretation clearer for analyst review.
 - [ ] Consider a native desktop shell only if the browser flow becomes a real blocker.
 
 Primary outputs:
@@ -177,7 +217,7 @@ Dependencies:
 
 - larger scored real datasets
 
-### 7. Coverage And Test Hardening
+### 8. Coverage And Test Hardening
 
 - [ ] Raise unit-test coverage above the current `85%`.
 - [ ] Add targeted tests for config parsing branches, inference helper branches, abstract base class behavior, and WMM fallback branches.
@@ -205,7 +245,7 @@ Dependencies:
 
 Goal: expand only where real deployment pressure exists.
 
-### 8. Source Connectors
+### 9. Source Connectors
 
 - [ ] Add connectors only where actual deployment needs them.
 - [ ] Candidate families include API ingestion, database-backed ingestion, message streams, and live sensor feeds.
@@ -227,7 +267,7 @@ Dependencies:
 
 - concrete deployment or ingestion requirements
 
-### 9. Global Baseline Scaling
+### 10. Global Baseline Scaling
 
 - [ ] Decide whether denser than `2 deg x 2 deg` global grids are actually worth the cost.
 - [ ] If justified, optimize for `1 deg` or sub-`2 deg` NOAA/WMM global grids.
@@ -250,7 +290,7 @@ Dependencies:
 - benchmark data from the WMM-backed path
 - viewer validation results
 
-### 10. Production Hardening
+### 11. Production Hardening
 
 - [ ] Decide explicitly whether the project remains a research prototype or becomes an operational service.
 - [ ] If operationalized, add packaging and deployment strategy.
@@ -278,6 +318,7 @@ Dependencies:
 - [ ] Keep `README.md`, `docs/architecture.md`, and `docs/mad-ai-milestone.md` aligned with the current state.
 - [ ] Add an experiment or results summary if tuning work becomes deeper.
 - [ ] Add data-governance notes before bringing in real operational datasets.
+- [ ] Keep the docs explicit that the current Bahamas workflow is anomaly detection with known vessel reference, not magnetometer-only vessel tracking.
 
 Exit criteria:
 
@@ -290,8 +331,9 @@ This is the recommended near-term sprint before adding any new feature scope.
 1. Land dataset manifests and split definitions for the first larger nominal and abnormal datasets.
 2. Re-run real-batch calibration on those datasets and save explicit false-positive analysis.
 3. Produce per-dataset real-data evaluation artifacts and baseline-only versus fused comparisons.
-4. Run one larger workflow with the WMM backend and record runtime and bottlenecks.
-5. Add the highest-value missing tests around config parsing, inference branches, and WMM fallback behavior.
+4. Define the first vessel state model and magnetic forward-model interface for inverse tracking.
+5. Run one larger workflow with the WMM backend and record runtime and bottlenecks.
+6. Add the highest-value missing tests around config parsing, inference branches, and WMM fallback behavior.
 
 ## Deferred Until Needed
 

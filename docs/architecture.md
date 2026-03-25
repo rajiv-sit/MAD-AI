@@ -41,6 +41,9 @@ MAD-AI/
 |   |-- train_temporal.py
 |   |-- evaluate_fusion_models.py
 |   |-- evaluate_real_batch_models.py
+|   |-- score_bahamas_realtime_anomalies.py
+|   |-- build_bahamas_noaa_combined_viewer.py
+|   |-- build_bahamas_realtime_dashboard.py
 |   |-- score_real_batch_folder.py
 |   |-- build_observed_anomaly_cesium_viewer.py
 |   |-- build_real_batch_cesium_viewer.py
@@ -214,6 +217,7 @@ Primary implementations:
 Static visualizations:
 
 - [src/mad_ai/viz/plots.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/viz/plots.py)
+- [src/mad_ai/viz/realtime_dashboard_html.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/viz/realtime_dashboard_html.py)
 
 Interactive review:
 
@@ -232,6 +236,16 @@ Current interactive capabilities:
 - anomaly-only and score-threshold filtering
 - export of selected anomalies, review bundle JSON, and screenshots
 - baseline-only versus fused anomaly comparison in the real-batch path
+- a linked Bahamas realtime dashboard with four synchronized views
+- current aircraft and vessel markers in the Bahamas globe
+- shared time synchronization between the dashboard and the Cesium globe
+
+Current tracking status:
+
+- the Bahamas aircraft track is the measurement platform path
+- the Bahamas vessel path shown in the viewer currently comes from the dataset reference navigation fields
+- anomaly is computed from aircraft magnetometer residuals against the magnetic baseline
+- inverse vessel tracking from magnetic measurements alone is not yet implemented
 
 ## Runtime Flows
 
@@ -274,6 +288,25 @@ Main scripts:
 - [scripts/evaluate_real_batch_models.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/evaluate_real_batch_models.py)
 - [scripts/score_real_batch_folder.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/score_real_batch_folder.py)
 - [scripts/build_real_batch_cesium_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_real_batch_cesium_viewer.py)
+
+### Bahamas Real-Data Review Flow
+
+1. Load the Bahamas `.asc` dataset with aircraft state, vessel state, and observed magnetic total field.
+2. Compute baseline and residual features for the aircraft-borne magnetometer readings.
+3. Score spatial, temporal, baseline-only, and fused anomaly outputs.
+4. Build the combined NOAA-only / NOAA-plus-anomaly globe.
+5. Build the linked four-view realtime dashboard.
+
+Main scripts:
+
+- [scripts/score_bahamas_realtime_anomalies.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/score_bahamas_realtime_anomalies.py)
+- [scripts/build_bahamas_noaa_combined_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_bahamas_noaa_combined_viewer.py)
+- [scripts/build_bahamas_realtime_dashboard.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_bahamas_realtime_dashboard.py)
+
+Important note:
+
+- this flow currently supports anomaly review with a known vessel reference path
+- it does not yet solve inverse vessel tracking from magnetometer measurements
 
 ### Large Real Batch Scaling Flow
 
@@ -327,6 +360,8 @@ CNN model             LSTM model
         v                   v
  Saved scored artifacts   Cesium review globe
 ```
+
+For the Bahamas review path, the vessel-reference data is used for comparison and visualization, while the anomaly signal is derived from aircraft-borne magnetometer residuals. A future inverse-tracking layer would sit between the fusion output and the review tooling.
 
 ## Complexity Notes
 

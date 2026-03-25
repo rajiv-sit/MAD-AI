@@ -27,6 +27,9 @@ The repo currently includes a working end-to-end prototype with:
   - real-batch globe generation from folder-based inputs
   - mixed-format ingestion for CSV, Parquet, JSONL, and SQLite sensor batches
   - a larger real-batch scaling config for calibration and tuning workflows
+  - a Bahamas real-data workflow with aircraft and vessel state ingestion from `.asc` flight data
+  - a combined NOAA-only / NOAA-plus-anomaly Cesium viewer for the Bahamas example
+  - a linked four-view Bahamas realtime dashboard with strip chart, vessel range comparison, synchronized globe, and along-track residual profile
 
 ## Repo Layout
 
@@ -103,6 +106,10 @@ In practice:
 
 - use `WMM` for NOAA-backed baseline analysis and production-style workflows
 - use `analytic` for the bundled large scaling config and fast local validation
+
+Current practical note:
+
+- the linked Bahamas realtime review flow exists today, but the full-flight operational path has mainly been exercised with the `analytic` backend because full-file `WMM` runtime still needs optimization
 
 ## Visualizer
 
@@ -239,6 +246,44 @@ This workflow supports:
 - viewer generation from the scored real batch output
 - comparison swipe mode between baseline-only and fused anomaly overlays in the globe
 
+### Bahamas Real-Data Workflow
+
+For the real Bahamas aircraft plus vessel dataset:
+
+```powershell
+python scripts\score_bahamas_realtime_anomalies.py inspection\external_mad_repo\data\raw\mad_data.asc data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json analytic stable_window
+python scripts\build_bahamas_noaa_combined_viewer.py outputs\viewer\cesium_bahamas_noaa_combined.html data\processed\global_noaa\global_wmm_grid.csv data\processed\bahamas\bahamas_mad_scored.csv
+python scripts\build_bahamas_realtime_dashboard.py data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json outputs\viewer\bahamas_realtime_dashboard.html cesium_bahamas_noaa_combined.html
+python scripts\serve_cesium_viewer.py
+```
+
+Main outputs:
+
+- [outputs/viewer/cesium_bahamas_noaa_combined.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_bahamas_noaa_combined.html)
+- [outputs/viewer/bahamas_realtime_dashboard.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/bahamas_realtime_dashboard.html)
+- [outputs/evaluation/bahamas_mad_summary.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/bahamas_mad_summary.json)
+
+What this workflow does today:
+
+- loads aircraft-borne magnetometer readings from the Bahamas `.asc` dataset
+- computes magnetic baseline, residual, and anomaly scores along the aircraft track
+- shows the provided vessel track from the dataset as a reference overlay
+- links strip-chart, range-to-vessel, globe, and along-track views through a shared time cursor
+
+Important current limitation:
+
+- the vessel path in the viewer comes from the dataset ship-navigation fields
+- the anomaly signal comes from magnetometer residuals
+- vessel tracking is not yet estimated from magnetic measurements alone
+
+That means the current Bahamas path is:
+
+- anomaly detection with known vessel reference
+
+and not yet:
+
+- inverse vessel tracking from magnetometer measurements
+
 ### Larger Real Batch Scaling Workflow
 
 For a larger mixed-format example dataset plus tuning and stronger nominal calibration:
@@ -319,6 +364,10 @@ Current settings:
   - local HTTP server for the viewer assets
 - `python scripts\launch_visualizer.py`
   - generates the broader visualizer artifact pack
+- `python scripts\build_bahamas_noaa_combined_viewer.py [output_html] [global_grid_csv] [scored_csv]`
+  - generates the combined Bahamas NOAA-only / NOAA-plus-anomaly globe
+- `python scripts\build_bahamas_realtime_dashboard.py [scored_csv] [summary_json] [output_html] [globe_html]`
+  - generates the linked four-view Bahamas realtime review dashboard
 
 ### Specialized Globe Variants
 
@@ -375,3 +424,4 @@ Important output areas:
 - The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.
 - The large real-batch scaling config is designed to run quickly by using the analytic backend instead of WMM.
 - The NOAA/WMM-backed workflow remains the correct path for real magnetic baseline interpretation.
+- The current Bahamas workflow visualizes anomaly against a known vessel reference path; it does not yet estimate vessel track from magnetometer measurements alone.

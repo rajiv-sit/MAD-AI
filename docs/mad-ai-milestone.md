@@ -47,6 +47,9 @@ Completed so far:
 - real-data folder ingestion now supports schema mapping, split-aware batch loading, batch scoring, and a real-batch Cesium review path
 - the real-batch review path now supports baseline-only residual anomaly overlays, fused anomaly overlays, robustness reports, and CI-backed regression checks
 - quality-scaling support now includes a larger mixed-format real-batch dataset generator, stronger real nominal calibration, broader model-tuning sweeps, and JSONL/SQLite source connectors
+- the repo now includes a Bahamas real-data workflow with aircraft state, vessel state, and aircraft-borne magnetic total field ingestion from `.asc` data
+- the Bahamas review path now includes a combined NOAA-only / NOAA-plus-anomaly globe plus a linked four-view realtime dashboard
+- the Bahamas dashboard now links strip-chart, vessel-range, synchronized globe, and along-track residual views with a shared time cursor
 
 Current limitations:
 
@@ -57,14 +60,20 @@ Current limitations:
 - the bundled default real-batch example is intentionally small, so its metrics are for pipeline verification rather than performance claims
 - denser full-earth builds are now practical at the current `2 deg x 2 deg` grid, but further scaling still needs care
 - broader operational connectors beyond the current file-based CSV, Parquet, JSONL, and SQLite paths may still be needed depending on deployment
+- the Bahamas vessel path currently comes from the dataset ship-navigation reference fields
+- anomaly in the Bahamas workflow comes from aircraft magnetometer residuals against the magnetic baseline
+- vessel tracking is not yet estimated from magnetic measurements alone
+- true inverse magnetic tracking still needs a vessel state model, magnetic forward model, initialization logic, and a filter-based tracker
 
 Immediate next steps:
 
 1. replace the synthetic large-batch example with larger operational datasets
 2. validate the tuned settings and calibrated thresholds on platform-specific real nominal distributions
-3. expand source connectors further only where actual deployments need them
-4. raise test coverage further and add script-level regression checks where useful
-5. consider a native desktop review shell only if the browser-based globe becomes limiting
+3. define the first vessel state model and magnetic forward-model interface for inverse tracking
+4. add filter-based vessel tracking from magnetic measurements and compare it against the provided ship-reference path
+5. expand source connectors further only where actual deployments need them
+6. raise test coverage further and add script-level regression checks where useful
+7. consider a native desktop review shell only if the browser-based globe becomes limiting
 
 ## Quality Status
 
@@ -481,6 +490,8 @@ Progress update:
 - `scripts/score_real_batch_folder.py` now scores arbitrary real-data folders against the trained real-batch models
 - `scripts/evaluate_real_batch_models.py` now honors configurable magnetic backends so larger synthetic scaling runs can use the analytic backend
 - `scripts/tune_real_batch_models.py` now performs broader parameter sweeps over window size, sequence length, stride, and fusion weights
+- `scripts/score_bahamas_realtime_anomalies.py` now scores the Bahamas real dataset and writes anomaly-enriched outputs
+- the Bahamas review flow now supports linked strip-chart, vessel-range, globe, and along-track analysis
 
 Acceptance criteria:
 
@@ -524,6 +535,8 @@ Progress update:
 - `scripts/build_real_batch_cesium_viewer.py` now generates a real-batch Cesium globe from folder-based scored inputs
 - the real-batch viewer can now compare baseline residual anomaly overlays against fused anomaly overlays in the same globe session
 - richer desktop-native drill-down UI is optional rather than required at the current prototype stage
+- `scripts/build_bahamas_noaa_combined_viewer.py` now generates the Bahamas NOAA-only / NOAA-plus-anomaly globe
+- `scripts/build_bahamas_realtime_dashboard.py` now generates a linked HTML dashboard for the Bahamas workflow
 
 Acceptance criteria:
 
@@ -608,6 +621,9 @@ Latest local verification completed on March 25, 2026:
 - `python scripts\tune_real_batch_models.py config\real_batch_large.yaml` generated the tuning leaderboard and summary outputs
 - `python scripts\build_real_batch_cesium_viewer.py` generated the real-batch anomaly globe
 - `python scripts\build_real_batch_cesium_viewer.py config\real_batch_large.yaml outputs\viewer\cesium_real_batch_large_globe.html` generated the larger real-batch anomaly globe
+- `python scripts\score_bahamas_realtime_anomalies.py inspection\external_mad_repo\data\raw\mad_data.asc data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json analytic stable_window` generated the Bahamas scored run
+- `python scripts\build_bahamas_noaa_combined_viewer.py outputs\viewer\cesium_bahamas_noaa_combined.html data\processed\global_noaa\global_wmm_grid.csv data\processed\bahamas\bahamas_mad_scored.csv` generated the linked Bahamas globe
+- `python scripts\build_bahamas_realtime_dashboard.py data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json outputs\viewer\bahamas_realtime_dashboard.html cesium_bahamas_noaa_combined.html` generated the four-view Bahamas dashboard
 - `.github/workflows/ci.yml` now enforces the unit suite on pushes and pull requests
 
 ## Success Metric
