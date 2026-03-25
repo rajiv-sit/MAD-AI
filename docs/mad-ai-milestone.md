@@ -17,7 +17,7 @@ A working prototype that accepts geographic and time-based magnetic inputs, comp
 
 ## Current Status
 
-Implementation has started and the repository now contains a runnable Python scaffold.
+Implementation is well beyond the initial scaffold stage and now includes a working end-to-end prototype with an interactive globe visualizer.
 
 Completed so far:
 
@@ -31,20 +31,27 @@ Completed so far:
 - threshold calibration and model evaluation outputs
 - a CSV-based preprocessing path for real sensor files
 - unit tests for the added implementation files and runnable scripts
+- direct NOAA coefficient import into the repo under `data/raw/noaa_wmm2025/`
+- full-earth NOAA magnetic overlays draped over an OpenStreetMap Cesium globe
+- altitude-aware global magnetic overlays for `0`, `1000`, `5000`, and `10000 m`
+- earth rotation and day/night lighting in the interactive globe
+- click-on-surface magnetic inspection using the active altitude and time layer
 
 Current limitations:
 
 - the WMM layer now tries real Python backends first, but still keeps an analytic fallback for portability
 - the spatial and temporal models now use trainable PyTorch autoencoder baselines, but they still need stronger architecture tuning and evaluation
-- the visualizer now exports richer review artifacts, but it is still file-output and matplotlib-based rather than a richer desktop UI
+- the visualizer is now interactive through a local Cesium globe, but it is browser-based rather than a richer native desktop review tool
 - the real-data path currently supports CSV ingestion; broader source handling and schema normalization are still limited
+- full-earth global builds denser than the current `5 deg x 5 deg` grid are still expensive with the current WMM query path
 
 Immediate next steps:
 
 1. tune the CNN and LSTM architectures on real or larger datasets
-2. evolve the visualizer from exported artifacts into an interactive desktop review tool
+2. optimize global WMM generation so `3 deg` or `2 deg` full-earth overlays become practical
 3. extend the real-data path beyond CSV to richer schemas and additional sources
 4. improve threshold calibration and evaluation on labeled or semi-labeled real datasets
+5. add a native desktop review layer or a richer browser-side UI around the current Cesium globe
 
 ## Quality Status
 
@@ -52,7 +59,7 @@ Current unit-test coverage for `src/mad_ai` is 85%.
 
 Coverage summary:
 
-- 25 unit tests are passing
+- 32 unit tests are passing
 - strong coverage exists for dataset, feature, ingest, visualization, and model save/load flows
 - the largest remaining gaps are in config parsing branches, inference helper branches, abstract base classes, and WMM fallback branches
 
@@ -260,7 +267,7 @@ Implementation guidance:
 
 **Goal:** Establish a reliable magnetic reference model.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -291,7 +298,7 @@ Acceptance criteria:
 
 **Goal:** Confirm that the WMM integration behaves plausibly across space.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -312,6 +319,8 @@ Progress update:
 - `scripts/generate_heatmaps.py` is implemented
 - `src/mad_ai/viz/plots.py` can render heatmaps
 - `scripts/launch_visualizer.py` exports baseline-map, residual-map, timeline, and anomaly-event review artifacts
+- `scripts/generate_global_noaa_visualizations.py` generates global 2D/3D visual products
+- the Cesium globe now visualizes full-earth magnetic overlays over OpenStreetMap
 
 Acceptance criteria:
 
@@ -322,7 +331,7 @@ Acceptance criteria:
 
 **Goal:** Prepare data for spatial and temporal anomaly models.
 
-Status: Started
+Status: In progress
 
 Tasks:
 
@@ -344,6 +353,7 @@ Progress update:
 - `src/mad_ai/datasets/builders.py` implements spatial-grid and temporal-sequence builders
 - processed dataset artifacts can now be persisted to disk
 - a CSV-based build path exists for real sensor inputs
+- the global NOAA dataset currently ships as a multi-altitude grid with `5 deg x 5 deg` spacing
 
 Acceptance criteria:
 
@@ -415,7 +425,7 @@ Acceptance criteria:
 
 **Goal:** Combine model outputs into a usable detection workflow.
 
-Status: Started
+Status: In progress
 
 Tasks:
 
@@ -447,7 +457,7 @@ Acceptance criteria:
 
 **Goal:** Provide a usable interface for reviewing magnetic maps, residuals, and anomaly results.
 
-Status: Started
+Status: In progress
 
 Tasks:
 
@@ -468,13 +478,17 @@ Progress update:
 
 - `src/mad_ai/visualizer/app.py` and `src/mad_ai/visualizer/viewmodels.py` are implemented
 - the current visualizer generates baseline-map, residual-map, anomaly-timeline, and anomaly-event CSV artifacts
-- richer interactive drill-down UI is still pending
+- `src/mad_ai/visualizer/cesium_viewer.py` now provides an interactive Cesium globe
+- the globe supports OpenStreetMap earth imagery, day/night lighting, earth rotation, altitude selection, and full-earth magnetic overlays
+- the globe no longer depends on persistent magnetic sample markers for the global field view; users can click the earth surface to inspect magnetic details
+- richer desktop-native drill-down UI is still pending
 
 Acceptance criteria:
 
 - A user can load generated artifacts and inspect anomalies visually.
 - The visualizer can show baseline, observed, and residual data without rerunning training.
 - The application remains responsive for normal review-sized datasets.
+- The globe can inspect magnetic values from the surface overlay at the active altitude and time setting.
 
 ## Suggested Technical Outputs
 
@@ -526,6 +540,7 @@ Latest local verification completed on March 24, 2026:
 
 - `python -m unittest discover -s tests\unit -p 'test_*.py' -v` passed
 - unit-test coverage for `src/mad_ai` measured at 85%
+- the current unit suite count is 32 passing tests
 - `python scripts\train_spatial.py` ran successfully
 - `python scripts\train_temporal.py` ran successfully
 - `python scripts\build_processed_datasets.py` ran successfully
@@ -533,6 +548,8 @@ Latest local verification completed on March 24, 2026:
 - `python scripts\evaluate_models.py` ran successfully
 - `python scripts\run_inference.py` ran successfully
 - `python scripts\launch_visualizer.py` generated baseline-map, residual-map, timeline, and anomaly-event outputs
+- `python scripts\build_global_noaa_grid.py` built the multi-altitude global NOAA dataset
+- `python scripts\generate_global_noaa_visualizations.py` generated the current global globe and overlay assets
 
 ## Success Metric
 
