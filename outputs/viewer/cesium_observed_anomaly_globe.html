@@ -8,10 +8,24 @@
   <script src="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Cesium.js"></script>
   <style>
     html, body, #cesiumContainer { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #07111f; }
+    #slider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      display: none;
+      z-index: 9;
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+      cursor: ew-resize;
+    }
     #panel {
-      position: absolute; top: 12px; left: 12px; z-index: 10; width: 320px;
+      position: absolute; top: 12px; left: 12px; z-index: 10; width: 368px;
       background: rgba(8, 16, 28, 0.84); color: #dfe9f6; padding: 14px 16px; border-radius: 12px;
       font-family: Segoe UI, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+      max-height: calc(100vh - 24px);
+      overflow-y: auto;
     }
     #panel h1 { margin: 0 0 8px 0; font-size: 18px; }
     #panel p { margin: 0 0 6px 0; font-size: 13px; line-height: 1.4; }
@@ -21,8 +35,15 @@
       margin-top: 8px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.08); color: #eef5ff;
     }
+    input[type="number"], input[type="text"] {
+      margin-top: 8px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08); color: #eef5ff; box-sizing: border-box;
+    }
     input[type="range"] { width: 100%; margin-top: 8px; }
     .time-row { margin-top: 10px; font-size: 12px; }
+    .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; }
+    .subtle { color: #c6d5e6; font-size: 11px; margin-top: 4px; }
     button {
       margin-top: 8px; margin-right: 6px; padding: 6px 10px; border-radius: 8px; border: 0;
       background: #1f7ae0; color: white; cursor: pointer;
@@ -52,12 +73,20 @@
   </style>
 </head>
 <body>
+  <div id="slider"></div>
   <div id="panel">
     <h1>MAD-AI Observed Anomaly Globe</h1>
     <p>Interactive Cesium globe adapted from the ConstellationVizFrontend approach.</p>
     <p>Magnetic values are draped across the full earth surface. Click the globe to inspect the nearest magnetic sample at the active time and altitude.</p>
     <label for="componentSelect">Displayed Component</label>
     <select id="componentSelect"></select>
+    <div class="checkbox-row">
+      <input id="compareToggle" type="checkbox" />
+      <label for="compareToggle">Enable comparison swipe</label>
+    </div>
+    <label for="secondaryComponentSelect">Secondary Component</label>
+    <select id="secondaryComponentSelect"></select>
+    <div class="subtle">Comparison mode shows the primary overlay on the left and the secondary overlay on the right.</div>
     <div class="time-row">
       <label for="timeSlider">Time Slice</label>
       <input id="timeSlider" type="range" min="0" max="0" value="0" step="1" />
@@ -70,7 +99,34 @@
       <div id="altitudeLabel">0.0 m</div>
     </div>
     <div class="time-row">
+      <label for="scoreThresholdSlider">Score Threshold Filter</label>
+      <input id="scoreThresholdSlider" type="range" min="0" max="1" value="0" step="0.001" />
+      <div id="scoreThresholdLabel">0.000</div>
+      <div class="checkbox-row">
+        <input id="anomalyOnlyCheckbox" type="checkbox" />
+        <label for="anomalyOnlyCheckbox">Anomaly-only filter</label>
+      </div>
+      <div class="checkbox-row">
+        <input id="showTracksCheckbox" type="checkbox" checked />
+        <label for="showTracksCheckbox">Show tracks</label>
+      </div>
+    </div>
+    <div class="time-row">
+      <label>Search Latitude / Longitude</label>
+      <div class="control-grid">
+        <input id="latInput" type="number" step="0.001" placeholder="Latitude" />
+        <input id="lonInput" type="number" step="0.001" placeholder="Longitude" />
+      </div>
+      <button id="goToLatLonBtn" type="button">Go To Location</button>
+      <button id="jumpHotspotBtn" type="button">Jump To Hotspot</button>
+    </div>
+    <div class="time-row">
       <button id="spinToggleBtn" type="button">Pause Earth Spin</button>
+    </div>
+    <div class="time-row">
+      <button id="exportSelectedBtn" type="button">Export Selected Anomalies CSV</button>
+      <button id="exportReportBtn" type="button">Export Review Bundle</button>
+      <button id="exportScreenshotBtn" type="button">Export Screenshot</button>
     </div>
     <div class="time-row">
       <div id="selectionInfo">Click the earth surface to inspect magnetic details.</div>
@@ -98,6 +154,8 @@
     const magneticOverlayAssets = {"Observed Total": {"0.0": "magnetic_overlay_observed_total_0_0m.png", "1.0": "magnetic_overlay_observed_total_1_0m.png", "2.0": "magnetic_overlay_observed_total_2_0m.png"}, "Baseline Total": {"0.0": "magnetic_overlay_baseline_total_0_0m.png", "1.0": "magnetic_overlay_baseline_total_1_0m.png", "2.0": "magnetic_overlay_baseline_total_2_0m.png"}, "Residual Total": {"0.0": "magnetic_overlay_residual_total_0_0m.png", "1.0": "magnetic_overlay_residual_total_1_0m.png", "2.0": "magnetic_overlay_residual_total_2_0m.png"}, "Spatial Anomaly Score": {"0.0": "magnetic_overlay_spatial_anomaly_score_0_0m.png", "1.0": "magnetic_overlay_spatial_anomaly_score_1_0m.png", "2.0": "magnetic_overlay_spatial_anomaly_score_2_0m.png"}, "Temporal Anomaly Score": {"0.0": "magnetic_overlay_temporal_anomaly_score_0_0m.png", "1.0": "magnetic_overlay_temporal_anomaly_score_1_0m.png", "2.0": "magnetic_overlay_temporal_anomaly_score_2_0m.png"}, "Final Anomaly Score": {"0.0": "magnetic_overlay_final_anomaly_score_0_0m.png", "1.0": "magnetic_overlay_final_anomaly_score_1_0m.png", "2.0": "magnetic_overlay_final_anomaly_score_2_0m.png"}};
     const componentOptions = ["Observed Total", "Baseline Total", "Residual Total", "Spatial Anomaly Score", "Temporal Anomaly Score", "Final Anomaly Score"];
     let currentComponent = "Final Anomaly Score";
+    let secondaryComponent = "Observed Total";
+    let compareEnabled = false;
     const groupedByTime = new Map();
     sampleData.forEach((point) => {
       const key = point.timestamp || "Single timestamp";
@@ -110,10 +168,14 @@
     };
     const timeKeys = Array.from(groupedByTime.keys()).sort((left, right) => parseTimeKey(left) - parseTimeKey(right));
     const altitudeKeys = Array.from(new Set(sampleData.map((point) => Number(point.alt).toFixed(1))));
+    const anomalyScores = sampleData.map((point) => Number(point.anomalyScore || 0.0)).filter((value) => Number.isFinite(value));
+    const maxAnomalyScore = anomalyScores.length > 0 ? Math.max(...anomalyScores) : 1.0;
     let currentTimeIndex = 0;
     let currentAltitudeKey = altitudeKeys[0] || "0.0";
     let playTimer = null;
-    let magneticOverlayLayer = null;
+    let primaryMagneticOverlayLayer = null;
+    let secondaryMagneticOverlayLayer = null;
+    let hotspotIndex = -1;
     Cesium.Ion.defaultAccessToken = "";
     const viewer = new Cesium.Viewer("cesiumContainer", {
       animation: false,
@@ -163,21 +225,37 @@
       }
     }
 
+    function removeOverlay(layer) {
+      if (layer) {
+        viewer.scene.globe.imageryLayers.remove(layer, true);
+      }
+      return null;
+    }
+
     function refreshMagneticOverlay() {
       const layers = viewer.scene.globe.imageryLayers;
-      if (magneticOverlayLayer) {
-        layers.remove(magneticOverlayLayer, true);
-        magneticOverlayLayer = null;
-      }
+      primaryMagneticOverlayLayer = removeOverlay(primaryMagneticOverlayLayer);
+      secondaryMagneticOverlayLayer = removeOverlay(secondaryMagneticOverlayLayer);
       const overlayPath = magneticOverlayAssets[currentComponent]?.[currentAltitudeKey];
-      if (!overlayPath) {
-        return;
+      if (overlayPath) {
+        primaryMagneticOverlayLayer = layers.addImageryProvider(new Cesium.SingleTileImageryProvider({
+          url: overlayPath,
+          rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
+        }));
+        primaryMagneticOverlayLayer.alpha = 0.52;
+        primaryMagneticOverlayLayer.splitDirection = compareEnabled ? Cesium.SplitDirection.LEFT : Cesium.SplitDirection.NONE;
       }
-      magneticOverlayLayer = layers.addImageryProvider(new Cesium.SingleTileImageryProvider({
-        url: overlayPath,
-        rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
-      }));
-      magneticOverlayLayer.alpha = 0.52;
+      if (compareEnabled) {
+        const secondaryPath = magneticOverlayAssets[secondaryComponent]?.[currentAltitudeKey];
+        if (secondaryPath) {
+          secondaryMagneticOverlayLayer = layers.addImageryProvider(new Cesium.SingleTileImageryProvider({
+            url: secondaryPath,
+            rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
+          }));
+          secondaryMagneticOverlayLayer.alpha = 0.52;
+          secondaryMagneticOverlayLayer.splitDirection = Cesium.SplitDirection.RIGHT;
+        }
+      }
       refreshColorLegend();
     }
 
@@ -209,8 +287,12 @@
       return point.components[currentComponent] ?? point.baseline;
     }
 
+    function getSecondaryComponentValue(point) {
+      return point.components[secondaryComponent] ?? point.baseline;
+    }
+
     function refreshColorLegend() {
-      const activePoints = getActivePoints();
+      const activePoints = getFilteredPoints();
       const values = activePoints
         .map((point) => Number(getComponentValue(point)))
         .filter((value) => Number.isFinite(value));
@@ -218,7 +300,9 @@
       const minEl = document.getElementById("colorLegendMin");
       const midEl = document.getElementById("colorLegendMid");
       const maxEl = document.getElementById("colorLegendMax");
-      titleEl.textContent = `${currentComponent} Scale`;
+      titleEl.textContent = compareEnabled
+        ? `${currentComponent} vs ${secondaryComponent} Scale`
+        : `${currentComponent} Scale`;
       if (values.length === 0) {
         minEl.textContent = "n/a";
         midEl.textContent = "n/a";
@@ -249,8 +333,19 @@
       return activeTimePoints.filter((point) => Number(point.alt).toFixed(1) === currentAltitudeKey);
     }
 
+    function getFilteredPoints() {
+      const threshold = Number(document.getElementById("scoreThresholdSlider").value || 0.0);
+      const anomalyOnly = document.getElementById("anomalyOnlyCheckbox").checked;
+      return getActivePoints().filter((point) => {
+        const passesThreshold = Number(point.anomalyScore || 0.0) >= threshold;
+        const passesAnomaly = !anomalyOnly || Boolean(point.isAnomaly);
+        return passesThreshold && passesAnomaly;
+      });
+    }
+
     function descriptionForPoint(point) {
       const value = getComponentValue(point);
+      const secondaryValue = getSecondaryComponentValue(point);
       const componentRows = Object.entries(point.components).map(([name, componentValue]) =>
         `<p><b>${name}:</b> ${Number(componentValue).toFixed(2)}</p>`
       ).join("");
@@ -260,6 +355,7 @@
           <p><b>Longitude:</b> ${point.lon.toFixed(3)}</p>
           <p><b>Altitude:</b> ${point.alt.toFixed(1)} m</p>
           <p><b>Current Component:</b> ${currentComponent} = ${Number(value).toFixed(2)}</p>
+          <p><b>Comparison Component:</b> ${secondaryComponent} = ${Number(secondaryValue).toFixed(2)}</p>
           <p><b>Baseline:</b> ${point.baseline.toFixed(2)} nT</p>
           <p><b>Residual:</b> ${point.residual.toFixed(2)} nT</p>
           <p><b>Anomaly Score:</b> ${Number(point.anomalyScore).toFixed(4)}</p>
@@ -295,9 +391,19 @@
     }
 
     function buildTracks() {
+      if (!document.getElementById("showTracksCheckbox").checked) {
+        return;
+      }
+      const threshold = Number(document.getElementById("scoreThresholdSlider").value || 0.0);
+      const anomalyOnly = document.getElementById("anomalyOnlyCheckbox").checked;
       const historicalPoints = getHistoricalTrackPoints();
       const groupedByTrack = new Map();
       historicalPoints.forEach((point) => {
+        const passesThreshold = Number(point.anomalyScore || 0.0) >= threshold;
+        const passesAnomaly = !anomalyOnly || Boolean(point.isAnomaly);
+        if (!passesThreshold || !passesAnomaly) {
+          return;
+        }
         if (!point.trackId) return;
         if (!groupedByTrack.has(point.trackId)) groupedByTrack.set(point.trackId, []);
         groupedByTrack.get(point.trackId).push(point);
@@ -331,6 +437,7 @@
 
     function describePointForPanel(point, clickedLat, clickedLon) {
       const currentValue = getComponentValue(point);
+      const secondaryValue = getSecondaryComponentValue(point);
       const componentRows = Object.entries(point.components)
         .map(([name, componentValue]) => `<div><b>${name}:</b> ${Number(componentValue).toFixed(2)}</div>`)
         .join("");
@@ -341,10 +448,13 @@
         <div><b>Nearest Sample Longitude:</b> ${point.lon.toFixed(3)}</div>
         <div><b>Altitude:</b> ${point.alt.toFixed(1)} m</div>
         <div><b>Current Component:</b> ${currentComponent} = ${Number(currentValue).toFixed(2)}</div>
+        <div><b>Comparison Component:</b> ${secondaryComponent} = ${Number(secondaryValue).toFixed(2)}</div>
         <div><b>Baseline:</b> ${point.baseline.toFixed(2)} nT</div>
         <div><b>Residual:</b> ${point.residual.toFixed(2)} nT</div>
         <div><b>Anomaly Score:</b> ${Number(point.anomalyScore).toFixed(4)}</div>
         <div><b>Anomaly:</b> ${point.isAnomaly}</div>
+        <div><b>Threshold Filter:</b> ${Number(document.getElementById("scoreThresholdSlider").value || 0.0).toFixed(3)}</div>
+        <div><b>Decision:</b> ${Number(point.anomalyScore || 0.0) >= Number(document.getElementById("scoreThresholdSlider").value || 0.0) ? "above filter" : "below filter"}</div>
         <div><b>Timestamp:</b> ${point.timestamp}</div>
         ${componentRows}
       `;
@@ -363,7 +473,7 @@
     }
 
     function findNearestActivePoint(lat, lon) {
-      const activePoints = getActivePoints();
+      const activePoints = getFilteredPoints();
       if (activePoints.length === 0) {
         return null;
       }
@@ -405,19 +515,82 @@
       viewer.selectedEntity = selectionEntity;
     }
 
+    function flyToPoint(point) {
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, Math.max(point.alt + 400000.0, 400000.0)),
+        duration: 1.4
+      });
+      updateSurfaceSelection(Cesium.Cartographic.fromDegrees(point.lon, point.lat, point.alt));
+    }
+
+    function exportCsv(filename, rows) {
+      const headers = Object.keys(rows[0] || { sample: "" });
+      const content = [headers.join(",")]
+        .concat(rows.map((row) => headers.map((header) => JSON.stringify(row[header] ?? "")).join(",")))
+        .join("\n");
+      const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportJson(filename, payload) {
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
     const componentSelect = document.getElementById("componentSelect");
+    const secondaryComponentSelect = document.getElementById("secondaryComponentSelect");
     componentOptions.forEach((label) => {
       const option = document.createElement("option");
       option.value = label;
       option.textContent = label;
       option.selected = label === currentComponent;
       componentSelect.appendChild(option);
+      const secondaryOption = document.createElement("option");
+      secondaryOption.value = label;
+      secondaryOption.textContent = label;
+      secondaryOption.selected = label === secondaryComponent;
+      secondaryComponentSelect.appendChild(secondaryOption);
     });
     componentSelect.addEventListener("change", (event) => {
       currentComponent = event.target.value;
+      if (secondaryComponent === currentComponent && componentOptions.length > 1) {
+        secondaryComponent = componentOptions.find((label) => label !== currentComponent) || currentComponent;
+        secondaryComponentSelect.value = secondaryComponent;
+      }
       refreshMagneticOverlay();
       refreshScene();
     });
+    secondaryComponentSelect.addEventListener("change", (event) => {
+      secondaryComponent = event.target.value;
+      refreshMagneticOverlay();
+      refreshScene();
+    });
+
+    const compareToggle = document.getElementById("compareToggle");
+    const slider = document.getElementById("slider");
+    compareToggle.addEventListener("change", (event) => {
+      compareEnabled = event.target.checked;
+      slider.style.display = compareEnabled ? "block" : "none";
+      refreshMagneticOverlay();
+      refreshScene();
+    });
+    const splitHandler = new Cesium.ScreenSpaceEventHandler(slider);
+    splitHandler.setInputAction((movement) => {
+      const rect = viewer.scene.canvas.getBoundingClientRect();
+      const splitPosition = Math.min(Math.max((movement.endPosition.x - rect.left) / rect.width, 0.05), 0.95);
+      viewer.scene.splitPosition = splitPosition;
+      slider.style.left = `${splitPosition * 100}%`;
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
     const timeSlider = document.getElementById("timeSlider");
     timeSlider.max = String(Math.max(0, timeKeys.length - 1));
@@ -436,6 +609,23 @@
       currentAltitudeKey = altitudeKeys[Number(event.target.value)] || altitudeKeys[0] || "0.0";
       altitudeLabel.textContent = `${currentAltitudeKey} m`;
       refreshMagneticOverlay();
+      refreshScene();
+    });
+
+    const scoreThresholdSlider = document.getElementById("scoreThresholdSlider");
+    const scoreThresholdLabel = document.getElementById("scoreThresholdLabel");
+    scoreThresholdSlider.max = String(Math.max(maxAnomalyScore, 0.001));
+    scoreThresholdSlider.value = "0";
+    scoreThresholdSlider.addEventListener("input", (event) => {
+      scoreThresholdLabel.textContent = Number(event.target.value).toFixed(3);
+      hotspotIndex = -1;
+      refreshScene();
+    });
+    document.getElementById("anomalyOnlyCheckbox").addEventListener("change", () => {
+      hotspotIndex = -1;
+      refreshScene();
+    });
+    document.getElementById("showTracksCheckbox").addEventListener("change", () => {
       refreshScene();
     });
 
@@ -460,6 +650,85 @@
       globeSpinEnabled = !globeSpinEnabled;
       spinToggleBtn.textContent = globeSpinEnabled ? "Pause Earth Spin" : "Resume Earth Spin";
       lastSpinTime = viewer.clock.currentTime;
+    });
+
+    document.getElementById("goToLatLonBtn").addEventListener("click", () => {
+      const lat = Number(document.getElementById("latInput").value);
+      const lon = Number(document.getElementById("lonInput").value);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        return;
+      }
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(lon, lat, 450000.0),
+        duration: 1.4
+      });
+      updateSurfaceSelection(Cesium.Cartographic.fromDegrees(lon, lat, 0.0));
+    });
+
+    document.getElementById("jumpHotspotBtn").addEventListener("click", () => {
+      const hotspots = getFilteredPoints().slice().sort((left, right) => Number(right.anomalyScore || 0.0) - Number(left.anomalyScore || 0.0));
+      if (hotspots.length === 0) {
+        return;
+      }
+      hotspotIndex = (hotspotIndex + 1) % hotspots.length;
+      flyToPoint(hotspots[hotspotIndex]);
+    });
+
+    document.getElementById("exportSelectedBtn").addEventListener("click", () => {
+      const rows = getFilteredPoints()
+        .filter((point) => Boolean(point.isAnomaly))
+        .map((point) => ({
+          latitude_deg: point.lat,
+          longitude_deg: point.lon,
+          altitude_m: point.alt,
+          timestamp: point.timestamp,
+          anomaly_score: point.anomalyScore,
+          primary_component: currentComponent,
+          primary_value: getComponentValue(point),
+          comparison_component: secondaryComponent,
+          comparison_value: getSecondaryComponentValue(point),
+          baseline_total_nt: point.baseline,
+          residual_total_nt: point.residual
+        }));
+      if (rows.length > 0) {
+        exportCsv("mad_ai_selected_anomalies.csv", rows);
+      }
+    });
+
+    document.getElementById("exportReportBtn").addEventListener("click", () => {
+      const filteredPoints = getFilteredPoints();
+      exportJson("mad_ai_review_bundle.json", {
+        title: "MAD-AI Observed Anomaly Globe",
+        primary_component: currentComponent,
+        secondary_component: secondaryComponent,
+        compare_enabled: compareEnabled,
+        time_slice: timeKeys[currentTimeIndex],
+        altitude_layer_m: Number(currentAltitudeKey),
+        anomaly_only: document.getElementById("anomalyOnlyCheckbox").checked,
+        show_tracks: document.getElementById("showTracksCheckbox").checked,
+        score_threshold: Number(scoreThresholdSlider.value || 0.0),
+        filtered_point_count: filteredPoints.length,
+        top_hotspots: filteredPoints
+          .slice()
+          .sort((left, right) => Number(right.anomalyScore || 0.0) - Number(left.anomalyScore || 0.0))
+          .slice(0, 10)
+          .map((point) => ({
+            lat: point.lat,
+            lon: point.lon,
+            alt: point.alt,
+            anomaly_score: point.anomalyScore,
+            timestamp: point.timestamp
+          })),
+        selection_summary: document.getElementById("selectionInfo").innerText
+      });
+    });
+
+    document.getElementById("exportScreenshotBtn").addEventListener("click", () => {
+      viewer.render();
+      const link = document.createElement("a");
+      link.href = viewer.scene.canvas.toDataURL("image/png");
+      link.download = "mad_ai_globe_screenshot.png";
+      link.click();
     });
 
     viewer.clock.onTick.addEventListener(spinCamera);

@@ -27,6 +27,19 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("sampleData", text)
             self.assertIn("componentSelect", text)
             self.assertIn("Displayed Component", text)
+            self.assertIn("compareToggle", text)
+            self.assertIn("secondaryComponentSelect", text)
+            self.assertIn("comparison swipe", text)
+            self.assertIn("scoreThresholdSlider", text)
+            self.assertIn("anomalyOnlyCheckbox", text)
+            self.assertIn("showTracksCheckbox", text)
+            self.assertIn("goToLatLonBtn", text)
+            self.assertIn("jumpHotspotBtn", text)
+            self.assertIn("exportSelectedBtn", text)
+            self.assertIn("exportReportBtn", text)
+            self.assertIn("exportScreenshotBtn", text)
+            self.assertIn("mad_ai_selected_anomalies.csv", text)
+            self.assertIn("mad_ai_review_bundle.json", text)
             self.assertIn("timeSlider", text)
             self.assertIn("altitudeSlider", text)
             self.assertIn("altitudeLabel", text)
@@ -44,7 +57,7 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("world_texture.svg", text)
             self.assertIn("refreshMagneticOverlay", text)
             self.assertIn("magnetic_overlay_total_field_0_0m.png", text)
-            self.assertIn("magneticOverlayLayer.alpha = 0.52", text)
+            self.assertIn("primaryMagneticOverlayLayer.alpha = 0.52", text)
             self.assertIn("viewer.clock.shouldAnimate = true", text)
             self.assertIn("viewer.clock.multiplier = 600", text)
             self.assertIn("spinToggleBtn", text)
@@ -54,6 +67,9 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("ScreenSpaceEventHandler", text)
             self.assertIn("pickEllipsoid", text)
             self.assertIn("refreshColorLegend", text)
+            self.assertIn("getFilteredPoints", text)
+            self.assertIn("flyToPoint", text)
+            self.assertIn("viewer.scene.splitPosition", text)
 
     def test_cesium_viewer_builder_supports_custom_observed_components(self) -> None:
         raw = make_sample_sensor_data(8)
@@ -81,6 +97,7 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("Final Anomaly Score", text)
             self.assertIn("anomalyScore", text)
             self.assertIn("colorLegendTitle", text)
+            self.assertIn("secondaryComponentSelect", text)
 
     def test_cesium_viewer_builder_renders_track_paths_when_track_ids_exist(self) -> None:
         raw = make_tracked_sensor_data(track_count=2, samples_per_track=5)
@@ -95,6 +112,7 @@ class CesiumViewerTestCase(unittest.TestCase):
             self.assertIn("getHistoricalTrackPoints", text)
             self.assertIn("polyline", text)
             self.assertIn("Surface selection", text)
+            self.assertIn("showTracksCheckbox", text)
 
 
 if __name__ == "__main__":

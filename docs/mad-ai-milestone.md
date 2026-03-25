@@ -43,6 +43,7 @@ Completed so far:
 - observed residual model checkpoints, evaluation metrics, and calibrated thresholds saved for reuse by the observed globe workflow
 - standalone spatial and temporal training scripts now save per-model checkpoints, calibrated thresholds, score comparisons, and validation histograms
 - fused anomaly calibration now reuses the standalone spatial and temporal thresholds and saves a dedicated fusion threshold artifact with fused metrics and plots
+- the Cesium review flow now supports comparison swipe mode, anomaly filtering, hotspot jumps, lat/lon search, and export actions for review outputs
 
 Current limitations:
 
@@ -57,9 +58,9 @@ Immediate next steps:
 
 1. expand observed-data anomaly workflows beyond CSV into richer real sensor sources
 2. improve threshold calibration and evaluation on labeled or semi-labeled real datasets
-3. add richer browser-side review controls such as search, filtering, and comparison modes around the current Cesium globe
-4. compare baseline-only anomaly overlays against observed-residual overlays in the same viewer flow
-5. continue tuning the CNN and LSTM architectures on broader real datasets
+3. compare baseline-only anomaly overlays against observed-residual overlays in the same viewer flow
+4. continue tuning the CNN and LSTM architectures on broader real datasets
+5. consider a native desktop review shell only if the browser-based globe becomes limiting
 
 ## Quality Status
 
@@ -506,7 +507,8 @@ Progress update:
 - observed anomaly CSV workflows can now generate a dedicated anomaly-aware observed globe
 - the global globe is currently built from a `2 deg x 2 deg` multi-altitude NOAA dataset and uses surface overlays rather than sparse points for the main magnetic field view
 - the observed anomaly globe now consumes calibrated observed-residual checkpoints and thresholds rather than relying on a one-off fixed-threshold scoring pass
-- richer desktop-native drill-down UI is still pending
+- the review flow now supports comparison swipe mode, score-threshold filtering, anomaly-only filtering, hotspot jumps, direct lat/lon search, and export of selected anomalies, review bundles, and screenshots
+- richer desktop-native drill-down UI is optional rather than required at the current prototype stage
 
 Acceptance criteria:
 
@@ -583,6 +585,7 @@ Latest local verification completed on March 25, 2026:
 - `python scripts\evaluate_observed_residual_models.py` saved observed-residual checkpoints, calibration, metrics, and score histograms
 - `python scripts\score_observed_csv_anomalies.py data\raw\sample_sensor.csv` generated an observed scored CSV and summary
 - `python scripts\build_observed_anomaly_cesium_viewer.py data\raw\sample_sensor.csv` generated the observed anomaly globe
+- the observed anomaly globe now includes comparison swipe, filter, search, hotspot-jump, and export controls
 
 ## Success Metric
 
