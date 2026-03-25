@@ -15,7 +15,8 @@ MAD-AI/
 |   |-- default.yaml
 |   |-- inference.yaml
 |   |-- training.yaml
-|   `-- real_batch.yaml              # Schema mapping and split-based real-data workflow
+|   |-- real_batch.yaml              # Schema mapping and split-based real-data workflow
+|   `-- real_batch_large.yaml        # Larger mixed-format scaling workflow using the analytic backend
 |-- data/
 |   |-- raw/
 |   |   |-- noaa_wmm2025/            # Imported NOAA WMM bundle
@@ -100,8 +101,8 @@ The project keeps stable class contracts in [src/mad_ai/core/base.py](c:/Users/M
 
 These are the main inheritance paths in the current repo:
 
-- `BaseMagneticModel` -> `WMMMagneticModel`
-- `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `SchemaMappedSensorIngestor`, `BatchSensorIngestor`
+- `BaseMagneticModel` -> `WMMMagneticModel`, `AnalyticMagneticModel`
+- `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `JsonlSensorIngestor`, `SqliteSensorIngestor`, `SchemaMappedSensorIngestor`, `BatchSensorIngestor`
 - `BaseFeatureBuilder` -> `ResidualFeatureBuilder`, `TemporalFeatureBuilder`
 - `BaseDatasetBuilder` -> `SpatialGridBuilder`, `TemporalSequenceBuilder`
 - `BaseAnomalyModel` -> `CNNAnomalyModel`, `LSTMAnomalyModel`
@@ -116,6 +117,7 @@ Located under [src/mad_ai/wmm](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/wmm
 Responsibilities:
 
 - query geomagnetic baseline values from WMM-backed providers
+- support a deterministic analytic backend for fast scaling/test runs
 - cache repeated lookups
 - expose total field, declination, inclination, and vector components
 
@@ -123,13 +125,18 @@ Primary implementation:
 
 - [src/mad_ai/wmm/model.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/wmm/model.py)
 
+Backend guidance:
+
+- `WMMMagneticModel` is the reference path for operational baseline generation
+- `AnalyticMagneticModel` is the fast fallback used by the bundled larger scaling config to keep runtime practical
+
 ### Ingestion Layer
 
 Located under [src/mad_ai/ingest](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/ingest).
 
 Responsibilities:
 
-- load CSV and Parquet sensor files
+- load CSV, Parquet, JSONL, and SQLite sensor files
 - normalize timestamps
 - map non-canonical sensor schemas into the project schema
 - batch-load folders of files
@@ -268,6 +275,26 @@ Main scripts:
 - [scripts/score_real_batch_folder.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/score_real_batch_folder.py)
 - [scripts/build_real_batch_cesium_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_real_batch_cesium_viewer.py)
 
+### Large Real Batch Scaling Flow
+
+1. Generate the larger mixed-format dataset.
+2. Evaluate and recalibrate on the larger nominal splits.
+3. Sweep tuning candidates.
+4. Build the larger real-batch review globe.
+
+Main scripts:
+
+- [scripts/generate_large_real_batch_dataset.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/generate_large_real_batch_dataset.py)
+- [scripts/evaluate_real_batch_models.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/evaluate_real_batch_models.py)
+- [scripts/tune_real_batch_models.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/tune_real_batch_models.py)
+- [scripts/build_real_batch_cesium_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_real_batch_cesium_viewer.py)
+
+Note:
+
+- the bundled large scaling flow uses `config/real_batch_large.yaml`
+- that config selects the analytic backend for runtime practicality
+- the NOAA/WMM-backed path remains the reference for real magnetic baseline interpretation
+
 ## Data Flow
 
 ```text
@@ -315,7 +342,7 @@ Unit tests live in [tests/unit](c:/Users/MrSit/source/repos/MAD-AI/tests/unit).
 
 Current status:
 
-- `44` passing unit tests
+- `47` passing unit tests
 - CI workflow at [.github/workflows/ci.yml](c:/Users/MrSit/source/repos/MAD-AI/.github/workflows/ci.yml)
 
 ## Design Rules

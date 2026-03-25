@@ -90,6 +90,20 @@ python scripts\build_global_noaa_grid.py
 python scripts\generate_global_noaa_visualizations.py
 ```
 
+## Magnetic Backends
+
+The repo supports two magnetic baseline modes:
+
+- `WMM`
+  The operational reference path. This uses the NOAA/WMM-derived backend in [model.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/wmm/model.py) and should be used for physically meaningful magnetic baseline generation.
+- `analytic`
+  A fast deterministic fallback from [model.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/wmm/model.py). This is useful for pipeline scaling, tests, and larger bundled example runs where runtime matters more than physical fidelity.
+
+In practice:
+
+- use `WMM` for NOAA-backed baseline analysis and production-style workflows
+- use `analytic` for the bundled large scaling config and fast local validation
+
 ## Visualizer
 
 The main visualizer is the interactive Cesium globe:
@@ -250,7 +264,8 @@ Generated artifacts:
 Notes:
 
 - the bundled large scaling config uses the analytic magnetic backend for runtime practicality
-- the operational NOAA/WMM-backed path remains available through the default WMM workflows
+- this does not replace the NOAA/WMM-backed workflow; it only makes the larger sample scaling run finish quickly
+- the operational NOAA/WMM-backed path remains available through the default WMM workflows and is the reference baseline path
 - the generated large dataset is still synthetic and intended for pipeline scaling checks, not production claims
 
 ### Current Global Viewer Data
@@ -359,3 +374,4 @@ Important output areas:
 - The interactive globe is best run through `localhost`, not by double-clicking the HTML file.
 - The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.
 - The large real-batch scaling config is designed to run quickly by using the analytic backend instead of WMM.
+- The NOAA/WMM-backed workflow remains the correct path for real magnetic baseline interpretation.

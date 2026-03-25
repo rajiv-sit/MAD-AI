@@ -51,12 +51,12 @@ Completed so far:
 Current limitations:
 
 - the WMM layer now tries real Python backends first, but still keeps an analytic fallback for portability
+- the larger bundled scaling workflow uses the analytic backend intentionally for runtime practicality; the NOAA/WMM-backed workflow remains the reference baseline path
 - the spatial and temporal models now use trainable PyTorch autoencoder baselines, but they still need stronger architecture tuning and evaluation
 - the visualizer is now interactive through a local Cesium globe, but it is browser-based rather than a richer native desktop review tool
 - the bundled default real-batch example is intentionally small, so its metrics are for pipeline verification rather than performance claims
-- the larger real-batch scaling config uses the analytic backend for runtime practicality; the NOAA/WMM-backed path remains the reference baseline workflow
 - denser full-earth builds are now practical at the current `2 deg x 2 deg` grid, but further scaling still needs care
-- observed anomaly scoring currently works from CSV workflows, but broader real-sensor connectors are still pending
+- broader operational connectors beyond the current file-based CSV, Parquet, JSONL, and SQLite paths may still be needed depending on deployment
 
 Immediate next steps:
 
@@ -126,9 +126,8 @@ Recommended base abstractions:
 
 Example inheritance structure:
 
-- `BaseMagneticModel` -> `WMMMagneticModel`
-- `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `LiveSensorIngestor`
 - `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `JsonlSensorIngestor`, `SqliteSensorIngestor`, `LiveSensorIngestor`
+- `BaseMagneticModel` -> `WMMMagneticModel`, `AnalyticMagneticModel`
 - `BaseDatasetBuilder` -> `SpatialGridBuilder`, `TemporalSequenceBuilder`
 - `BaseAnomalyModel` -> `CNNAnomalyModel`, `LSTMAnomalyModel`
 - `BaseVisualizer` -> `HeatmapVisualizer`, `AnomalyReportVisualizer`
@@ -303,6 +302,7 @@ Progress update:
 - real Python backend support has been added using `geomag`, with optional `wmm2020` fallback support
 - repeated WMM queries are cached in memory to keep lookup cost close to `O(1)` for repeated points
 - a deterministic analytic fallback remains in place so the rest of the pipeline still runs when backend packages are unavailable
+- the larger scaling config uses the analytic backend intentionally so larger bundled runs finish quickly without changing the reference WMM workflow
 
 Acceptance criteria:
 
