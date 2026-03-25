@@ -8,13 +8,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import pandas as pd
 
+from mad_ai.core.config import load_config
 from mad_ai.visualizer import CesiumGlobeViewerBuilder
 
 
 def main() -> None:
     config_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("config/real_batch.yaml")
     output_html = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("outputs/viewer/cesium_real_batch_globe.html")
-    input_dir = Path("data/raw/real_batch/anomalous_eval")
+    config = load_config(config_path)
+    split_sources = config.get("split_sources", {})
+    input_dir = Path(split_sources.get("anomalous_eval", "data/raw/real_batch/anomalous_eval"))
     scored_csv = Path("data/processed/real_batch_scored/real_batch_scored.csv")
     summary_json = Path("outputs/evaluation/real_batch_scored_summary.json")
 

@@ -13,7 +13,9 @@ from mad_ai.core.config import load_config
 from mad_ai.ingest import SplitBatchSensorIngestor
 from mad_ai.inference import ThresholdCalibrator
 from mad_ai.inference import prepare_observed_features, score_observed_features, train_observed_models
-from mad_ai.wmm import WMMMagneticModel
+from mad_ai.models.spatial import CNNAnomalyModel
+from mad_ai.models.temporal import LSTMAnomalyModel
+from mad_ai.wmm import AnalyticMagneticModel, WMMMagneticModel
 
 
 def main() -> None:
@@ -23,23 +25,33 @@ def main() -> None:
     split_sources = config.get("split_sources", {})
     training_config = config.get("training", {})
     inference_config = config.get("inference", {})
+    source_options = config.get("source_options", {})
     if not split_sources:
         raise ValueError("real batch config must define split_sources.")
     spatial_window_size = int(training_config.get("spatial_window_size", 12))
     temporal_sequence_length = int(training_config.get("temporal_sequence_length", 6))
     stride = int(training_config.get("stride", 3))
+    spatial_epochs = int(training_config.get("spatial_epochs", 8))
+    temporal_epochs = int(training_config.get("temporal_epochs", 10))
+    spatial_batch_size = int(training_config.get("spatial_batch_size", 16))
+    temporal_batch_size = int(training_config.get("temporal_batch_size", 32))
     spatial_weight = float(inference_config.get("spatial_weight", 0.5))
     temporal_weight = float(inference_config.get("temporal_weight", 0.5))
     calibration_percentile = float(inference_config.get("calibration_percentile", 97.5))
     robustness_percentiles = [float(value) for value in inference_config.get("robustness_percentiles", [90.0, 95.0, 97.5, 99.0])]
 
-    ingestor = SplitBatchSensorIngestor(schema_mapping=schema_mapping)
+    ingestor = SplitBatchSensorIngestor(
+        schema_mapping=schema_mapping,
+        sqlite_table_name=str(source_options.get("sqlite_table_name", "sensor_readings")),
+    )
     raw_splits = ingestor.load_splits(split_sources)
-    magnetic_model = WMMMagneticModel(cache_path="data/cache/wmm_cache.json")
+    magnetic_model = _make_magnetic_model(config)
     prepared = {name: prepare_observed_features(frame, magnetic_model) for name, frame in raw_splits.items()}
 
     spatial_model, temporal_model, training_summary = train_observed_models(
         prepared["train"],
+        spatial_model=CNNAnomalyModel(epochs=spatial_epochs, batch_size=spatial_batch_size, latent_channels=24),
+        temporal_model=LSTMAnomalyModel(epochs=temporal_epochs, batch_size=temporal_batch_size, hidden_size=48),
         spatial_window_size=spatial_window_size,
         temporal_sequence_length=temporal_sequence_length,
         stride=stride,
@@ -109,7 +121,12 @@ def main() -> None:
             "spatial_window_size": spatial_window_size,
             "temporal_sequence_length": temporal_sequence_length,
             "stride": stride,
+            "spatial_epochs": spatial_epochs,
+            "temporal_epochs": temporal_epochs,
+            "spatial_batch_size": spatial_batch_size,
+            "temporal_batch_size": temporal_batch_size,
         },
+        "magnetic_backend": str(config.get("magnetic_backend", "wmm")).lower(),
         "config_path": str(config_path),
     }
     calibration_path.parent.mkdir(parents=True, exist_ok=True)
@@ -163,6 +180,13 @@ def main() -> None:
     print(f"Saved real batch metrics to {metrics_path}")
     print(f"Saved real batch robustness report to {robustness_path}")
     print(f"Saved real batch histogram to {histogram_path}")
+
+
+def _make_magnetic_model(config: dict) -> AnalyticMagneticModel | WMMMagneticModel:
+    backend = str(config.get("magnetic_backend", "wmm")).strip().lower()
+    if backend == "analytic":
+        return AnalyticMagneticModel()
+    return WMMMagneticModel(cache_path="data/cache/wmm_cache.json")
 
 
 def _tag_frame(frame: pd.DataFrame, split_name: str) -> pd.DataFrame:

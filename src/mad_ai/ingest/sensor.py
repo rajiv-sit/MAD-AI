@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sqlite3
 
 import pandas as pd
 
@@ -37,11 +38,39 @@ class ParquetSensorIngestor(BaseDataIngestor):
         return data
 
 
+class JsonlSensorIngestor(BaseDataIngestor):
+    def load(self, source: str | Path) -> pd.DataFrame:
+        data = pd.read_json(source, lines=True)
+        data = _normalize_optional_columns(data)
+        _validate_columns(data)
+        return data
+
+
+class SqliteSensorIngestor(BaseDataIngestor):
+    def __init__(self, table_name: str = "sensor_readings", validate_columns: bool = True) -> None:
+        self.table_name = table_name
+        self.validate_columns = validate_columns
+
+    def load(self, source: str | Path) -> pd.DataFrame:
+        with sqlite3.connect(str(source)) as connection:
+            data = pd.read_sql_query(f"SELECT * FROM {self.table_name}", connection)
+        data = _normalize_optional_columns(data)
+        if self.validate_columns:
+            _validate_columns(data)
+        return data
+
+
 class SchemaMappedSensorIngestor(BaseDataIngestor):
-    def __init__(self, schema_mapping: dict[str, list[str] | str] | None = None) -> None:
+    def __init__(
+        self,
+        schema_mapping: dict[str, list[str] | str] | None = None,
+        sqlite_table_name: str = "sensor_readings",
+    ) -> None:
         self.schema_mapping = schema_mapping or DEFAULT_SCHEMA_MAPPING
         self.csv_ingestor = CsvSensorIngestor()
         self.parquet_ingestor = ParquetSensorIngestor()
+        self.jsonl_ingestor = JsonlSensorIngestor()
+        self.sqlite_ingestor = SqliteSensorIngestor(table_name=sqlite_table_name, validate_columns=False)
 
     def load(self, source: str | Path) -> pd.DataFrame:
         path = Path(source)
@@ -50,6 +79,14 @@ class SchemaMappedSensorIngestor(BaseDataIngestor):
             data = pd.read_csv(path)
         elif suffix == ".parquet":
             data = pd.read_parquet(path)
+        elif suffix == ".jsonl":
+            data = pd.read_json(path, lines=True)
+        elif suffix in {".sqlite", ".db"}:
+            data = self.sqlite_ingestor.load(path)
+            normalized = _apply_schema_mapping(data, self.schema_mapping)
+            normalized = _normalize_optional_columns(normalized)
+            _validate_columns(normalized)
+            return normalized
         else:
             raise ValueError(f"Unsupported sensor file format: {suffix}")
 
@@ -63,11 +100,15 @@ class BatchSensorIngestor(BaseDataIngestor):
     def __init__(
         self,
         schema_mapping: dict[str, list[str] | str] | None = None,
-        file_extensions: tuple[str, ...] = (".csv", ".parquet"),
+        file_extensions: tuple[str, ...] = (".csv", ".parquet", ".jsonl", ".sqlite", ".db"),
+        sqlite_table_name: str = "sensor_readings",
     ) -> None:
         self.schema_mapping = schema_mapping or DEFAULT_SCHEMA_MAPPING
         self.file_extensions = tuple(ext.lower() for ext in file_extensions)
-        self.file_ingestor = SchemaMappedSensorIngestor(schema_mapping=self.schema_mapping)
+        self.file_ingestor = SchemaMappedSensorIngestor(
+            schema_mapping=self.schema_mapping,
+            sqlite_table_name=sqlite_table_name,
+        )
 
     def load(self, source: str | Path) -> pd.DataFrame:
         source_path = Path(source)
@@ -91,8 +132,12 @@ class BatchSensorIngestor(BaseDataIngestor):
 
 
 class SplitBatchSensorIngestor:
-    def __init__(self, schema_mapping: dict[str, list[str] | str] | None = None) -> None:
-        self.batch_ingestor = BatchSensorIngestor(schema_mapping=schema_mapping)
+    def __init__(
+        self,
+        schema_mapping: dict[str, list[str] | str] | None = None,
+        sqlite_table_name: str = "sensor_readings",
+    ) -> None:
+        self.batch_ingestor = BatchSensorIngestor(schema_mapping=schema_mapping, sqlite_table_name=sqlite_table_name)
 
     def load_splits(self, split_sources: dict[str, str | Path]) -> dict[str, pd.DataFrame]:
         return {split_name: self.batch_ingestor.load(source) for split_name, source in split_sources.items()}

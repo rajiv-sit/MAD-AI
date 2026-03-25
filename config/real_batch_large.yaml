@@ -1,0 +1,73 @@
+schema_mapping:
+  latitude_deg:
+    - latitude
+    - lat
+    - latitude_deg
+  longitude_deg:
+    - longitude
+    - lon
+    - longitude_deg
+  altitude_m:
+    - altitude
+    - alt_m
+    - altitude_m
+  timestamp:
+    - time
+    - timestamp
+  observed_total_nt:
+    - total_field_nt
+    - observed_total_nt
+  observed_declination_deg:
+    - declination_deg
+    - observed_declination_deg
+  observed_inclination_deg:
+    - inclination_deg
+    - observed_inclination_deg
+  track_id:
+    - platform_id
+    - track_id
+  is_injected_anomaly:
+    - label_anomaly
+    - is_injected_anomaly
+
+source_options:
+  sqlite_table_name: sensor_readings
+magnetic_backend: analytic
+
+split_sources:
+  train: data/raw/real_batch_large/train
+  calibration: data/raw/real_batch_large/calibration
+  nominal_eval: data/raw/real_batch_large/nominal_eval
+  anomalous_eval: data/raw/real_batch_large/anomalous_eval
+
+training:
+  spatial_window_size: 12
+  temporal_sequence_length: 8
+  stride: 4
+  spatial_epochs: 3
+  temporal_epochs: 4
+  spatial_batch_size: 16
+  temporal_batch_size: 24
+
+inference:
+  spatial_weight: 0.45
+  temporal_weight: 0.55
+  calibration_percentile: 97.5
+  robustness_percentiles:
+    - 90.0
+    - 95.0
+    - 97.5
+    - 99.0
+
+tuning:
+  spatial_window_sizes:
+    - 12
+    - 18
+  temporal_sequence_lengths:
+    - 8
+    - 12
+  strides:
+    - 4
+  spatial_weights:
+    - 0.5
+    - 0.6

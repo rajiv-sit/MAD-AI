@@ -9,7 +9,9 @@ import pandas as pd
 from mad_ai.core.config import load_config
 from mad_ai.ingest import SplitBatchSensorIngestor
 from mad_ai.inference import prepare_observed_features
+from mad_ai.utils.sample_data import write_large_real_batch_dataset
 from mad_ai.wmm import AnalyticMagneticModel
+from tests.unit.helpers import workspace_temp_dir
 
 
 class RealBatchWorkflowTestCase(unittest.TestCase):
@@ -36,6 +38,22 @@ class RealBatchWorkflowTestCase(unittest.TestCase):
         self.assertIn("robustness", payload)
         self.assertIn("fusion_thresholds", payload["robustness"])
         self.assertIn("baseline_thresholds", payload["robustness"])
+
+    def test_large_real_batch_generator_writes_mixed_formats(self) -> None:
+        with workspace_temp_dir() as tmp_dir:
+            outputs = write_large_real_batch_dataset(
+                tmp_dir / "real_batch_large",
+                train_runs=4,
+                calibration_runs=2,
+                nominal_eval_runs=2,
+                anomalous_eval_runs=2,
+                rows_per_run=24,
+            )
+            written_suffixes = {path.suffix.lower() for paths in outputs.values() for path in paths}
+            self.assertIn(".csv", written_suffixes)
+            self.assertIn(".jsonl", written_suffixes)
+            self.assertIn(".sqlite", written_suffixes)
+            self.assertTrue(".parquet" in written_suffixes or any("_fallback.jsonl" in str(path) for paths in outputs.values() for path in paths))
 
 
 if __name__ == "__main__":

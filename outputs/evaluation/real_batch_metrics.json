@@ -1,59 +1,59 @@
 {
-  "threshold": 0.5353795289993286,
-  "baseline_threshold": 873.745117726788,
+  "threshold": 0.1844499707221985,
+  "baseline_threshold": 1299.7755471009318,
   "training_summary": {
-    "spatial_sample_count": 2,
-    "temporal_sample_count": 2
+    "spatial_sample_count": 432,
+    "temporal_sample_count": 450
   },
   "nominal_eval": {
-    "rows": 4,
-    "threshold": 0.5353795289993286,
+    "rows": 864,
+    "threshold": 0.1844499707221985,
     "spatial_scale": 1.0,
     "temporal_scale": 1.0,
-    "spatial_mean": 0.4370441734790802,
-    "temporal_mean": 0.7209993600845337,
-    "final_mean": 0.579021766781807,
-    "anomaly_count": 4,
+    "spatial_mean": 0.10079970210790634,
+    "temporal_mean": 0.1529284566640854,
+    "final_mean": 0.12947051446298483,
+    "anomaly_count": 24,
     "calibration": {
-      "threshold": 0.5353795289993286,
+      "threshold": 0.1844499707221985,
       "percentile": 97.5,
-      "mean_score": 0.5353795289993286,
-      "std_score": 0.0,
-      "min_score": 0.5353795289993286,
-      "max_score": 0.5353795289993286,
-      "sample_count": 4
+      "mean_score": 0.12947051482344116,
+      "std_score": 0.023612335088549954,
+      "min_score": 0.08880282938480377,
+      "max_score": 0.23238420486450195,
+      "sample_count": 864
     },
     "metrics": {
-      "threshold": 0.5353795289993286,
+      "threshold": 0.1844499707221985,
       "true_positives": 0,
-      "true_negatives": 0,
-      "false_positives": 4,
+      "true_negatives": 840,
+      "false_positives": 24,
       "false_negatives": 0,
       "precision": 0.0,
       "recall": 0.0,
-      "accuracy": 0.0,
+      "accuracy": 0.9722222222222222,
       "f1_score": 0.0
     }
   },
   "anomalous_eval": {
-    "rows": 4,
-    "threshold": 0.5353795289993286,
+    "rows": 864,
+    "threshold": 0.1844499707221985,
     "spatial_scale": 1.0,
     "temporal_scale": 1.0,
-    "spatial_mean": 0.41362372040748596,
-    "temporal_mean": 6.476836204528809,
-    "final_mean": 3.4452299624681473,
-    "anomaly_count": 4,
+    "spatial_mean": 0.11399615556001663,
+    "temporal_mean": 0.2694278657436371,
+    "final_mean": 0.19948359237190474,
+    "anomaly_count": 168,
     "metrics": {
-      "threshold": 0.5353795289993286,
-      "true_positives": 2,
-      "true_negatives": 0,
-      "false_positives": 2,
+      "threshold": 0.1844499707221985,
+      "true_positives": 56,
+      "true_negatives": 696,
+      "false_positives": 112,
       "false_negatives": 0,
-      "precision": 0.5,
+      "precision": 0.3333333333333333,
       "recall": 1.0,
-      "accuracy": 0.5,
-      "f1_score": 0.6666666666666666
+      "accuracy": 0.8703703703703703,
+      "f1_score": 0.5
     }
   }
 }

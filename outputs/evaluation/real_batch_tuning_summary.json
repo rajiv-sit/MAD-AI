@@ -1,0 +1,18 @@
+{
+  "config_path": "config\\real_batch_large.yaml",
+  "candidate_count": 8,
+  "best_candidate": {
+    "spatial_window_size": 12.0,
+    "temporal_sequence_length": 8.0,
+    "stride": 4.0,
+    "spatial_weight": 0.5,
+    "temporal_weight": 0.5,
+    "threshold": 0.21804510056972504,
+    "nominal_false_positive_count": 24.0,
+    "anomalous_recall": 1.0,
+    "anomalous_precision": 0.358974358974359,
+    "anomalous_f1": 0.5283018867924528,
+    "anomalous_accuracy": 0.8842592592592593,
+    "nominal_accuracy": 0.9722222222222222
+  }
+}

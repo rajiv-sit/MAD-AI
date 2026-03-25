@@ -1,11 +1,20 @@
 from __future__ import annotations
 
+import sqlite3
 import unittest
 from unittest.mock import patch
 
 import pandas as pd
 
-from mad_ai.ingest import BatchSensorIngestor, CsvSensorIngestor, ParquetSensorIngestor, SchemaMappedSensorIngestor, SplitBatchSensorIngestor
+from mad_ai.ingest import (
+    BatchSensorIngestor,
+    CsvSensorIngestor,
+    JsonlSensorIngestor,
+    ParquetSensorIngestor,
+    SchemaMappedSensorIngestor,
+    SplitBatchSensorIngestor,
+    SqliteSensorIngestor,
+)
 from tests.unit.helpers import workspace_temp_dir
 
 
@@ -104,6 +113,34 @@ class IngestTestCase(unittest.TestCase):
             self.assertEqual(sorted(splits.keys()), ["eval", "train"])
             self.assertEqual(len(splits["train"]), 1)
             self.assertEqual(len(splits["eval"]), 1)
+
+    def test_jsonl_sensor_ingestor_loads_lines_file(self) -> None:
+        with workspace_temp_dir() as tmp_dir:
+            path = tmp_dir / "sensor.jsonl"
+            pd.DataFrame(
+                {
+                    "latitude_deg": [43.7],
+                    "longitude_deg": [-79.4],
+                    "altitude_m": [0.0],
+                }
+            ).to_json(path, orient="records", lines=True)
+            loaded = JsonlSensorIngestor().load(path)
+            self.assertEqual(len(loaded), 1)
+
+    def test_sqlite_sensor_ingestor_loads_sensor_table(self) -> None:
+        with workspace_temp_dir() as tmp_dir:
+            path = tmp_dir / "sensor.sqlite"
+            with sqlite3.connect(path) as connection:
+                pd.DataFrame(
+                    {
+                        "latitude_deg": [43.7],
+                        "longitude_deg": [-79.4],
+                        "altitude_m": [5.0],
+                    }
+                ).to_sql("sensor_readings", connection, index=False, if_exists="replace")
+            loaded = SqliteSensorIngestor().load(path)
+            self.assertEqual(len(loaded), 1)
+            self.assertIn("altitude_m", loaded.columns)
 
 
 if __name__ == "__main__":

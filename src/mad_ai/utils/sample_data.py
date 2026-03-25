@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
+from pathlib import Path
+import sqlite3
 
 import numpy as np
 import pandas as pd
@@ -80,6 +82,65 @@ def make_observed_residual_datasets(
         "nominal_eval": pd.concat(nominal_eval_frames, ignore_index=True),
         "anomalous_eval": pd.concat(anomalous_eval_frames, ignore_index=True),
     }
+
+
+def make_large_real_batch_datasets(
+    train_runs: int = 10,
+    calibration_runs: int = 4,
+    nominal_eval_runs: int = 4,
+    anomalous_eval_runs: int = 4,
+    rows_per_run: int = 72,
+) -> dict[str, pd.DataFrame]:
+    datasets = make_observed_residual_datasets(
+        train_runs=train_runs,
+        calibration_runs=calibration_runs,
+        nominal_eval_runs=nominal_eval_runs,
+        anomalous_eval_runs=anomalous_eval_runs,
+        rows_per_run=rows_per_run,
+    )
+    for split_name, frame in datasets.items():
+        datasets[split_name] = _rename_to_real_sensor_schema(frame)
+    return datasets
+
+
+def write_large_real_batch_dataset(
+    output_root: str | Path,
+    train_runs: int = 10,
+    calibration_runs: int = 4,
+    nominal_eval_runs: int = 4,
+    anomalous_eval_runs: int = 4,
+    rows_per_run: int = 72,
+) -> dict[str, list[Path]]:
+    output_root = Path(output_root)
+    output_root.mkdir(parents=True, exist_ok=True)
+    datasets = make_large_real_batch_datasets(
+        train_runs=train_runs,
+        calibration_runs=calibration_runs,
+        nominal_eval_runs=nominal_eval_runs,
+        anomalous_eval_runs=anomalous_eval_runs,
+        rows_per_run=rows_per_run,
+    )
+    split_outputs: dict[str, list[Path]] = {}
+    for split_name, frame in datasets.items():
+        split_dir = output_root / split_name
+        split_dir.mkdir(parents=True, exist_ok=True)
+        split_outputs[split_name] = []
+        for run_id, run_frame in frame.groupby("platform_id", sort=False):
+            run_frame = run_frame.reset_index(drop=True)
+            file_index = len(split_outputs[split_name])
+            if file_index % 4 == 0:
+                path = split_dir / f"{run_id}.csv"
+                run_frame.to_csv(path, index=False)
+            elif file_index % 4 == 1:
+                path = split_dir / f"{run_id}.jsonl"
+                run_frame.to_json(path, orient="records", lines=True, date_format="iso")
+            elif file_index % 4 == 2:
+                path = _write_parquet_or_fallback(run_frame, split_dir, run_id)
+            else:
+                path = split_dir / f"{run_id}.sqlite"
+                _write_sqlite_frame(run_frame, path)
+            split_outputs[split_name].append(path)
+    return split_outputs
 
 
 def make_global_wmm_grid(
@@ -197,3 +258,39 @@ def make_tracked_sensor_data(
         )
 
     return pd.concat(rows, ignore_index=True)
+
+
+def _rename_to_real_sensor_schema(frame: pd.DataFrame) -> pd.DataFrame:
+    renamed = frame.rename(
+        columns={
+            "latitude_deg": "latitude",
+            "longitude_deg": "longitude",
+            "altitude_m": "altitude",
+            "timestamp": "time",
+            "observed_total_nt": "total_field_nt",
+            "observed_declination_deg": "declination_deg",
+            "observed_inclination_deg": "inclination_deg",
+            "track_id": "platform_id",
+            "run_id": "platform_id",
+            "is_injected_anomaly": "label_anomaly",
+        }
+    ).copy()
+    if "platform_id" not in renamed.columns:
+        renamed["platform_id"] = [f"platform_{idx + 1}" for idx in range(len(renamed))]
+    return renamed
+
+
+def _write_sqlite_frame(frame: pd.DataFrame, path: Path) -> None:
+    with sqlite3.connect(path) as connection:
+        frame.to_sql("sensor_readings", connection, if_exists="replace", index=False)
+
+
+def _write_parquet_or_fallback(frame: pd.DataFrame, split_dir: Path, run_id: str) -> Path:
+    parquet_path = split_dir / f"{run_id}.parquet"
+    try:
+        frame.to_parquet(parquet_path, index=False)
+        return parquet_path
+    except Exception:
+        fallback_path = split_dir / f"{run_id}_fallback.jsonl"
+        frame.to_json(fallback_path, orient="records", lines=True, date_format="iso")
+        return fallback_path

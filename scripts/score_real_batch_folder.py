@@ -11,7 +11,7 @@ from mad_ai.ingest import BatchSensorIngestor
 from mad_ai.inference import prepare_observed_features, score_observed_features
 from mad_ai.models.spatial import CNNAnomalyModel
 from mad_ai.models.temporal import LSTMAnomalyModel
-from mad_ai.wmm import WMMMagneticModel
+from mad_ai.wmm import AnalyticMagneticModel, WMMMagneticModel
 
 
 def main() -> None:
@@ -27,8 +27,12 @@ def main() -> None:
 
     config = load_config(config_path)
     schema_mapping = config.get("schema_mapping", {})
-    raw = BatchSensorIngestor(schema_mapping=schema_mapping).load(input_dir)
-    features = prepare_observed_features(raw, WMMMagneticModel(cache_path="data/cache/wmm_cache.json"))
+    source_options = config.get("source_options", {})
+    raw = BatchSensorIngestor(
+        schema_mapping=schema_mapping,
+        sqlite_table_name=str(source_options.get("sqlite_table_name", "sensor_readings")),
+    ).load(input_dir)
+    features = prepare_observed_features(raw, _make_magnetic_model(config))
 
     spatial_model = CNNAnomalyModel()
     spatial_model.load(Path("outputs/models/real_batch_spatial.pt"))
@@ -60,6 +64,13 @@ def main() -> None:
 
     print(f"Saved real batch scored CSV to {output_csv}")
     print(f"Saved real batch scoring summary to {summary_json}")
+
+
+def _make_magnetic_model(config: dict) -> AnalyticMagneticModel | WMMMagneticModel:
+    backend = str(config.get("magnetic_backend", "wmm")).strip().lower()
+    if backend == "analytic":
+        return AnalyticMagneticModel()
+    return WMMMagneticModel(cache_path="data/cache/wmm_cache.json")
 
 
 if __name__ == "__main__":

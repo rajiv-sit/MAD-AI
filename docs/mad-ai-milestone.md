@@ -46,22 +46,23 @@ Completed so far:
 - the Cesium review flow now supports comparison swipe mode, anomaly filtering, hotspot jumps, lat/lon search, and export actions for review outputs
 - real-data folder ingestion now supports schema mapping, split-aware batch loading, batch scoring, and a real-batch Cesium review path
 - the real-batch review path now supports baseline-only residual anomaly overlays, fused anomaly overlays, robustness reports, and CI-backed regression checks
+- quality-scaling support now includes a larger mixed-format real-batch dataset generator, stronger real nominal calibration, broader model-tuning sweeps, and JSONL/SQLite source connectors
 
 Current limitations:
 
 - the WMM layer now tries real Python backends first, but still keeps an analytic fallback for portability
 - the spatial and temporal models now use trainable PyTorch autoencoder baselines, but they still need stronger architecture tuning and evaluation
 - the visualizer is now interactive through a local Cesium globe, but it is browser-based rather than a richer native desktop review tool
-- the real-data path currently supports CSV ingestion; broader source handling and schema normalization are still limited
-- the bundled real-batch example is intentionally small, so its metrics are for pipeline verification rather than performance claims
+- the bundled default real-batch example is intentionally small, so its metrics are for pipeline verification rather than performance claims
+- the larger real-batch scaling config uses the analytic backend for runtime practicality; the NOAA/WMM-backed path remains the reference baseline workflow
 - denser full-earth builds are now practical at the current `2 deg x 2 deg` grid, but further scaling still needs care
 - observed anomaly scoring currently works from CSV workflows, but broader real-sensor connectors are still pending
 
 Immediate next steps:
 
-1. improve threshold calibration and evaluation on larger labeled or semi-labeled real datasets
-2. continue tuning the CNN and LSTM architectures on broader real datasets
-3. add richer source connectors beyond file-system CSV and Parquet batches if needed
+1. replace the synthetic large-batch example with larger operational datasets
+2. validate the tuned settings and calibrated thresholds on platform-specific real nominal distributions
+3. expand source connectors further only where actual deployments need them
 4. raise test coverage further and add script-level regression checks where useful
 5. consider a native desktop review shell only if the browser-based globe becomes limiting
 
@@ -71,9 +72,10 @@ Current unit-test coverage for `src/mad_ai` is 85%.
 
 Coverage summary:
 
-- 44 unit tests are passing
+- 47 unit tests are passing
 - strong coverage exists for dataset, feature, ingest, visualization, and model save/load flows
 - the largest remaining gaps are in config parsing branches, inference helper branches, abstract base classes, and WMM fallback branches
+- new ingest coverage now includes JSONL and SQLite connectors plus the large mixed-format real-batch generator
 
 ## Implementation Language
 
@@ -126,6 +128,7 @@ Example inheritance structure:
 
 - `BaseMagneticModel` -> `WMMMagneticModel`
 - `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `LiveSensorIngestor`
+- `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `JsonlSensorIngestor`, `SqliteSensorIngestor`, `LiveSensorIngestor`
 - `BaseDatasetBuilder` -> `SpatialGridBuilder`, `TemporalSequenceBuilder`
 - `BaseAnomalyModel` -> `CNNAnomalyModel`, `LSTMAnomalyModel`
 - `BaseVisualizer` -> `HeatmapVisualizer`, `AnomalyReportVisualizer`
@@ -367,8 +370,10 @@ Progress update:
 - processed dataset artifacts can now be persisted to disk
 - a CSV-based build path exists for real sensor inputs
 - split-aware real batch ingestion now exists through schema-mapped folder loading
+- split-aware real batch ingestion now supports mixed CSV, Parquet, JSONL, and SQLite folders
 - the global NOAA dataset currently ships as a multi-altitude grid with `2 deg x 2 deg` spacing
 - observed anomaly scoring can now persist anomaly-enriched CSV artifacts for globe review
+- `scripts/generate_large_real_batch_dataset.py` now creates a larger mixed-format dataset for scaling checks
 
 Acceptance criteria:
 
@@ -401,7 +406,7 @@ Progress update:
 - model checkpoints are saved to `outputs/models/`
 - observed-residual training now saves reusable model checkpoints and evaluation artifacts under `outputs/models/` and `outputs/evaluation/`
 - `scripts/train_spatial.py` now saves a calibrated spatial threshold, score comparison CSV, and validation histogram
-- broader architecture tuning on real sensor data is still pending
+- `scripts/tune_real_batch_models.py` now saves tuning leaderboards and best-candidate summaries for larger real-batch runs
 
 Acceptance criteria:
 
@@ -433,7 +438,7 @@ Progress update:
 - model checkpoints are saved to `outputs/models/`
 - observed-residual training now saves reusable temporal checkpoints and evaluation artifacts under `outputs/models/` and `outputs/evaluation/`
 - `scripts/train_temporal.py` now saves a calibrated temporal threshold, score comparison CSV, and validation histogram
-- stronger recurrent tuning on real sensor data is still pending
+- temporal tuning is now included in the larger real-batch search space through configurable sequence-length sweeps
 
 Acceptance criteria:
 
@@ -474,6 +479,8 @@ Progress update:
 - the observed anomaly globe now uses the fused calibration path rather than a separate ad hoc threshold
 - `scripts/evaluate_real_batch_models.py` now trains and evaluates on schema-mapped real batch splits from folders
 - `scripts/score_real_batch_folder.py` now scores arbitrary real-data folders against the trained real-batch models
+- `scripts/evaluate_real_batch_models.py` now honors configurable magnetic backends so larger synthetic scaling runs can use the analytic backend
+- `scripts/tune_real_batch_models.py` now performs broader parameter sweeps over window size, sequence length, stride, and fusion weights
 
 Acceptance criteria:
 
@@ -577,7 +584,7 @@ Latest local verification completed on March 25, 2026:
 
 - `python -m unittest discover -s tests\unit -p 'test_*.py' -v` passed
 - unit-test coverage for `src/mad_ai` measured at 85%
-- the current unit suite count is 44 passing tests
+- the current unit suite count is 47 passing tests
 - `python scripts\train_spatial.py` ran successfully
 - `python scripts\train_temporal.py` ran successfully
 - `python scripts\train_spatial.py` saved spatial metrics, threshold, comparison CSV, and histogram artifacts
@@ -596,7 +603,11 @@ Latest local verification completed on March 25, 2026:
 - `python scripts\build_observed_anomaly_cesium_viewer.py data\raw\sample_sensor.csv` generated the observed anomaly globe
 - the observed anomaly globe now includes comparison swipe, filter, search, hotspot-jump, and export controls
 - `python scripts\evaluate_real_batch_models.py` generated real-batch models, calibration, metrics, and histogram outputs
+- `python scripts\evaluate_real_batch_models.py config\real_batch_large.yaml` generated larger real-batch models, calibration, metrics, and histogram outputs
+- `python scripts\generate_large_real_batch_dataset.py` generated the larger mixed-format scaling dataset
+- `python scripts\tune_real_batch_models.py config\real_batch_large.yaml` generated the tuning leaderboard and summary outputs
 - `python scripts\build_real_batch_cesium_viewer.py` generated the real-batch anomaly globe
+- `python scripts\build_real_batch_cesium_viewer.py config\real_batch_large.yaml outputs\viewer\cesium_real_batch_large_globe.html` generated the larger real-batch anomaly globe
 - `.github/workflows/ci.yml` now enforces the unit suite on pushes and pull requests
 
 ## Success Metric

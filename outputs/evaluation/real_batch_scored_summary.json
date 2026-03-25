@@ -1,26 +1,26 @@
 {
-  "rows": 4,
-  "threshold": 0.5395634174346924,
+  "rows": 864,
+  "threshold": 0.1844499707221985,
   "spatial_scale": 1.0,
   "temporal_scale": 1.0,
-  "spatial_mean": 0.45489266514778137,
-  "temporal_mean": 3.7298691272735596,
-  "final_mean": 2.0923808962106705,
-  "anomaly_count": 4,
+  "spatial_mean": 0.11600746959447861,
+  "temporal_mean": 0.2731981873512268,
+  "final_mean": 0.20246236383552768,
+  "anomaly_count": 186,
   "metrics": {
-    "threshold": 0.5395634174346924,
-    "true_positives": 2,
-    "true_negatives": 0,
-    "false_positives": 2,
+    "threshold": 0.1844499707221985,
+    "true_positives": 56,
+    "true_negatives": 678,
+    "false_positives": 130,
     "false_negatives": 0,
-    "precision": 0.5,
+    "precision": 0.3010752688172043,
     "recall": 1.0,
-    "accuracy": 0.5,
-    "f1_score": 0.6666666666666666
+    "accuracy": 0.8495370370370371,
+    "f1_score": 0.4628099173553719
   },
-  "input_dir": "data\\raw\\real_batch\\anomalous_eval",
+  "input_dir": "data\\raw\\real_batch_large\\anomalous_eval",
   "output_csv": "data\\processed\\real_batch_scored\\real_batch_scored.csv",
-  "config_path": "config\\real_batch.yaml",
-  "baseline_threshold": 1.0,
-  "baseline_anomaly_count": 4
+  "config_path": "config\\real_batch_large.yaml",
+  "baseline_threshold": 1299.7755471009318,
+  "baseline_anomaly_count": 22
 }

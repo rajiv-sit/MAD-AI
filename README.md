@@ -25,6 +25,8 @@ The repo currently includes a working end-to-end prototype with:
   - anomaly filtering and hotspot jumps
   - observed anomaly globe generation from CSV inputs
   - real-batch globe generation from folder-based inputs
+  - mixed-format ingestion for CSV, Parquet, JSONL, and SQLite sensor batches
+  - a larger real-batch scaling config for calibration and tuning workflows
 
 ## Repo Layout
 
@@ -213,6 +215,7 @@ Generated artifacts:
 This workflow supports:
 
 - multi-file folder ingestion
+- mixed source formats across a batch, including CSV, Parquet, JSONL, and SQLite
 - schema mapping into the project's canonical sensor columns
 - nominal-train, calibration, nominal-eval, and anomalous-eval splits
 - real-data recalibration from nominal data
@@ -221,6 +224,34 @@ This workflow supports:
 - baseline-only residual anomaly scoring alongside fused anomaly scoring
 - viewer generation from the scored real batch output
 - comparison swipe mode between baseline-only and fused anomaly overlays in the globe
+
+### Larger Real Batch Scaling Workflow
+
+For a larger mixed-format example dataset plus tuning and stronger nominal calibration:
+
+```powershell
+python scripts\generate_large_real_batch_dataset.py
+python scripts\evaluate_real_batch_models.py config\real_batch_large.yaml
+python scripts\tune_real_batch_models.py config\real_batch_large.yaml
+python scripts\build_real_batch_cesium_viewer.py config\real_batch_large.yaml outputs\viewer\cesium_real_batch_large_globe.html
+```
+
+Config:
+
+- [config/real_batch_large.yaml](c:/Users/MrSit/source/repos/MAD-AI/config/real_batch_large.yaml)
+
+Generated artifacts:
+
+- [outputs/evaluation/real_batch_tuning_leaderboard.csv](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_tuning_leaderboard.csv)
+- [outputs/evaluation/real_batch_tuning_summary.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_tuning_summary.json)
+- [outputs/evaluation/real_batch_calibration_robustness.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_calibration_robustness.json)
+- [outputs/viewer/cesium_real_batch_large_globe.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_real_batch_large_globe.html)
+
+Notes:
+
+- the bundled large scaling config uses the analytic magnetic backend for runtime practicality
+- the operational NOAA/WMM-backed path remains available through the default WMM workflows
+- the generated large dataset is still synthetic and intended for pipeline scaling checks, not production claims
 
 ### Current Global Viewer Data
 
@@ -285,13 +316,15 @@ Current settings:
 - `python scripts\evaluate_real_batch_models.py [config_path]`
 - `python scripts\score_real_batch_folder.py <input_dir> [config_path] [output_csv] [summary_json]`
 - `python scripts\build_real_batch_cesium_viewer.py [config_path] [output_html]`
+- `python scripts\generate_large_real_batch_dataset.py [output_root]`
+- `python scripts\tune_real_batch_models.py [config_path]`
 
 ## Testing
 
 Current verification snapshot:
 
 - all project phases are functionally complete
-- `44` unit tests are passing
+- `47` unit tests are passing
 - CI runs the unit suite on pushes and pull requests
 
 Run the unit test suite:
@@ -325,3 +358,4 @@ Important output areas:
 - The global viewer currently runs from a `2 deg` global grid across four altitude layers.
 - The interactive globe is best run through `localhost`, not by double-clicking the HTML file.
 - The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.
+- The large real-batch scaling config is designed to run quickly by using the analytic backend instead of WMM.
