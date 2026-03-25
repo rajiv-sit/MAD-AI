@@ -1,0 +1,18 @@
+{
+  "threshold": 0.21467125415802002,
+  "spatial_weight": 0.5,
+  "temporal_weight": 0.5,
+  "calibration": {
+    "threshold": 0.21467125415802002,
+    "percentile": 97.5,
+    "mean_score": 0.15152515878435224,
+    "std_score": 0.025172319591480967,
+    "min_score": 0.10636086016893387,
+    "max_score": 0.2167292833328247,
+    "sample_count": 384
+  },
+  "training_summary": {
+    "spatial_sample_count": 104,
+    "temporal_sample_count": 120
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "threshold": 0.21467125415802002,
+  "training_summary": {
+    "spatial_sample_count": 104,
+    "temporal_sample_count": 120
+  },
+  "nominal_eval": {
+    "rows": 384,
+    "anomaly_count": 12,
+    "mean_final_score": 0.15152515470981598,
+    "metrics": {
+      "threshold": 0.21467125415802002,
+      "true_positives": 0,
+      "true_negatives": 372,
+      "false_positives": 12,
+      "false_negatives": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "accuracy": 0.96875,
+      "f1_score": 0.0
+    }
+  },
+  "anomalous_eval": {
+    "rows": 384,
+    "anomaly_count": 96,
+    "mean_final_score": 0.21665489673614502,
+    "metrics": {
+      "threshold": 0.21467125415802002,
+      "true_positives": 28,
+      "true_negatives": 288,
+      "false_positives": 68,
+      "false_negatives": 0,
+      "precision": 0.2916666666666667,
+      "recall": 1.0,
+      "accuracy": 0.8229166666666666,
+      "f1_score": 0.45161290322580644
+    }
+  }
+}

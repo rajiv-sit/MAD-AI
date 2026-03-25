@@ -26,8 +26,60 @@ def make_sample_sensor_data(rows: int = 128, anomaly_magnitude: float = 900.0, a
             "observed_total_nt": baseline + anomaly,
             "observed_declination_deg": -8.0 + 0.2 * np.cos(np.linspace(0, 2 * np.pi, rows)),
             "observed_inclination_deg": 58.0 + 0.5 * np.sin(np.linspace(0, 3 * np.pi, rows)),
+            "is_injected_anomaly": anomaly > 0.0,
         }
     )
+
+
+def make_observed_residual_datasets(
+    train_runs: int = 8,
+    calibration_runs: int = 4,
+    nominal_eval_runs: int = 4,
+    anomalous_eval_runs: int = 4,
+    rows_per_run: int = 96,
+) -> dict[str, pd.DataFrame]:
+    """Build deterministic observed datasets for training, calibration, and evaluation."""
+
+    def _make_run(run_index: int, anomaly_magnitude: float, anomaly_span: int, split_name: str) -> pd.DataFrame:
+        frame = make_sample_sensor_data(
+            rows=rows_per_run,
+            anomaly_magnitude=anomaly_magnitude,
+            anomaly_span=anomaly_span,
+        ).copy()
+        frame["run_id"] = f"{split_name}_run_{run_index + 1}"
+        frame["dataset_split"] = split_name
+        frame["latitude_deg"] = frame["latitude_deg"] + (0.18 * run_index)
+        frame["longitude_deg"] = frame["longitude_deg"] - (0.22 * run_index)
+        frame["altitude_m"] = float((run_index % 4) * 250.0)
+        frame["observed_total_nt"] = frame["observed_total_nt"] + (35.0 * run_index)
+        frame["observed_declination_deg"] = frame["observed_declination_deg"] + (0.05 * run_index)
+        frame["observed_inclination_deg"] = frame["observed_inclination_deg"] - (0.04 * run_index)
+        frame["timestamp"] = pd.to_datetime(frame["timestamp"]) + pd.to_timedelta(run_index * rows_per_run * 5, unit="m")
+        return frame
+
+    train_frames = [_make_run(idx, anomaly_magnitude=0.0, anomaly_span=0, split_name="train") for idx in range(train_runs)]
+    calibration_frames = [
+        _make_run(idx, anomaly_magnitude=0.0, anomaly_span=0, split_name="calibration") for idx in range(calibration_runs)
+    ]
+    nominal_eval_frames = [
+        _make_run(idx, anomaly_magnitude=0.0, anomaly_span=0, split_name="nominal_eval") for idx in range(nominal_eval_runs)
+    ]
+    anomalous_eval_frames = [
+        _make_run(
+            idx,
+            anomaly_magnitude=float([350.0, 650.0, 900.0, 1200.0][idx % 4]),
+            anomaly_span=int([4, 6, 8, 10][idx % 4]),
+            split_name="anomalous_eval",
+        )
+        for idx in range(anomalous_eval_runs)
+    ]
+
+    return {
+        "train": pd.concat(train_frames, ignore_index=True),
+        "calibration": pd.concat(calibration_frames, ignore_index=True),
+        "nominal_eval": pd.concat(nominal_eval_frames, ignore_index=True),
+        "anomalous_eval": pd.concat(anomalous_eval_frames, ignore_index=True),
+    }
 
 
 def make_global_wmm_grid(

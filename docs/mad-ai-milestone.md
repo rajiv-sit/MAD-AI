@@ -38,6 +38,9 @@ Completed so far:
 - click-on-surface magnetic inspection using the active altitude and time layer
 - observed CSV anomaly scoring exported to processed CSV and evaluation summary artifacts
 - overlay legend support for active magnetic and anomaly components
+- anomaly-capable observed globe generation from scored CSV artifacts
+- denser global NOAA overlays generated at the current `2 deg x 2 deg` default resolution
+- observed residual model checkpoints, evaluation metrics, and calibrated thresholds saved for reuse by the observed globe workflow
 
 Current limitations:
 
@@ -50,11 +53,11 @@ Current limitations:
 
 Immediate next steps:
 
-1. tune the CNN and LSTM architectures on real or larger datasets
-2. expand observed-data anomaly workflows beyond CSV into richer real sensor sources
-3. extend the real-data path beyond CSV to richer schemas and additional sources
-4. improve threshold calibration and evaluation on labeled or semi-labeled real datasets
-5. add a native desktop review layer or a richer browser-side UI around the current Cesium globe
+1. expand observed-data anomaly workflows beyond CSV into richer real sensor sources
+2. improve threshold calibration and evaluation on labeled or semi-labeled real datasets
+3. add richer browser-side review controls such as search, filtering, and comparison modes around the current Cesium globe
+4. compare baseline-only anomaly overlays against observed-residual overlays in the same viewer flow
+5. continue tuning the CNN and LSTM architectures on broader real datasets
 
 ## Quality Status
 
@@ -62,7 +65,7 @@ Current unit-test coverage for `src/mad_ai` is 85%.
 
 Coverage summary:
 
-- 32 unit tests are passing
+- 35 unit tests are passing
 - strong coverage exists for dataset, feature, ingest, visualization, and model save/load flows
 - the largest remaining gaps are in config parsing branches, inference helper branches, abstract base classes, and WMM fallback branches
 
@@ -335,7 +338,7 @@ Acceptance criteria:
 
 **Goal:** Prepare data for spatial and temporal anomaly models.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -370,7 +373,7 @@ Acceptance criteria:
 
 **Goal:** Learn normal spatial magnetic patterns.
 
-Status: Started
+Status: In progress
 
 Tasks:
 
@@ -387,9 +390,10 @@ Deliverables:
 Progress update:
 
 - `scripts/train_spatial.py` exists
-- `src/mad_ai/models/spatial/cnn.py` now provides a trainable PyTorch convolutional autoencoder
+- `src/mad_ai/models/spatial/cnn.py` now provides a trainable PyTorch convolutional autoencoder with normalization and mini-batch training
 - model checkpoints are saved to `outputs/models/`
-- architecture tuning and validation metrics are still pending
+- observed-residual training now saves reusable model checkpoints and evaluation artifacts under `outputs/models/` and `outputs/evaluation/`
+- broader architecture tuning on real sensor data is still pending
 
 Acceptance criteria:
 
@@ -400,7 +404,7 @@ Acceptance criteria:
 
 **Goal:** Learn how magnetic readings evolve over time.
 
-Status: Started
+Status: In progress
 
 Tasks:
 
@@ -417,9 +421,10 @@ Deliverables:
 Progress update:
 
 - `scripts/train_temporal.py` exists
-- `src/mad_ai/models/temporal/lstm.py` now provides a trainable PyTorch LSTM autoencoder
+- `src/mad_ai/models/temporal/lstm.py` now provides a trainable PyTorch LSTM autoencoder with normalization, mini-batch training, and stronger recurrent layers
 - model checkpoints are saved to `outputs/models/`
-- stronger recurrent architecture tuning and evaluation are still pending
+- observed-residual training now saves reusable temporal checkpoints and evaluation artifacts under `outputs/models/` and `outputs/evaluation/`
+- stronger recurrent tuning on real sensor data is still pending
 
 Acceptance criteria:
 
@@ -453,6 +458,8 @@ Progress update:
 - `scripts/evaluate_models.py` saves nominal-vs-anomalous comparison artifacts
 - `scripts/score_global_noaa_anomalies.py` now writes global anomaly scores back into the global NOAA dataset
 - `scripts/score_observed_csv_anomalies.py` persists anomaly-scored observed CSV outputs
+- the global Cesium globe can now render full-earth anomaly overlays from saved scored artifacts
+- `scripts/evaluate_observed_residual_models.py` now trains reusable observed-residual models, calibrates thresholds from nominal observed distributions, and saves comparison metrics and plots
 
 Acceptance criteria:
 
@@ -490,6 +497,8 @@ Progress update:
 - the globe no longer depends on persistent magnetic sample markers for the global field view; users can click the earth surface to inspect magnetic details
 - the globe now supports anomaly overlay modes and an active overlay legend/color scale
 - observed anomaly CSV workflows can now generate a dedicated anomaly-aware observed globe
+- the global globe is currently built from a `2 deg x 2 deg` multi-altitude NOAA dataset and uses surface overlays rather than sparse points for the main magnetic field view
+- the observed anomaly globe now consumes calibrated observed-residual checkpoints and thresholds rather than relying on a one-off fixed-threshold scoring pass
 - richer desktop-native drill-down UI is still pending
 
 Acceptance criteria:
@@ -546,7 +555,7 @@ This milestone is complete when:
 
 ## Verification Snapshot
 
-Latest local verification completed on March 24, 2026:
+Latest local verification completed on March 25, 2026:
 
 - `python -m unittest discover -s tests\unit -p 'test_*.py' -v` passed
 - unit-test coverage for `src/mad_ai` measured at 85%
@@ -561,6 +570,7 @@ Latest local verification completed on March 24, 2026:
 - `python scripts\build_global_noaa_grid.py` built the multi-altitude global NOAA dataset
 - `python scripts\generate_global_noaa_visualizations.py` generated the current global globe and overlay assets
 - `python scripts\score_global_noaa_anomalies.py` wrote anomaly fields into the global NOAA dataset
+- `python scripts\evaluate_observed_residual_models.py` saved observed-residual checkpoints, calibration, metrics, and score histograms
 - `python scripts\score_observed_csv_anomalies.py data\raw\sample_sensor.csv` generated an observed scored CSV and summary
 - `python scripts\build_observed_anomaly_cesium_viewer.py data\raw\sample_sensor.csv` generated the observed anomaly globe
 

@@ -6,14 +6,10 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-import pandas as pd
-
-from mad_ai.datasets import SpatialGridBuilder, TemporalSequenceBuilder
-from mad_ai.features import ResidualFeatureBuilder, TemporalFeatureBuilder
-from mad_ai.inference import AnomalyFusionEngine, SpatialScorer, TemporalScorer
-from mad_ai.ingest import CsvSensorIngestor
+from mad_ai.inference import prepare_observed_features, score_observed_features
 from mad_ai.models.spatial import CNNAnomalyModel
 from mad_ai.models.temporal import LSTMAnomalyModel
+from mad_ai.ingest import CsvSensorIngestor
 from mad_ai.wmm import WMMMagneticModel
 
 
@@ -28,56 +24,52 @@ def main() -> None:
     summary_json = Path(sys.argv[3]) if len(sys.argv) > 3 else Path("outputs/evaluation/observed_anomaly_summary.json")
 
     raw = CsvSensorIngestor().load(input_csv)
-    enriched = ResidualFeatureBuilder(WMMMagneticModel(cache_path="data/cache/wmm_cache.json")).transform(raw)
-    temporal = TemporalFeatureBuilder().transform(enriched)
+    features = prepare_observed_features(raw, WMMMagneticModel(cache_path="data/cache/wmm_cache.json"))
 
-    grid = SpatialGridBuilder().build(temporal)
-    sequences = TemporalSequenceBuilder().build(temporal)
+    spatial_model = _load_spatial_model(Path("outputs/models/observed_residual_spatial.pt"))
+    temporal_model = _load_temporal_model(Path("outputs/models/observed_residual_temporal.pt"))
+    calibration_payload = _load_calibration_payload(Path("outputs/calibration/observed_thresholds.json"))
 
-    spatial_model = CNNAnomalyModel()
-    spatial_model.train(grid)
-    temporal_model = LSTMAnomalyModel()
-    temporal_model.train(sequences)
-
-    spatial_score = SpatialScorer(spatial_model).score(grid)
-    temporal_scores = temporal_model.score(sequences)
-    temporal["spatial_anomaly_score"] = float(spatial_score)
-    temporal["temporal_anomaly_score"] = 0.0
-    temporal["final_anomaly_score"] = 0.0
-    temporal["is_anomaly"] = False
-
-    engine = AnomalyFusionEngine()
-    start_index = max(0, len(temporal) - len(temporal_scores))
-    for idx, temporal_score in enumerate(temporal_scores):
-        row_index = start_index + idx
-        result = engine.fuse(float(spatial_score), float(temporal_score))
-        temporal.at[row_index, "temporal_anomaly_score"] = result.temporal_score
-        temporal.at[row_index, "final_anomaly_score"] = result.final_score
-        temporal.at[row_index, "is_anomaly"] = result.is_anomaly
+    scored, summary = score_observed_features(
+        features,
+        spatial_model=spatial_model,
+        temporal_model=temporal_model,
+        threshold=float(calibration_payload["threshold"]),
+        spatial_weight=float(calibration_payload.get("spatial_weight", 0.5)),
+        temporal_weight=float(calibration_payload.get("temporal_weight", 0.5)),
+    )
+    summary["input_csv"] = str(input_csv)
+    summary["output_csv"] = str(output_csv)
+    summary["model_source"] = "pretrained-observed-residual-models"
 
     output_csv.parent.mkdir(parents=True, exist_ok=True)
-    temporal.to_csv(output_csv, index=False)
+    scored.to_csv(output_csv, index=False)
 
     summary_json.parent.mkdir(parents=True, exist_ok=True)
-    summary_json.write_text(
-        json.dumps(
-            {
-                "input_csv": str(input_csv),
-                "output_csv": str(output_csv),
-                "rows": int(len(temporal)),
-                "spatial_score": float(spatial_score),
-                "temporal_score_mean": float(pd.Series(temporal["temporal_anomaly_score"]).mean()),
-                "final_score_mean": float(pd.Series(temporal["final_anomaly_score"]).mean()),
-                "anomaly_count": int(pd.Series(temporal["is_anomaly"]).sum()),
-                "threshold": float(engine.threshold),
-            },
-            indent=2,
-        ),
-        encoding="utf-8",
-    )
+    summary_json.write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
     print(f"Saved scored observed anomaly CSV to {output_csv}")
     print(f"Saved observed anomaly summary to {summary_json}")
+
+
+def _load_spatial_model(path: Path) -> CNNAnomalyModel:
+    model = CNNAnomalyModel()
+    model.load(path)
+    return model
+
+
+def _load_temporal_model(path: Path) -> LSTMAnomalyModel:
+    model = LSTMAnomalyModel()
+    model.load(path)
+    return model
+
+
+def _load_calibration_payload(path: Path) -> dict[str, float]:
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Observed calibration file not found: {path}. Run scripts\\evaluate_observed_residual_models.py first."
+        )
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
