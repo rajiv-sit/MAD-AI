@@ -209,7 +209,10 @@ This workflow supports:
 - nominal-train, calibration, nominal-eval, and anomalous-eval splits
 - real-data recalibration from nominal data
 - evaluation on abnormal segments
+- calibration robustness reporting across multiple percentiles
+- baseline-only residual anomaly scoring alongside fused anomaly scoring
 - viewer generation from the scored real batch output
+- comparison swipe mode between baseline-only and fused anomaly overlays in the globe
 
 ### Current Global Viewer Data
 
@@ -282,6 +285,10 @@ Run the unit test suite:
 ```powershell
 python -m unittest discover -s tests\unit -p "test_*.py" -v
 ```
+
+CI:
+
+- [.github/workflows/ci.yml](c:/Users/MrSit/source/repos/MAD-AI/.github/workflows/ci.yml) runs the unit suite on pushes and pull requests
 
 Run the Cesium viewer-focused tests:
 

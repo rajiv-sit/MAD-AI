@@ -35,3 +35,18 @@ split_sources:
   calibration: data/raw/real_batch/calibration
   nominal_eval: data/raw/real_batch/nominal_eval
   anomalous_eval: data/raw/real_batch/anomalous_eval
+
+training:
+  spatial_window_size: 12
+  temporal_sequence_length: 6
+  stride: 3
+
+inference:
+  spatial_weight: 0.5
+  temporal_weight: 0.5
+  calibration_percentile: 97.5
+  robustness_percentiles:
+    - 90.0
+    - 95.0
+    - 97.5
+    - 99.0

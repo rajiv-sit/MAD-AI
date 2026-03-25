@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from mad_ai.core.config import load_config
 from mad_ai.ingest import SplitBatchSensorIngestor
+from mad_ai.inference import ThresholdCalibrator
 from mad_ai.inference import prepare_observed_features, score_observed_features, train_observed_models
 from mad_ai.wmm import WMMMagneticModel
 
@@ -20,8 +21,17 @@ def main() -> None:
     config = load_config(config_path)
     schema_mapping = config.get("schema_mapping", {})
     split_sources = config.get("split_sources", {})
+    training_config = config.get("training", {})
+    inference_config = config.get("inference", {})
     if not split_sources:
         raise ValueError("real batch config must define split_sources.")
+    spatial_window_size = int(training_config.get("spatial_window_size", 12))
+    temporal_sequence_length = int(training_config.get("temporal_sequence_length", 6))
+    stride = int(training_config.get("stride", 3))
+    spatial_weight = float(inference_config.get("spatial_weight", 0.5))
+    temporal_weight = float(inference_config.get("temporal_weight", 0.5))
+    calibration_percentile = float(inference_config.get("calibration_percentile", 97.5))
+    robustness_percentiles = [float(value) for value in inference_config.get("robustness_percentiles", [90.0, 95.0, 97.5, 99.0])]
 
     ingestor = SplitBatchSensorIngestor(schema_mapping=schema_mapping)
     raw_splits = ingestor.load_splits(split_sources)
@@ -30,9 +40,9 @@ def main() -> None:
 
     spatial_model, temporal_model, training_summary = train_observed_models(
         prepared["train"],
-        spatial_window_size=12,
-        temporal_sequence_length=6,
-        stride=3,
+        spatial_window_size=spatial_window_size,
+        temporal_sequence_length=temporal_sequence_length,
+        stride=stride,
     )
 
     models_dir = Path("outputs/models")
@@ -47,9 +57,12 @@ def main() -> None:
         spatial_model=spatial_model,
         temporal_model=temporal_model,
         calibration_features=prepared["calibration"],
-        spatial_window_size=12,
-        temporal_sequence_length=6,
-        stride=3,
+        calibration_percentile=calibration_percentile,
+        spatial_window_size=spatial_window_size,
+        temporal_sequence_length=temporal_sequence_length,
+        stride=stride,
+        spatial_weight=spatial_weight,
+        temporal_weight=temporal_weight,
     )
     threshold = float(nominal_summary["threshold"])
     anomalous_scored, anomalous_summary = score_observed_features(
@@ -57,18 +70,46 @@ def main() -> None:
         spatial_model=spatial_model,
         temporal_model=temporal_model,
         threshold=threshold,
-        spatial_window_size=12,
-        temporal_sequence_length=6,
-        stride=3,
+        spatial_window_size=spatial_window_size,
+        temporal_sequence_length=temporal_sequence_length,
+        stride=stride,
+        spatial_weight=spatial_weight,
+        temporal_weight=temporal_weight,
     )
+
+    baseline_threshold = ThresholdCalibrator(percentile=calibration_percentile).calibrate(
+        prepared["calibration"]["residual_total_nt"].abs().to_numpy(dtype=float)
+    ).threshold
+    baseline_robustness = {
+        f"{percentile:.1f}": ThresholdCalibrator(percentile=percentile).calibrate(
+            prepared["calibration"]["residual_total_nt"].abs().to_numpy(dtype=float)
+        ).threshold
+        for percentile in robustness_percentiles
+    }
+    fusion_robustness = {
+        f"{percentile:.1f}": ThresholdCalibrator(percentile=percentile).calibrate(
+            nominal_scored["final_anomaly_score"].to_numpy(dtype=float)
+        ).threshold
+        for percentile in robustness_percentiles
+    }
 
     calibration_path = Path("outputs/calibration/real_batch_thresholds.json")
     calibration_payload = {
         "threshold": threshold,
-        "spatial_weight": 0.5,
-        "temporal_weight": 0.5,
+        "spatial_weight": spatial_weight,
+        "temporal_weight": temporal_weight,
+        "baseline_threshold": baseline_threshold,
         "training_summary": training_summary,
         "calibration": nominal_summary.get("calibration", {}),
+        "robustness": {
+            "fusion_thresholds": fusion_robustness,
+            "baseline_thresholds": baseline_robustness,
+        },
+        "training": {
+            "spatial_window_size": spatial_window_size,
+            "temporal_sequence_length": temporal_sequence_length,
+            "stride": stride,
+        },
         "config_path": str(config_path),
     }
     calibration_path.parent.mkdir(parents=True, exist_ok=True)
@@ -79,6 +120,7 @@ def main() -> None:
     comparison_path = output_dir / "real_batch_score_comparison.csv"
     metrics_path = output_dir / "real_batch_metrics.json"
     histogram_path = output_dir / "real_batch_score_histogram.png"
+    robustness_path = output_dir / "real_batch_calibration_robustness.json"
 
     comparison = pd.concat(
         [
@@ -92,9 +134,21 @@ def main() -> None:
         json.dumps(
             {
                 "threshold": threshold,
+                "baseline_threshold": baseline_threshold,
                 "training_summary": training_summary,
                 "nominal_eval": nominal_summary,
                 "anomalous_eval": anomalous_summary,
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    robustness_path.write_text(
+        json.dumps(
+            {
+                "calibration_percentile": calibration_percentile,
+                "fusion_thresholds": fusion_robustness,
+                "baseline_thresholds": baseline_robustness,
             },
             indent=2,
         ),
@@ -107,6 +161,7 @@ def main() -> None:
     print(f"Saved real batch calibration to {calibration_path}")
     print(f"Saved real batch comparison to {comparison_path}")
     print(f"Saved real batch metrics to {metrics_path}")
+    print(f"Saved real batch robustness report to {robustness_path}")
     print(f"Saved real batch histogram to {histogram_path}")
 
 

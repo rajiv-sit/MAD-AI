@@ -45,6 +45,7 @@ Completed so far:
 - fused anomaly calibration now reuses the standalone spatial and temporal thresholds and saves a dedicated fusion threshold artifact with fused metrics and plots
 - the Cesium review flow now supports comparison swipe mode, anomaly filtering, hotspot jumps, lat/lon search, and export actions for review outputs
 - real-data folder ingestion now supports schema mapping, split-aware batch loading, batch scoring, and a real-batch Cesium review path
+- the real-batch review path now supports baseline-only residual anomaly overlays, fused anomaly overlays, robustness reports, and CI-backed regression checks
 
 Current limitations:
 
@@ -59,9 +60,9 @@ Current limitations:
 Immediate next steps:
 
 1. improve threshold calibration and evaluation on larger labeled or semi-labeled real datasets
-2. compare baseline-only anomaly overlays against observed-residual overlays in the same viewer flow
-3. continue tuning the CNN and LSTM architectures on broader real datasets
-4. add richer source connectors beyond file-system CSV and Parquet batches if needed
+2. continue tuning the CNN and LSTM architectures on broader real datasets
+3. add richer source connectors beyond file-system CSV and Parquet batches if needed
+4. raise test coverage further and add script-level regression checks where useful
 5. consider a native desktop review shell only if the browser-based globe becomes limiting
 
 ## Quality Status
@@ -70,7 +71,7 @@ Current unit-test coverage for `src/mad_ai` is 85%.
 
 Coverage summary:
 
-- 37 unit tests are passing
+- 44 unit tests are passing
 - strong coverage exists for dataset, feature, ingest, visualization, and model save/load flows
 - the largest remaining gaps are in config parsing branches, inference helper branches, abstract base classes, and WMM fallback branches
 
@@ -484,7 +485,7 @@ Acceptance criteria:
 
 **Goal:** Provide a usable interface for reviewing magnetic maps, residuals, and anomaly results.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -514,6 +515,7 @@ Progress update:
 - the observed anomaly globe now consumes calibrated observed-residual checkpoints and thresholds rather than relying on a one-off fixed-threshold scoring pass
 - the review flow now supports comparison swipe mode, score-threshold filtering, anomaly-only filtering, hotspot jumps, direct lat/lon search, and export of selected anomalies, review bundles, and screenshots
 - `scripts/build_real_batch_cesium_viewer.py` now generates a real-batch Cesium globe from folder-based scored inputs
+- the real-batch viewer can now compare baseline residual anomaly overlays against fused anomaly overlays in the same globe session
 - richer desktop-native drill-down UI is optional rather than required at the current prototype stage
 
 Acceptance criteria:
@@ -523,6 +525,7 @@ Acceptance criteria:
 - The application remains responsive for normal review-sized datasets.
 - The globe can inspect magnetic values from the surface overlay at the active altitude and time setting.
 - The globe can expose anomaly overlays and observed-data anomaly results from saved artifacts.
+- The globe can compare baseline-only and fused anomaly overlays in the same review session.
 
 ## Suggested Technical Outputs
 
@@ -594,6 +597,7 @@ Latest local verification completed on March 25, 2026:
 - the observed anomaly globe now includes comparison swipe, filter, search, hotspot-jump, and export controls
 - `python scripts\evaluate_real_batch_models.py` generated real-batch models, calibration, metrics, and histogram outputs
 - `python scripts\build_real_batch_cesium_viewer.py` generated the real-batch anomaly globe
+- `.github/workflows/ci.yml` now enforces the unit suite on pushes and pull requests
 
 ## Success Metric
 

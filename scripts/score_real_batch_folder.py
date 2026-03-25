@@ -44,9 +44,14 @@ def main() -> None:
         spatial_weight=float(calibration_payload.get("spatial_weight", 0.5)),
         temporal_weight=float(calibration_payload.get("temporal_weight", 0.5)),
     )
+    baseline_threshold = float(calibration_payload.get("baseline_threshold", 1.0))
+    scored["baseline_residual_score"] = scored["residual_total_nt"].abs() / max(baseline_threshold, 1e-6)
+    scored["baseline_is_anomaly"] = scored["baseline_residual_score"] >= 1.0
     summary["input_dir"] = str(input_dir)
     summary["output_csv"] = str(output_csv)
     summary["config_path"] = str(config_path)
+    summary["baseline_threshold"] = baseline_threshold
+    summary["baseline_anomaly_count"] = int(scored["baseline_is_anomaly"].sum())
 
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     scored.to_csv(output_csv, index=False)

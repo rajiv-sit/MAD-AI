@@ -20,5 +20,7 @@
   },
   "input_dir": "data\\raw\\real_batch\\anomalous_eval",
   "output_csv": "data\\processed\\real_batch_scored\\real_batch_scored.csv",
-  "config_path": "config\\real_batch.yaml"
+  "config_path": "config\\real_batch.yaml",
+  "baseline_threshold": 1.0,
+  "baseline_anomaly_count": 4
 }

@@ -42,6 +42,7 @@ def main() -> None:
             "Observed Total": "observed_total_nt",
             "Baseline Total": "baseline_total_nt",
             "Residual Total": "residual_total_nt",
+            "Baseline Residual Score": "baseline_residual_score",
             "Spatial Anomaly Score": "spatial_anomaly_score",
             "Temporal Anomaly Score": "temporal_anomaly_score",
             "Final Anomaly Score": "final_anomaly_score",

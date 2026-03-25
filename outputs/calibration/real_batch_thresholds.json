@@ -1,19 +1,39 @@
 {
-  "threshold": 0.5395634174346924,
+  "threshold": 0.5353795289993286,
   "spatial_weight": 0.5,
   "temporal_weight": 0.5,
+  "baseline_threshold": 873.745117726788,
   "training_summary": {
     "spatial_sample_count": 2,
     "temporal_sample_count": 2
   },
   "calibration": {
-    "threshold": 0.5395634174346924,
+    "threshold": 0.5353795289993286,
     "percentile": 97.5,
-    "mean_score": 0.5395634174346924,
+    "mean_score": 0.5353795289993286,
     "std_score": 0.0,
-    "min_score": 0.5395634174346924,
-    "max_score": 0.5395634174346924,
+    "min_score": 0.5353795289993286,
+    "max_score": 0.5353795289993286,
     "sample_count": 4
+  },
+  "robustness": {
+    "fusion_thresholds": {
+      "90.0": 0.579021766781807,
+      "95.0": 0.579021766781807,
+      "97.5": 0.579021766781807,
+      "99.0": 0.579021766781807
+    },
+    "baseline_thresholds": {
+      "90.0": 872.9455842185904,
+      "95.0": 873.4786065573887,
+      "97.5": 873.745117726788,
+      "99.0": 873.9050244284275
+    }
+  },
+  "training": {
+    "spatial_window_size": 12,
+    "temporal_sequence_length": 6,
+    "stride": 3
   },
   "config_path": "config\\real_batch.yaml"
 }
