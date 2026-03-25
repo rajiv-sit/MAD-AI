@@ -84,6 +84,7 @@ class CesiumGlobeViewerBuilder:
                     "vesselHeadingDeg": float(getattr(row, "vessel_heading_deg", 0.0)) if hasattr(row, "vessel_heading_deg") else None,
                     "vesselSpeedMps": float(getattr(row, "vessel_speed_mps", 0.0)) if hasattr(row, "vessel_speed_mps") else None,
                     "vesselSpeedKnots": float(getattr(row, "vessel_speed_knots", 0.0)) if hasattr(row, "vessel_speed_knots") else None,
+                    "rangeToVesselM": float(getattr(row, "range_to_vessel_m", 0.0)) if hasattr(row, "range_to_vessel_m") else None,
                     "anomalyScore": float(getattr(row, self.anomaly_score_column, 0.0))
                     if hasattr(row, self.anomaly_score_column)
                     else 0.0,
@@ -301,6 +302,22 @@ class CesiumGlobeViewerBuilder:
     let primaryMagneticOverlayLayer = null;
     let secondaryMagneticOverlayLayer = null;
     let hotspotIndex = -1;
+    function findNearestTimeIndex(timestamp) {{
+      if (!timestamp || timeKeys.length === 0) {{
+        return 0;
+      }}
+      const target = parseTimeKey(timestamp);
+      let bestIndex = 0;
+      let bestDistance = Math.abs(parseTimeKey(timeKeys[0]) - target);
+      for (let index = 1; index < timeKeys.length; index += 1) {{
+        const distance = Math.abs(parseTimeKey(timeKeys[index]) - target);
+        if (distance < bestDistance) {{
+          bestDistance = distance;
+          bestIndex = index;
+        }}
+      }}
+      return bestIndex;
+    }}
     Cesium.Ion.defaultAccessToken = "";
     const viewer = new Cesium.Viewer("cesiumContainer", {{
       animation: false,
@@ -493,12 +510,15 @@ class CesiumGlobeViewerBuilder:
           <p><b>Vessel Position:</b> ${{point.vesselLat == null ? "n/a" : Number(point.vesselLat).toFixed(3) + ", " + Number(point.vesselLon).toFixed(3)}}</p>
           <p><b>Vessel Heading:</b> ${{point.vesselHeadingDeg == null ? "n/a" : Number(point.vesselHeadingDeg).toFixed(2) + " deg"}}</p>
           <p><b>Vessel Speed:</b> ${{point.vesselSpeedMps == null ? "n/a" : Number(point.vesselSpeedMps).toFixed(2) + " m/s (" + Number(point.vesselSpeedKnots).toFixed(2) + " kn)"}}</p>
+          <p><b>Range To Vessel:</b> ${{point.rangeToVesselM == null ? "n/a" : (Number(point.rangeToVesselM) / 1000.0).toFixed(3) + " km"}}</p>
           ${{componentRows}}
       `;
     }}
     let trackEntities = [];
     let vesselTrackEntities = [];
     let trackLabelEntities = [];
+    let currentAircraftEntities = [];
+    let currentVesselEntities = [];
     let selectionEntity = null;
 
     function getHistoricalTrackPoints() {{
@@ -517,6 +537,10 @@ class CesiumGlobeViewerBuilder:
       vesselTrackEntities = [];
       trackLabelEntities.forEach((entity) => viewer.entities.remove(entity));
       trackLabelEntities = [];
+      currentAircraftEntities.forEach((entity) => viewer.entities.remove(entity));
+      currentAircraftEntities = [];
+      currentVesselEntities.forEach((entity) => viewer.entities.remove(entity));
+      currentVesselEntities = [];
       if (selectionEntity) {{
         viewer.entities.remove(selectionEntity);
         selectionEntity = null;
@@ -525,6 +549,66 @@ class CesiumGlobeViewerBuilder:
 
     function parseTimeValue(point) {{
       return parseTimeKey(point.timestamp || "");
+    }}
+
+    function colorForAnomalyScore(score) {{
+      const normalized = Math.min(Math.max(Number(score || 0.0) / Math.max(maxAnomalyScore, 0.001), 0.0), 1.0);
+      return Cesium.Color.fromHsl(0.66 * (1.0 - normalized), 0.88, 0.56, 0.96);
+    }}
+
+    function buildCurrentMarkers() {{
+      const activePoints = getFilteredPoints();
+      activePoints.forEach((point, index) => {{
+        currentAircraftEntities.push(
+          viewer.entities.add({{
+            id: `current_aircraft_${{index}}`,
+            position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt),
+            point: {{
+              pixelSize: 12,
+              color: colorForAnomalyScore(point.anomalyScore),
+              outlineColor: Cesium.Color.WHITE,
+              outlineWidth: 2
+            }},
+            label: {{
+              text: `Aircraft Now\\nScore ${{Number(point.anomalyScore || 0.0).toFixed(3)}}`,
+              font: "13px Segoe UI",
+              fillColor: Cesium.Color.WHITE,
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              pixelOffset: new Cesium.Cartesian2(0, -28),
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.78)")
+            }},
+            description: descriptionForPoint(point)
+          }})
+        );
+        if (point.vesselLat != null && point.vesselLon != null) {{
+          currentVesselEntities.push(
+            viewer.entities.add({{
+              id: `current_vessel_${{index}}`,
+              position: Cesium.Cartesian3.fromDegrees(point.vesselLon, point.vesselLat, 0.0),
+              point: {{
+                pixelSize: 11,
+                color: Cesium.Color.fromCssColorString("#ff7b72"),
+                outlineColor: Cesium.Color.WHITE,
+                outlineWidth: 2
+              }},
+              label: {{
+                text: `Vessel Now\\nRange ${{point.rangeToVesselM == null ? "n/a" : (Number(point.rangeToVesselM) / 1000.0).toFixed(2) + " km"}}`,
+                font: "13px Segoe UI",
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                pixelOffset: new Cesium.Cartesian2(0, -28),
+                showBackground: true,
+                backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.78)")
+              }}
+            }})
+          );
+        }}
+      }});
     }}
 
     function buildTracks() {{
@@ -646,8 +730,35 @@ class CesiumGlobeViewerBuilder:
     function refreshScene() {{
       clearDynamicEntities();
       buildTracks();
+      buildCurrentMarkers();
       document.getElementById("timeLabel").textContent = timeKeys[currentTimeIndex];
       refreshColorLegend();
+      notifyTimeChange();
+    }}
+
+    function setCurrentTimeIndex(index) {{
+      currentTimeIndex = Math.min(Math.max(Number(index) || 0, 0), Math.max(0, timeKeys.length - 1));
+      if (typeof timeSlider !== "undefined") {{
+        timeSlider.value = String(currentTimeIndex);
+      }}
+      refreshScene();
+    }}
+
+    function notifyTimeChange() {{
+      const payload = {{
+        type: "mad-ai-time-change",
+        source: "viewer",
+        timeIndex: currentTimeIndex,
+        timestamp: timeKeys[currentTimeIndex] || "",
+        altitudeM: Number(currentAltitudeKey || 0.0),
+        viewMode: currentViewMode
+      }};
+      if (window.parent && window.parent !== window) {{
+        window.parent.postMessage(payload, "*");
+      }}
+      if (window.opener && window.opener !== window) {{
+        window.opener.postMessage(payload, "*");
+      }}
     }}
 
     function describePointForPanel(point, clickedLat, clickedLon) {{
@@ -674,6 +785,7 @@ class CesiumGlobeViewerBuilder:
         <div><b>Vessel Position:</b> ${{point.vesselLat == null ? "n/a" : Number(point.vesselLat).toFixed(3) + ", " + Number(point.vesselLon).toFixed(3)}}</div>
         <div><b>Vessel Heading:</b> ${{point.vesselHeadingDeg == null ? "n/a" : Number(point.vesselHeadingDeg).toFixed(2) + " deg"}}</div>
         <div><b>Vessel Speed:</b> ${{point.vesselSpeedMps == null ? "n/a" : Number(point.vesselSpeedMps).toFixed(2) + " m/s (" + Number(point.vesselSpeedKnots).toFixed(2) + " kn)"}}</div>
+        <div><b>Range To Vessel:</b> ${{point.rangeToVesselM == null ? "n/a" : (Number(point.rangeToVesselM) / 1000.0).toFixed(3) + " km"}}</div>
         <div><b>Threshold Filter:</b> ${{Number(document.getElementById("scoreThresholdSlider").value || 0.0).toFixed(3)}}</div>
         <div><b>Decision:</b> ${{Number(point.anomalyScore || 0.0) >= Number(document.getElementById("scoreThresholdSlider").value || 0.0) ? "above filter" : "below filter"}}</div>
         <div><b>Timestamp:</b> ${{point.timestamp}}</div>
@@ -819,8 +931,7 @@ class CesiumGlobeViewerBuilder:
     timeSlider.max = String(Math.max(0, timeKeys.length - 1));
     timeSlider.value = "0";
     timeSlider.addEventListener("input", (event) => {{
-      currentTimeIndex = Number(event.target.value);
-      refreshScene();
+      setCurrentTimeIndex(Number(event.target.value));
     }});
 
     const altitudeSlider = document.getElementById("altitudeSlider");
@@ -866,9 +977,7 @@ class CesiumGlobeViewerBuilder:
         return;
       }}
       playTimer = setInterval(() => {{
-        currentTimeIndex = (currentTimeIndex + 1) % timeKeys.length;
-        timeSlider.value = String(currentTimeIndex);
-        refreshScene();
+        setCurrentTimeIndex((currentTimeIndex + 1) % timeKeys.length);
       }}, 900);
       playPauseBtn.textContent = "Pause";
     }});
@@ -957,6 +1066,16 @@ class CesiumGlobeViewerBuilder:
       link.href = viewer.scene.canvas.toDataURL("image/png");
       link.download = "mad_ai_globe_screenshot.png";
       link.click();
+    }});
+
+    window.addEventListener("message", (event) => {{
+      const message = event.data || {{}};
+      if (message.type === "mad-ai-set-time-index") {{
+        setCurrentTimeIndex(Number(message.timeIndex || 0));
+      }}
+      if (message.type === "mad-ai-set-timestamp") {{
+        setCurrentTimeIndex(findNearestTimeIndex(String(message.timestamp || "")));
+      }}
     }});
 
     viewer.clock.onTick.addEventListener(spinCamera);

@@ -9,6 +9,7 @@ from .plots import (
     RealtimeAnomalyDashboardVisualizer,
     Surface3DVisualizer,
 )
+from .realtime_dashboard_html import BahamasRealtimeDashboardHTMLBuilder
 
 __all__ = [
     "AnomalyReportVisualizer",
@@ -16,6 +17,7 @@ __all__ = [
     "ContourMapVisualizer",
     "Globe3DVisualizer",
     "HeatmapVisualizer",
+    "BahamasRealtimeDashboardHTMLBuilder",
     "RealtimeAnomalyDashboardVisualizer",
     "Surface3DVisualizer",
 ]
