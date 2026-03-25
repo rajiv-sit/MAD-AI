@@ -176,6 +176,41 @@ The observed anomaly globe supports:
 - temporal anomaly score
 - final anomaly score
 
+### Real Batch Workflow
+
+For folder-based real data ingestion with schema mapping and split-aware evaluation:
+
+```powershell
+python scripts\evaluate_real_batch_models.py
+python scripts\build_real_batch_cesium_viewer.py
+```
+
+Config:
+
+- [config/real_batch.yaml](c:/Users/MrSit/source/repos/MAD-AI/config/real_batch.yaml)
+
+Sample batch input:
+
+- [data/raw/real_batch](c:/Users/MrSit/source/repos/MAD-AI/data/raw/real_batch)
+
+Generated artifacts:
+
+- [outputs/models/real_batch_spatial.pt](c:/Users/MrSit/source/repos/MAD-AI/outputs/models/real_batch_spatial.pt)
+- [outputs/models/real_batch_temporal.pt](c:/Users/MrSit/source/repos/MAD-AI/outputs/models/real_batch_temporal.pt)
+- [outputs/calibration/real_batch_thresholds.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/calibration/real_batch_thresholds.json)
+- [outputs/evaluation/real_batch_metrics.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_metrics.json)
+- [data/processed/real_batch_scored/real_batch_scored.csv](c:/Users/MrSit/source/repos/MAD-AI/data/processed/real_batch_scored/real_batch_scored.csv)
+- [outputs/viewer/cesium_real_batch_globe.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_real_batch_globe.html)
+
+This workflow supports:
+
+- multi-file folder ingestion
+- schema mapping into the project's canonical sensor columns
+- nominal-train, calibration, nominal-eval, and anomalous-eval splits
+- real-data recalibration from nominal data
+- evaluation on abnormal segments
+- viewer generation from the scored real batch output
+
 ### Current Global Viewer Data
 
 The current global magnetic surface is built from:
@@ -236,6 +271,9 @@ Current settings:
 - `python scripts\build_tracked_cesium_globe.py`
 - `python scripts\build_observed_csv_cesium_viewer.py <input_csv>`
 - `python scripts\build_observed_anomaly_cesium_viewer.py <input_csv>`
+- `python scripts\evaluate_real_batch_models.py [config_path]`
+- `python scripts\score_real_batch_folder.py <input_dir> [config_path] [output_csv] [summary_json]`
+- `python scripts\build_real_batch_cesium_viewer.py [config_path] [output_html]`
 
 ## Testing
 

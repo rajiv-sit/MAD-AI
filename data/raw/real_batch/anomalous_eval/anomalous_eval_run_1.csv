@@ -1,0 +1,5 @@
+latitude,longitude,altitude,time,total_field_nt,declination_deg,inclination_deg,platform_id,label_anomaly
+43.720,-79.420,250.0,2026-03-24T04:00:00,52030.0,-7.38,58.48,epsilon,0
+43.750,-79.380,250.0,2026-03-24T04:05:00,52690.0,-7.25,58.62,epsilon,1
+43.780,-79.340,250.0,2026-03-24T04:10:00,52710.0,-7.18,58.70,epsilon,1
+43.810,-79.300,250.0,2026-03-24T04:15:00,52062.0,-7.10,58.78,epsilon,0

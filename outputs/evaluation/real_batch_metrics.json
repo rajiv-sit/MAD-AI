@@ -1,0 +1,58 @@
+{
+  "threshold": 0.5395634174346924,
+  "training_summary": {
+    "spatial_sample_count": 2,
+    "temporal_sample_count": 2
+  },
+  "nominal_eval": {
+    "rows": 4,
+    "threshold": 0.5395634174346924,
+    "spatial_scale": 1.0,
+    "temporal_scale": 1.0,
+    "spatial_mean": 0.4803028702735901,
+    "temporal_mean": 0.695073664188385,
+    "final_mean": 0.5876882672309875,
+    "anomaly_count": 4,
+    "calibration": {
+      "threshold": 0.5395634174346924,
+      "percentile": 97.5,
+      "mean_score": 0.5395634174346924,
+      "std_score": 0.0,
+      "min_score": 0.5395634174346924,
+      "max_score": 0.5395634174346924,
+      "sample_count": 4
+    },
+    "metrics": {
+      "threshold": 0.5395634174346924,
+      "true_positives": 0,
+      "true_negatives": 0,
+      "false_positives": 4,
+      "false_negatives": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "accuracy": 0.0,
+      "f1_score": 0.0
+    }
+  },
+  "anomalous_eval": {
+    "rows": 4,
+    "threshold": 0.5395634174346924,
+    "spatial_scale": 1.0,
+    "temporal_scale": 1.0,
+    "spatial_mean": 0.45489266514778137,
+    "temporal_mean": 6.500993251800537,
+    "final_mean": 3.4779429584741592,
+    "anomaly_count": 4,
+    "metrics": {
+      "threshold": 0.5395634174346924,
+      "true_positives": 2,
+      "true_negatives": 0,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "precision": 0.5,
+      "recall": 1.0,
+      "accuracy": 0.5,
+      "f1_score": 0.6666666666666666
+    }
+  }
+}

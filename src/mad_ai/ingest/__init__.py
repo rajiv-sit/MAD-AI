@@ -1,5 +1,17 @@
 """Data ingestion."""
 
-from .sensor import CsvSensorIngestor, ParquetSensorIngestor
+from .sensor import (
+    BatchSensorIngestor,
+    CsvSensorIngestor,
+    ParquetSensorIngestor,
+    SchemaMappedSensorIngestor,
+    SplitBatchSensorIngestor,
+)
 
-__all__ = ["CsvSensorIngestor", "ParquetSensorIngestor"]
+__all__ = [
+    "BatchSensorIngestor",
+    "CsvSensorIngestor",
+    "ParquetSensorIngestor",
+    "SchemaMappedSensorIngestor",
+    "SplitBatchSensorIngestor",
+]

@@ -1,0 +1,37 @@
+schema_mapping:
+  latitude_deg:
+    - latitude
+    - lat
+    - latitude_deg
+  longitude_deg:
+    - longitude
+    - lon
+    - longitude_deg
+  altitude_m:
+    - altitude
+    - alt_m
+    - altitude_m
+  timestamp:
+    - time
+    - timestamp
+  observed_total_nt:
+    - total_field_nt
+    - observed_total_nt
+  observed_declination_deg:
+    - declination_deg
+    - observed_declination_deg
+  observed_inclination_deg:
+    - inclination_deg
+    - observed_inclination_deg
+  track_id:
+    - platform_id
+    - track_id
+  is_injected_anomaly:
+    - label_anomaly
+    - is_injected_anomaly
+
+split_sources:
+  train: data/raw/real_batch/train
+  calibration: data/raw/real_batch/calibration
+  nominal_eval: data/raw/real_batch/nominal_eval
+  anomalous_eval: data/raw/real_batch/anomalous_eval

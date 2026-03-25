@@ -44,6 +44,7 @@ Completed so far:
 - standalone spatial and temporal training scripts now save per-model checkpoints, calibrated thresholds, score comparisons, and validation histograms
 - fused anomaly calibration now reuses the standalone spatial and temporal thresholds and saves a dedicated fusion threshold artifact with fused metrics and plots
 - the Cesium review flow now supports comparison swipe mode, anomaly filtering, hotspot jumps, lat/lon search, and export actions for review outputs
+- real-data folder ingestion now supports schema mapping, split-aware batch loading, batch scoring, and a real-batch Cesium review path
 
 Current limitations:
 
@@ -51,15 +52,16 @@ Current limitations:
 - the spatial and temporal models now use trainable PyTorch autoencoder baselines, but they still need stronger architecture tuning and evaluation
 - the visualizer is now interactive through a local Cesium globe, but it is browser-based rather than a richer native desktop review tool
 - the real-data path currently supports CSV ingestion; broader source handling and schema normalization are still limited
+- the bundled real-batch example is intentionally small, so its metrics are for pipeline verification rather than performance claims
 - denser full-earth builds are now practical at the current `2 deg x 2 deg` grid, but further scaling still needs care
 - observed anomaly scoring currently works from CSV workflows, but broader real-sensor connectors are still pending
 
 Immediate next steps:
 
-1. expand observed-data anomaly workflows beyond CSV into richer real sensor sources
-2. improve threshold calibration and evaluation on labeled or semi-labeled real datasets
-3. compare baseline-only anomaly overlays against observed-residual overlays in the same viewer flow
-4. continue tuning the CNN and LSTM architectures on broader real datasets
+1. improve threshold calibration and evaluation on larger labeled or semi-labeled real datasets
+2. compare baseline-only anomaly overlays against observed-residual overlays in the same viewer flow
+3. continue tuning the CNN and LSTM architectures on broader real datasets
+4. add richer source connectors beyond file-system CSV and Parquet batches if needed
 5. consider a native desktop review shell only if the browser-based globe becomes limiting
 
 ## Quality Status
@@ -363,6 +365,7 @@ Progress update:
 - `src/mad_ai/datasets/builders.py` implements spatial-grid and temporal-sequence builders
 - processed dataset artifacts can now be persisted to disk
 - a CSV-based build path exists for real sensor inputs
+- split-aware real batch ingestion now exists through schema-mapped folder loading
 - the global NOAA dataset currently ships as a multi-altitude grid with `2 deg x 2 deg` spacing
 - observed anomaly scoring can now persist anomaly-enriched CSV artifacts for globe review
 
@@ -468,6 +471,8 @@ Progress update:
 - `scripts/evaluate_fusion_models.py` now calibrates a fused threshold using the standalone spatial and temporal thresholds as component scales
 - `scripts/run_inference.py` and `scripts/evaluate_models.py` now consume the fused calibration artifact
 - the observed anomaly globe now uses the fused calibration path rather than a separate ad hoc threshold
+- `scripts/evaluate_real_batch_models.py` now trains and evaluates on schema-mapped real batch splits from folders
+- `scripts/score_real_batch_folder.py` now scores arbitrary real-data folders against the trained real-batch models
 
 Acceptance criteria:
 
@@ -508,6 +513,7 @@ Progress update:
 - the global globe is currently built from a `2 deg x 2 deg` multi-altitude NOAA dataset and uses surface overlays rather than sparse points for the main magnetic field view
 - the observed anomaly globe now consumes calibrated observed-residual checkpoints and thresholds rather than relying on a one-off fixed-threshold scoring pass
 - the review flow now supports comparison swipe mode, score-threshold filtering, anomaly-only filtering, hotspot jumps, direct lat/lon search, and export of selected anomalies, review bundles, and screenshots
+- `scripts/build_real_batch_cesium_viewer.py` now generates a real-batch Cesium globe from folder-based scored inputs
 - richer desktop-native drill-down UI is optional rather than required at the current prototype stage
 
 Acceptance criteria:
@@ -586,6 +592,8 @@ Latest local verification completed on March 25, 2026:
 - `python scripts\score_observed_csv_anomalies.py data\raw\sample_sensor.csv` generated an observed scored CSV and summary
 - `python scripts\build_observed_anomaly_cesium_viewer.py data\raw\sample_sensor.csv` generated the observed anomaly globe
 - the observed anomaly globe now includes comparison swipe, filter, search, hotspot-jump, and export controls
+- `python scripts\evaluate_real_batch_models.py` generated real-batch models, calibration, metrics, and histogram outputs
+- `python scripts\build_real_batch_cesium_viewer.py` generated the real-batch anomaly globe
 
 ## Success Metric
 

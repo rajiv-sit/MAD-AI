@@ -1,0 +1,24 @@
+{
+  "rows": 4,
+  "threshold": 0.5395634174346924,
+  "spatial_scale": 1.0,
+  "temporal_scale": 1.0,
+  "spatial_mean": 0.45489266514778137,
+  "temporal_mean": 3.7298691272735596,
+  "final_mean": 2.0923808962106705,
+  "anomaly_count": 4,
+  "metrics": {
+    "threshold": 0.5395634174346924,
+    "true_positives": 2,
+    "true_negatives": 0,
+    "false_positives": 2,
+    "false_negatives": 0,
+    "precision": 0.5,
+    "recall": 1.0,
+    "accuracy": 0.5,
+    "f1_score": 0.6666666666666666
+  },
+  "input_dir": "data\\raw\\real_batch\\anomalous_eval",
+  "output_csv": "data\\processed\\real_batch_scored\\real_batch_scored.csv",
+  "config_path": "config\\real_batch.yaml"
+}
