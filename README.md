@@ -113,17 +113,37 @@ Current practical note:
 
 ## Visualizer
 
-The main visualizer is the interactive Cesium globe:
+`MAD-AI` has two main review experiences:
+
+1. a 3D Cesium globe for spatial review
+2. a linked Bahamas dashboard for time-based anomaly review
+
+### 3D Globe Visualizer
+
+The main globe visualizer is:
 
 - [outputs/viewer/cesium_global_magnetic_globe.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_global_magnetic_globe.html)
 
-Visualizer preview:
+Preview:
 
 ![MAD-AI Earth Visualizer](docs/EarthMag.png)
 
-### Recommended Way To Run It
+What the 3D globe is for:
 
-Do not rely on opening the HTML directly with `file://`. Serve the viewer directory over localhost:
+- reviewing the NOAA/WMM magnetic baseline on the earth surface
+- switching between magnetic components such as total field, declination, inclination, and residual
+- inspecting anomaly overlays when scored data is available
+- checking where tracks and anomaly hotspots sit geographically
+
+What you see in the globe:
+
+- the earth rendered with OpenStreetMap imagery
+- a draped magnetic overlay across the world surface
+- a left-side control panel for component, altitude, time, comparison mode, filtering, and export
+- track overlays when the loaded dataset contains aircraft or anomaly paths
+- click-based inspection of the nearest sample under the cursor
+
+How to run the 3D globe:
 
 ```powershell
 python scripts\serve_cesium_viewer.py
@@ -135,52 +155,97 @@ Then open:
 http://127.0.0.1:8765/cesium_global_magnetic_globe.html
 ```
 
-If you already have the local server running, you can just reopen that URL in the browser.
-
-### What The Visualizer Supports
-
-- OpenStreetMap earth layer
-- full-earth magnetic overlay for the active component
-- magnetic component switching
-- comparison swipe mode
-- altitude slider
-- time slider
-- earth rotation
-- day/night lighting
-- click-on-surface inspection of magnetic values
-- live min/mid/max legend for the active overlay
-- anomaly-only and score-threshold filtering
-- lat/lon jump and hotspot navigation
-- export of selected anomalies, review bundle JSON, and screenshots
-
-### How To Use It
-
-1. Start the local server:
-
-```powershell
-python scripts\serve_cesium_viewer.py
-```
-
-2. Generate or refresh the viewer assets if needed:
+If you need to regenerate the global NOAA viewer assets first:
 
 ```powershell
 python scripts\build_global_noaa_grid.py
 python scripts\generate_global_noaa_visualizations.py
 ```
 
-3. Open:
+How to use the 3D globe:
 
-```text
-http://127.0.0.1:8765/cesium_global_magnetic_globe.html
+1. Use `Displayed Component` to choose what the surface overlay means.
+   `Total Field` shows the baseline magnetic field, while `Residual` or anomaly-score layers show deviation from the baseline.
+2. Use `Altitude Layer` to move between the available magnetic surfaces.
+3. Use `Time Slice` when the loaded data has temporal samples.
+4. Click on the globe to inspect the nearest magnetic sample and read the values in the side panel.
+5. Use `Compare` mode if you want to swipe between two magnetic layers.
+6. Use `Score Threshold Filter` and `Anomaly-only` when reviewing scored anomaly outputs.
+7. Use `Jump To Hotspot` to move between the strongest currently visible anomaly points.
+
+What the main globe controls mean:
+
+- `Displayed Component`
+  selects the surface or anomaly quantity being colored on the globe
+- `Secondary Component`
+  selects the comparison overlay for swipe mode
+- `Time Slice`
+  moves through timestamped samples when the dataset has time structure
+- `Altitude Layer`
+  switches between the available baseline or review surfaces
+- `View Mode`
+  switches between baseline-only and baseline-plus-anomaly overlays when supported
+- `Score Threshold Filter`
+  hides lower-score points so you can focus on stronger events
+
+### Bahamas Realtime Dashboard
+
+The Bahamas review dashboard is:
+
+- [outputs/viewer/bahamas_realtime_dashboard.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/bahamas_realtime_dashboard.html)
+
+Preview:
+
+![MAD-AI Magnetic Dashboard](docs/Magnetic-Dashboard.png)
+
+What the dashboard provides:
+
+- a single shared time cursor across four linked views
+- direct comparison between observed magnetometer readings and the NOAA-style baseline
+- range-to-vessel context next to anomaly response
+- a synchronized embedded 3D globe for geographic context
+- an along-track residual view that makes localized anomaly bumps easier to see
+
+The four dashboard views are:
+
+1. `Realtime Anomaly Strip Chart`
+   shows `Observed Total`, `NOAA Baseline Total`, `Residual Total`, `Final Anomaly Score`, and the anomaly threshold over time
+2. `Vessel Proximity vs Anomaly`
+   shows `range_to_vessel_m` against anomaly response so you can see whether anomaly strength increases as geometry changes
+3. `3D Globe Track Colored By Anomaly`
+   embeds the Cesium globe and keeps it synchronized to the current dashboard time
+4. `Along-Track Residual Profile`
+   shows residual behavior against cumulative distance with closest-approach and high-anomaly markers
+
+How to run the Bahamas dashboard:
+
+```powershell
+python scripts\score_bahamas_realtime_anomalies.py inspection\external_mad_repo\data\raw\mad_data.asc data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json analytic stable_window
+python scripts\build_bahamas_noaa_combined_viewer.py outputs\viewer\cesium_bahamas_noaa_combined.html data\processed\global_noaa\global_wmm_grid.csv data\processed\bahamas\bahamas_mad_scored.csv
+python scripts\build_bahamas_realtime_dashboard.py data\processed\bahamas\bahamas_mad_scored.csv outputs\evaluation\bahamas_mad_summary.json outputs\viewer\bahamas_realtime_dashboard.html cesium_bahamas_noaa_combined.html
+python scripts\serve_cesium_viewer.py
 ```
 
-4. In the viewer:
+Then open:
 
-- use `Displayed Component` to switch between `Total Field`, `Declination`, `Inclination`, and `Residual`
-- use the altitude slider to move between `0`, `1000`, `5000`, and `10000 m`
-- click anywhere on the earth surface to inspect the nearest magnetic sample on the active altitude/time layer
-- use `Pause Earth Spin` if you want a fixed globe view
-- read the legend beneath the inspector to understand the current overlay scale
+```text
+http://127.0.0.1:8765/bahamas_realtime_dashboard.html
+```
+
+How to use the Bahamas dashboard:
+
+1. Move the dashboard `time` slider to select the current sample.
+2. Watch the strip chart to compare observed field, baseline field, residual, and anomaly score at that moment.
+3. Watch the vessel-range chart to see whether anomaly strength changes with aircraft-to-vessel separation.
+4. Use the embedded globe to inspect the same moment spatially.
+5. Use the along-track profile to see where the anomaly bump occurs along the aircraft path.
+6. Use `Play`, `Closest Approach`, and `Top Anomaly` to move quickly through the most important parts of the run.
+
+Important interpretation note:
+
+- in the current Bahamas workflow, the vessel path displayed in the viewer comes from the dataset reference navigation fields
+- the anomaly signal comes from aircraft-borne magnetometer residuals against the magnetic baseline
+- this is currently an anomaly-review workflow with known vessel reference, not yet magnetometer-only vessel tracking
 
 ### Observed Anomaly Globe
 
