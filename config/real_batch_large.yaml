@@ -48,8 +48,14 @@ training:
   stride: 4
   spatial_epochs: 3
   temporal_epochs: 4
+  spatial_learning_rate: 0.001
+  temporal_learning_rate: 0.001
   spatial_batch_size: 16
   temporal_batch_size: 24
+  spatial_latent_channels: 24
+  temporal_hidden_size: 48
+  spatial_dropout: 0.1
+  temporal_dropout: 0.1
 
 inference:
   spatial_weight: 0.45
@@ -73,3 +79,23 @@ tuning:
   spatial_weights:
     - 0.5
     - 0.6
+  spatial_latent_channels:
+    - 24
+    - 32
+  temporal_hidden_sizes:
+    - 48
+    - 64
+  spatial_dropouts:
+    - 0.05
+    - 0.1
+  temporal_dropouts:
+    - 0.05
+    - 0.1
+  spatial_learning_rates:
+    - 0.001
+  temporal_learning_rates:
+    - 0.001
+  spatial_batch_sizes:
+    - 16
+  temporal_batch_sizes:
+    - 24

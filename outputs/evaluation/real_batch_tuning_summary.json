@@ -1,18 +1,33 @@
 {
   "config_path": "config\\real_batch_large.yaml",
-  "candidate_count": 8,
+  "candidate_count": 128,
   "best_candidate": {
     "spatial_window_size": 12.0,
     "temporal_sequence_length": 8.0,
     "stride": 4.0,
-    "spatial_weight": 0.5,
-    "temporal_weight": 0.5,
-    "threshold": 0.21804510056972504,
-    "nominal_false_positive_count": 24.0,
+    "spatial_weight": 0.6,
+    "temporal_weight": 0.4,
+    "spatial_latent_channels": 24.0,
+    "temporal_hidden_size": 48.0,
+    "spatial_dropout": 0.1,
+    "temporal_dropout": 0.1,
+    "spatial_learning_rate": 0.001,
+    "temporal_learning_rate": 0.001,
+    "spatial_batch_size": 16.0,
+    "temporal_batch_size": 24.0,
+    "spatial_epochs": 3.0,
+    "temporal_epochs": 4.0,
+    "threshold": 0.20167772471904755,
+    "nominal_false_positive_count": 20.0,
+    "nominal_anomaly_rate": 0.023148148148148147,
+    "anomalous_anomaly_rate": 0.17592592592592593,
     "anomalous_recall": 1.0,
-    "anomalous_precision": 0.358974358974359,
-    "anomalous_f1": 0.5283018867924528,
-    "anomalous_accuracy": 0.8842592592592593,
-    "nominal_accuracy": 0.9722222222222222
-  }
+    "anomalous_precision": 0.3684210526315789,
+    "anomalous_f1": 0.5384615384615384,
+    "anomalous_accuracy": 0.8888888888888888,
+    "nominal_accuracy": 0.9768518518518519,
+    "spatial_training_final_loss": 0.02368053545554479,
+    "temporal_training_final_loss": 0.03066386880451127
+  },
+  "best_config_path": "outputs\\evaluation\\real_batch_best_config.json"
 }

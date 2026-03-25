@@ -244,15 +244,18 @@ Current state:
 
 - `[done]` CNN and LSTM anomaly baselines exist
 - `[done]` tuning support exists for the larger real-batch path
+- `[done]` the tuning workflow now searches core model hyperparameters:
+  window size, sequence length, fusion weighting, latent channels, hidden size, dropout, learning rate, and batch size
+- `[done]` tuning now saves a reusable best-config artifact in addition to the leaderboard
 - `[active]` stronger tuning and real-data comparison are still needed
 
 Remaining work:
 
-- [ ] Tune the CNN architecture beyond the current baseline autoencoder.
-- [ ] Tune the LSTM architecture beyond the current baseline autoencoder.
-- [ ] Run structured experiments over window size, sequence length, latent size, dropout, stride, and fusion weighting.
+- [ ] Tune the CNN architecture beyond the current baseline autoencoder if the broader hyperparameter search still plateaus.
+- [ ] Tune the LSTM architecture beyond the current baseline autoencoder if the broader hyperparameter search still plateaus.
+- [ ] Run the expanded structured experiments on real datasets that matter operationally, not only the bundled large synthetic batch.
 - [ ] Compare alternative anomaly strategies only if the current baselines plateau on real evaluation data.
-- [ ] Track best-performing configurations with reproducible config files and saved metrics.
+- [ ] Track best-performing configurations per dataset family with reproducible config files and saved metrics.
 
 Exit criteria:
 
