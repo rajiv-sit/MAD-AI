@@ -1,0 +1,38 @@
+{
+  "training_samples": 120,
+  "threshold": 0.3953065872192383,
+  "calibration": {
+    "percentile": 97.5,
+    "mean_score": 0.19693950563669205,
+    "std_score": 0.07622577939613588,
+    "min_score": 0.10531146824359894,
+    "max_score": 0.41126522421836853,
+    "sample_count": 384
+  },
+  "nominal_eval": {
+    "rows": 384,
+    "threshold": 0.3953065872192383,
+    "true_positives": 0,
+    "true_negatives": 372,
+    "false_positives": 12,
+    "false_negatives": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "accuracy": 0.96875,
+    "f1_score": 0.0,
+    "mean_score": 0.19693951308727264
+  },
+  "anomalous_eval": {
+    "rows": 384,
+    "threshold": 0.3953065872192383,
+    "true_positives": 28,
+    "true_negatives": 306,
+    "false_positives": 50,
+    "false_negatives": 0,
+    "precision": 0.358974358974359,
+    "recall": 1.0,
+    "accuracy": 0.8697916666666666,
+    "f1_score": 0.5283018867924528,
+    "mean_score": 0.3162508010864258
+  }
+}

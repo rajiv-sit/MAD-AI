@@ -41,6 +41,7 @@ Completed so far:
 - anomaly-capable observed globe generation from scored CSV artifacts
 - denser global NOAA overlays generated at the current `2 deg x 2 deg` default resolution
 - observed residual model checkpoints, evaluation metrics, and calibrated thresholds saved for reuse by the observed globe workflow
+- standalone spatial and temporal training scripts now save per-model checkpoints, calibrated thresholds, score comparisons, and validation histograms
 
 Current limitations:
 
@@ -373,7 +374,7 @@ Acceptance criteria:
 
 **Goal:** Learn normal spatial magnetic patterns.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -393,6 +394,7 @@ Progress update:
 - `src/mad_ai/models/spatial/cnn.py` now provides a trainable PyTorch convolutional autoencoder with normalization and mini-batch training
 - model checkpoints are saved to `outputs/models/`
 - observed-residual training now saves reusable model checkpoints and evaluation artifacts under `outputs/models/` and `outputs/evaluation/`
+- `scripts/train_spatial.py` now saves a calibrated spatial threshold, score comparison CSV, and validation histogram
 - broader architecture tuning on real sensor data is still pending
 
 Acceptance criteria:
@@ -404,7 +406,7 @@ Acceptance criteria:
 
 **Goal:** Learn how magnetic readings evolve over time.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -424,6 +426,7 @@ Progress update:
 - `src/mad_ai/models/temporal/lstm.py` now provides a trainable PyTorch LSTM autoencoder with normalization, mini-batch training, and stronger recurrent layers
 - model checkpoints are saved to `outputs/models/`
 - observed-residual training now saves reusable temporal checkpoints and evaluation artifacts under `outputs/models/` and `outputs/evaluation/`
+- `scripts/train_temporal.py` now saves a calibrated temporal threshold, score comparison CSV, and validation histogram
 - stronger recurrent tuning on real sensor data is still pending
 
 Acceptance criteria:
@@ -562,6 +565,8 @@ Latest local verification completed on March 25, 2026:
 - the current unit suite count is 32 passing tests
 - `python scripts\train_spatial.py` ran successfully
 - `python scripts\train_temporal.py` ran successfully
+- `python scripts\train_spatial.py` saved spatial metrics, threshold, comparison CSV, and histogram artifacts
+- `python scripts\train_temporal.py` saved temporal metrics, threshold, comparison CSV, and histogram artifacts
 - `python scripts\build_processed_datasets.py` ran successfully
 - `python scripts\calibrate_thresholds.py` ran successfully
 - `python scripts\evaluate_models.py` ran successfully

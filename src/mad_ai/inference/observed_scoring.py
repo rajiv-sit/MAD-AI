@@ -71,6 +71,40 @@ def train_observed_models(
     }
 
 
+def build_spatial_training_samples(
+    features: pd.DataFrame,
+    window_size: int = 24,
+    stride: int = 6,
+) -> np.ndarray:
+    return _build_spatial_samples(features, window_size=window_size, stride=stride)
+
+
+def build_temporal_training_samples(
+    features: pd.DataFrame,
+    sequence_length: int = 12,
+    stride: int = 6,
+) -> np.ndarray:
+    return _build_temporal_samples(features, sequence_length=sequence_length, stride=stride)
+
+
+def score_spatial_rows(
+    features: pd.DataFrame,
+    model: CNNAnomalyModel,
+    window_size: int = 24,
+    stride: int = 6,
+) -> np.ndarray:
+    return _score_rows_with_spatial_windows(features, model, window_size=window_size, stride=stride)
+
+
+def score_temporal_rows(
+    features: pd.DataFrame,
+    model: LSTMAnomalyModel,
+    sequence_length: int = 12,
+    stride: int = 6,
+) -> np.ndarray:
+    return _score_rows_with_temporal_windows(features, model, sequence_length=sequence_length, stride=stride)
+
+
 def score_observed_features(
     features: pd.DataFrame,
     spatial_model: CNNAnomalyModel,
