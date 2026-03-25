@@ -1,0 +1,10 @@
+{
+  "rows": 503041,
+  "mean_tracking_error_m": 12995.564353618582,
+  "median_tracking_error_m": 9112.323285834378,
+  "max_tracking_error_m": 93562.77094007796,
+  "mean_innovation_nt": -50993.23032082878,
+  "estimated_csv": "outputs\\evaluation\\bahamas_tracking_estimates.csv",
+  "initialization_strategy": "magnetic_bearing_grid",
+  "note": "This is a first-pass constant-velocity magnetic tracker that updates from inferred magnetic range and aircraft geometry. The reference vessel track is used for evaluation only."
+}

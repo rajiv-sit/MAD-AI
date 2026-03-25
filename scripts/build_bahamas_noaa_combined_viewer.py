@@ -14,9 +14,14 @@ def main() -> None:
     output_html = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("outputs/viewer/cesium_bahamas_noaa_combined.html")
     global_grid_csv = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("data/processed/global_noaa/global_wmm_grid.csv")
     scored_csv = Path(sys.argv[3]) if len(sys.argv) > 3 else Path("data/processed/bahamas/bahamas_mad_scored.csv")
+    tracking_estimates_csv = (
+        Path(sys.argv[4]) if len(sys.argv) > 4 else Path("outputs/evaluation/bahamas_tracking_estimates_multi.csv")
+    )
 
     global_grid = pd.read_csv(global_grid_csv)
     scored = pd.read_csv(scored_csv)
+    if tracking_estimates_csv.exists():
+        scored = _merge_tracking_estimates(scored, pd.read_csv(tracking_estimates_csv))
     viewer_frame = _prepare_viewer_frame(scored, max_points=12000, altitude_bins=8)
     overlay_altitudes = sorted(global_grid["altitude_m"].dropna().astype(float).unique().tolist())
     viewer_frame["altitude_m"] = viewer_frame["altitude_m"].map(lambda value: _nearest_altitude(float(value), overlay_altitudes))
@@ -45,6 +50,28 @@ def main() -> None:
         overlay_data=global_grid,
     )
     print(f"Saved combined NOAA and Bahamas Cesium viewer to {output}")
+
+
+def _merge_tracking_estimates(scored: pd.DataFrame, estimates: pd.DataFrame) -> pd.DataFrame:
+    if "timestamp" not in scored.columns or "timestamp" not in estimates.columns:
+        return scored
+
+    estimate_columns = [
+        "timestamp",
+        "estimated_vessel_latitude_deg",
+        "estimated_vessel_longitude_deg",
+        "tracking_error_m",
+        "confidence",
+        "innovation_nt",
+    ]
+    available_columns = [column for column in estimate_columns if column in estimates.columns]
+    merged = scored.copy()
+    merged["timestamp"] = pd.to_datetime(merged["timestamp"], utc=False, format="ISO8601")
+    estimate_frame = estimates[available_columns].copy()
+    estimate_frame["timestamp"] = pd.to_datetime(estimate_frame["timestamp"], utc=False, format="ISO8601")
+    merged = merged.merge(estimate_frame, on="timestamp", how="left")
+    merged["timestamp"] = merged["timestamp"].dt.strftime("%Y-%m-%dT%H:%M:%S")
+    return merged
 
 def _nearest_altitude(value: float, overlay_altitudes: list[float]) -> float:
     if not overlay_altitudes:

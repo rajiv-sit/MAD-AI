@@ -12,3 +12,4 @@ data/processed/global_noaa_3deg/
 outputs/test_artifacts/
 data/processed/bahamas/
 outputs/viewer/magnetic_overlay_*.png
+outputs/evaluation/bahamas_tracking_estimates*.csv

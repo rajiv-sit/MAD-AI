@@ -40,6 +40,14 @@ class BahamasRealtimeDashboardHTMLBuilder(BaseVisualizer):
     def _prepare_frame(self, frame: pd.DataFrame) -> pd.DataFrame:
         working = frame.copy()
         working["timestamp"] = pd.to_datetime(working["timestamp"])
+        if "estimated_vessel_latitude_deg" not in working.columns:
+            working["estimated_vessel_latitude_deg"] = np.nan
+        if "estimated_vessel_longitude_deg" not in working.columns:
+            working["estimated_vessel_longitude_deg"] = np.nan
+        if "tracking_error_m" not in working.columns:
+            working["tracking_error_m"] = np.nan
+        if "confidence" not in working.columns:
+            working["confidence"] = np.nan
         working["abs_residual_total_nt"] = working["residual_total_nt"].abs()
         working["cumulative_distance_km"] = self._cumulative_distance_km(
             working["latitude_deg"],
@@ -107,6 +115,10 @@ class BahamasRealtimeDashboardHTMLBuilder(BaseVisualizer):
                     "longitudeDeg": float(row.longitude_deg),
                     "vesselLatitudeDeg": float(row.vessel_latitude_deg),
                     "vesselLongitudeDeg": float(row.vessel_longitude_deg),
+                    "estimatedVesselLatitudeDeg": None if pd.isna(row.estimated_vessel_latitude_deg) else float(row.estimated_vessel_latitude_deg),
+                    "estimatedVesselLongitudeDeg": None if pd.isna(row.estimated_vessel_longitude_deg) else float(row.estimated_vessel_longitude_deg),
+                    "trackingErrorM": None if pd.isna(row.tracking_error_m) else float(row.tracking_error_m),
+                    "trackingConfidence": None if pd.isna(row.confidence) else float(row.confidence),
                     "isAnomaly": bool(getattr(row, "is_anomaly", False)),
                 }
             )
@@ -220,10 +232,10 @@ class BahamasRealtimeDashboardHTMLBuilder(BaseVisualizer):
       color: white;
       background: #1f7ae0;
     }
-    .grid {
+      .grid {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      grid-template-rows: minmax(280px, 34vh) minmax(280px, 34vh) minmax(240px, 28vh);
+      grid-template-rows: minmax(280px, 34vh) minmax(280px, 34vh) minmax(260px, 30vh) minmax(240px, 28vh);
       gap: 16px;
     }
     .card {
@@ -297,7 +309,7 @@ class BahamasRealtimeDashboardHTMLBuilder(BaseVisualizer):
     }
     @media (max-width: 1200px) {
       .hero { grid-template-columns: 1fr; }
-      .grid { grid-template-columns: 1fr; grid-template-rows: repeat(4, minmax(260px, 34vh)); }
+      .grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, minmax(260px, 34vh)); }
       .map-card { grid-row: span 1; }
     }
   </style>
@@ -357,6 +369,16 @@ class BahamasRealtimeDashboardHTMLBuilder(BaseVisualizer):
           <span class="range">Range To Vessel</span>
           <span class="residual">Absolute Residual</span>
           <span class="score">Final Anomaly Score</span>
+        </div>
+      </article>
+      <article class="card">
+        <h2>Estimated Magnetic Track vs True Vessel Track</h2>
+        <p>The magnetic-only vessel estimate is plotted against the reference vessel path in a local plan view around the Bahamas run.</p>
+        <svg id="trackChart" viewBox="0 0 960 300" preserveAspectRatio="none"></svg>
+        <div class="legend">
+          <span class="range">True Vessel Track</span>
+          <span class="score">Estimated Magnetic Track</span>
+          <span class="closest">Current Time Pair</span>
         </div>
       </article>
       <article class="card" style="grid-column: 1 / -1;">
@@ -606,9 +628,64 @@ class BahamasRealtimeDashboardHTMLBuilder(BaseVisualizer):
       appendCursor(svg, cursorX, height, padding, "Current");
     }
 
+    function projectTrack(point, refLatDeg, refLonDeg) {
+      const metersPerDegLat = 111320.0;
+      const metersPerDegLon = 111320.0 * Math.cos(refLatDeg * Math.PI / 180.0);
+      return {
+        x: (point.lon - refLonDeg) * metersPerDegLon / 1000.0,
+        y: (point.lat - refLatDeg) * metersPerDegLat / 1000.0
+      };
+    }
+
+    function drawTrackChart() {
+      const { svg, width, height, padding } = baseSvg("trackChart");
+      const validPoints = points.filter((point) => point.estimatedVesselLatitudeDeg != null && point.estimatedVesselLongitudeDeg != null);
+      if (validPoints.length === 0) {
+        appendText(svg, width / 2, height / 2, "No estimated vessel track is available in this dashboard.", "middle");
+        return;
+      }
+      const refLatDeg = validPoints.reduce((sum, point) => sum + point.vesselLatitudeDeg, 0.0) / validPoints.length;
+      const refLonDeg = validPoints.reduce((sum, point) => sum + point.vesselLongitudeDeg, 0.0) / validPoints.length;
+      const trueTrack = validPoints.map((point) => projectTrack({ lat: point.vesselLatitudeDeg, lon: point.vesselLongitudeDeg }, refLatDeg, refLonDeg));
+      const estimatedTrack = validPoints.map((point) => projectTrack({ lat: point.estimatedVesselLatitudeDeg, lon: point.estimatedVesselLongitudeDeg }, refLatDeg, refLonDeg));
+      const allX = trueTrack.map((point) => point.x).concat(estimatedTrack.map((point) => point.x));
+      const allY = trueTrack.map((point) => point.y).concat(estimatedTrack.map((point) => point.y));
+      const xMin = Math.min(...allX);
+      const xMax = Math.max(...allX);
+      const yMin = Math.min(...allY);
+      const yMax = Math.max(...allY);
+      const spanX = Math.max(xMax - xMin, 1e-6);
+      const spanY = Math.max(yMax - yMin, 1e-6);
+      const toSvgX = (value) => padding.left + ((value - xMin) / spanX) * (width - padding.left - padding.right);
+      const toSvgY = (value) => padding.top + (1.0 - (value - yMin) / spanY) * (height - padding.top - padding.bottom);
+      const pathForPoints = (track) => track.map((point, index) => `${index === 0 ? "M" : "L"} ${toSvgX(point.x).toFixed(2)} ${toSvgY(point.y).toFixed(2)}`).join(" ");
+
+      appendPath(svg, pathForPoints(trueTrack), "#58a6ff", 2.2);
+      appendPath(svg, pathForPoints(estimatedTrack), "#7ee787", 2.2, "7 4");
+
+      const currentPoint = points[currentIndex];
+      if (currentPoint.estimatedVesselLatitudeDeg != null && currentPoint.estimatedVesselLongitudeDeg != null) {
+        const currentTrue = projectTrack({ lat: currentPoint.vesselLatitudeDeg, lon: currentPoint.vesselLongitudeDeg }, refLatDeg, refLonDeg);
+        const currentEstimated = projectTrack({ lat: currentPoint.estimatedVesselLatitudeDeg, lon: currentPoint.estimatedVesselLongitudeDeg }, refLatDeg, refLonDeg);
+        [["#58a6ff", currentTrue], ["#ffa657", currentEstimated]].forEach(([color, point]) => {
+          const marker = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          marker.setAttribute("cx", String(toSvgX(point.x)));
+          marker.setAttribute("cy", String(toSvgY(point.y)));
+          marker.setAttribute("r", "5");
+          marker.setAttribute("fill", color);
+          marker.setAttribute("stroke", "white");
+          marker.setAttribute("stroke-width", "1.2");
+          svg.appendChild(marker);
+        });
+      }
+      appendText(svg, padding.left, 14, `Local Easting ${formatNumber(xMin, 1)} to ${formatNumber(xMax, 1)} km`);
+      appendText(svg, width - padding.right, 14, `Local Northing ${formatNumber(yMin, 1)} to ${formatNumber(yMax, 1)} km`, "end");
+    }
+
     function drawAllCharts() {
       drawStripChart();
       drawRangeChart();
+      drawTrackChart();
       drawProfileChart();
     }
 

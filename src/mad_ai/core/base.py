@@ -57,3 +57,19 @@ class BaseViewModel(ABC):
     @abstractmethod
     def build_view_state(self, data):
         raise NotImplementedError
+
+
+class BaseMagneticForwardModel(ABC):
+    @abstractmethod
+    def predict_total_field_nt(self, sensor_state, vessel_state, baseline_field_nt: float) -> float:
+        raise NotImplementedError
+
+
+class BaseTracker(ABC):
+    @abstractmethod
+    def initialize(self, observations):
+        raise NotImplementedError
+
+    @abstractmethod
+    def step(self, observation):
+        raise NotImplementedError

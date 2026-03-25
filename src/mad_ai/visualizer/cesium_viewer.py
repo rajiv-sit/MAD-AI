@@ -85,6 +85,18 @@ class CesiumGlobeViewerBuilder:
                     "vesselSpeedMps": float(getattr(row, "vessel_speed_mps", 0.0)) if hasattr(row, "vessel_speed_mps") else None,
                     "vesselSpeedKnots": float(getattr(row, "vessel_speed_knots", 0.0)) if hasattr(row, "vessel_speed_knots") else None,
                     "rangeToVesselM": float(getattr(row, "range_to_vessel_m", 0.0)) if hasattr(row, "range_to_vessel_m") else None,
+                    "estimatedVesselLat": float(getattr(row, "estimated_vessel_latitude_deg", 0.0))
+                    if hasattr(row, "estimated_vessel_latitude_deg") and pd.notna(getattr(row, "estimated_vessel_latitude_deg"))
+                    else None,
+                    "estimatedVesselLon": float(getattr(row, "estimated_vessel_longitude_deg", 0.0))
+                    if hasattr(row, "estimated_vessel_longitude_deg") and pd.notna(getattr(row, "estimated_vessel_longitude_deg"))
+                    else None,
+                    "trackingErrorM": float(getattr(row, "tracking_error_m", 0.0))
+                    if hasattr(row, "tracking_error_m") and pd.notna(getattr(row, "tracking_error_m"))
+                    else None,
+                    "trackingConfidence": float(getattr(row, "confidence", 0.0))
+                    if hasattr(row, "confidence") and pd.notna(getattr(row, "confidence"))
+                    else None,
                     "anomalyScore": float(getattr(row, self.anomaly_score_column, 0.0))
                     if hasattr(row, self.anomaly_score_column)
                     else 0.0,
@@ -268,6 +280,7 @@ class CesiumGlobeViewerBuilder:
       <span><span class="swatch" style="background:#4fc3f7"></span> Magnetic overlay</span>
       <span><span class="swatch" style="background:#ffd166"></span> Aircraft track</span>
       <span><span class="swatch" style="background:#ff7b72"></span> Vessel track</span>
+      <span><span class="swatch" style="background:#7ee787"></span> Estimated magnetic track</span>
       <span><span class="swatch" style="background:#ffffff"></span> Surface selection</span>
     </div>
   </div>
@@ -508,17 +521,22 @@ class CesiumGlobeViewerBuilder:
           <p><b>Aircraft Heading:</b> ${{point.aircraftHeadingDeg == null ? "n/a" : Number(point.aircraftHeadingDeg).toFixed(2) + " deg"}}</p>
           <p><b>Aircraft Speed:</b> ${{point.aircraftSpeedMps == null ? "n/a" : Number(point.aircraftSpeedMps).toFixed(2) + " m/s (" + Number(point.aircraftSpeedKnots).toFixed(2) + " kn)"}}</p>
           <p><b>Vessel Position:</b> ${{point.vesselLat == null ? "n/a" : Number(point.vesselLat).toFixed(3) + ", " + Number(point.vesselLon).toFixed(3)}}</p>
+          <p><b>Estimated Vessel Position:</b> ${{point.estimatedVesselLat == null ? "n/a" : Number(point.estimatedVesselLat).toFixed(3) + ", " + Number(point.estimatedVesselLon).toFixed(3)}}</p>
           <p><b>Vessel Heading:</b> ${{point.vesselHeadingDeg == null ? "n/a" : Number(point.vesselHeadingDeg).toFixed(2) + " deg"}}</p>
           <p><b>Vessel Speed:</b> ${{point.vesselSpeedMps == null ? "n/a" : Number(point.vesselSpeedMps).toFixed(2) + " m/s (" + Number(point.vesselSpeedKnots).toFixed(2) + " kn)"}}</p>
           <p><b>Range To Vessel:</b> ${{point.rangeToVesselM == null ? "n/a" : (Number(point.rangeToVesselM) / 1000.0).toFixed(3) + " km"}}</p>
+          <p><b>Tracking Error:</b> ${{point.trackingErrorM == null ? "n/a" : (Number(point.trackingErrorM) / 1000.0).toFixed(3) + " km"}}</p>
+          <p><b>Tracking Confidence:</b> ${{point.trackingConfidence == null ? "n/a" : Number(point.trackingConfidence).toFixed(4)}}</p>
           ${{componentRows}}
       `;
     }}
     let trackEntities = [];
     let vesselTrackEntities = [];
+    let estimatedVesselTrackEntities = [];
     let trackLabelEntities = [];
     let currentAircraftEntities = [];
     let currentVesselEntities = [];
+    let currentEstimatedVesselEntities = [];
     let selectionEntity = null;
 
     function getHistoricalTrackPoints() {{
@@ -535,12 +553,16 @@ class CesiumGlobeViewerBuilder:
       trackEntities = [];
       vesselTrackEntities.forEach((entity) => viewer.entities.remove(entity));
       vesselTrackEntities = [];
+      estimatedVesselTrackEntities.forEach((entity) => viewer.entities.remove(entity));
+      estimatedVesselTrackEntities = [];
       trackLabelEntities.forEach((entity) => viewer.entities.remove(entity));
       trackLabelEntities = [];
       currentAircraftEntities.forEach((entity) => viewer.entities.remove(entity));
       currentAircraftEntities = [];
       currentVesselEntities.forEach((entity) => viewer.entities.remove(entity));
       currentVesselEntities = [];
+      currentEstimatedVesselEntities.forEach((entity) => viewer.entities.remove(entity));
+      currentEstimatedVesselEntities = [];
       if (selectionEntity) {{
         viewer.entities.remove(selectionEntity);
         selectionEntity = null;
@@ -596,6 +618,31 @@ class CesiumGlobeViewerBuilder:
               }},
               label: {{
                 text: `Vessel Now\\nRange ${{point.rangeToVesselM == null ? "n/a" : (Number(point.rangeToVesselM) / 1000.0).toFixed(2) + " km"}}`,
+                font: "13px Segoe UI",
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                pixelOffset: new Cesium.Cartesian2(0, -28),
+                showBackground: true,
+                backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.78)")
+              }}
+            }})
+          );
+        }}
+        if (point.estimatedVesselLat != null && point.estimatedVesselLon != null) {{
+          currentEstimatedVesselEntities.push(
+            viewer.entities.add({{
+              id: `current_estimated_vessel_${{index}}`,
+              position: Cesium.Cartesian3.fromDegrees(point.estimatedVesselLon, point.estimatedVesselLat, 0.0),
+              point: {{
+                pixelSize: 10,
+                color: Cesium.Color.fromCssColorString("#7ee787"),
+                outlineColor: Cesium.Color.WHITE,
+                outlineWidth: 2
+              }},
+              label: {{
+                text: `Estimated Vessel Now\\nError ${{point.trackingErrorM == null ? "n/a" : (Number(point.trackingErrorM) / 1000.0).toFixed(2) + " km"}}`,
                 font: "13px Segoe UI",
                 fillColor: Cesium.Color.WHITE,
                 outlineColor: Cesium.Color.BLACK,
@@ -676,6 +723,34 @@ class CesiumGlobeViewerBuilder:
           }});
         }});
 
+      const groupedEstimatedVesselTrack = new Map();
+      historicalPoints.forEach((point) => {{
+        if (point.estimatedVesselLat == null || point.estimatedVesselLon == null || !point.trackId) {{
+          return;
+        }}
+        const estimatedTrackId = `${{point.trackId}}_estimated`;
+        if (!groupedEstimatedVesselTrack.has(estimatedTrackId)) groupedEstimatedVesselTrack.set(estimatedTrackId, []);
+        groupedEstimatedVesselTrack.get(estimatedTrackId).push(point);
+      }});
+
+      estimatedVesselTrackEntities = Array.from(groupedEstimatedVesselTrack.entries())
+        .filter(([, points]) => points.length >= 2)
+        .map(([trackId, points], index) => {{
+          const orderedPoints = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+          const positions = orderedPoints.map((point) => Cesium.Cartesian3.fromDegrees(point.estimatedVesselLon, point.estimatedVesselLat, 0.0));
+          return viewer.entities.add({{
+            id: `estimated_vessel_track_${{index}}_${{trackId}}`,
+            name: `Estimated Magnetic Track ${{trackId}}`,
+            polyline: {{
+              positions,
+              width: 3,
+              material: Cesium.Color.fromCssColorString("#7ee787"),
+              clampToGround: false
+            }},
+            description: `<h3>Estimated Magnetic Track ${{trackId}}</h3><p><b>Visible History Samples:</b> ${{orderedPoints.length}}</p><p><b>Latest Tracking Error:</b> ${{orderedPoints[orderedPoints.length - 1].trackingErrorM == null ? "n/a" : (Number(orderedPoints[orderedPoints.length - 1].trackingErrorM) / 1000.0).toFixed(2) + " km"}}</p><p><b>Latest Confidence:</b> ${{orderedPoints[orderedPoints.length - 1].trackingConfidence == null ? "n/a" : Number(orderedPoints[orderedPoints.length - 1].trackingConfidence).toFixed(4)}}</p>`
+          }});
+        }});
+
       trackLabelEntities = [];
       Array.from(groupedByTrack.entries()).forEach(([trackId, points], index) => {{
         const orderedPoints = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
@@ -715,6 +790,30 @@ class CesiumGlobeViewerBuilder:
               text: `Vessel: ${{trackId.replace("_vessel", "")}}`,
               font: "14px Segoe UI",
               fillColor: Cesium.Color.fromCssColorString("#ff7b72"),
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              pixelOffset: new Cesium.Cartesian2(0, -18),
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.78)")
+            }}
+          }})
+        );
+      }});
+      Array.from(groupedEstimatedVesselTrack.entries()).forEach(([trackId, points], index) => {{
+        const orderedPoints = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+        const latest = orderedPoints[orderedPoints.length - 1];
+        if (!latest || latest.estimatedVesselLat == null || latest.estimatedVesselLon == null) {{
+          return;
+        }}
+        trackLabelEntities.push(
+          viewer.entities.add({{
+            id: `estimated_vessel_label_${{index}}_${{trackId}}`,
+            position: Cesium.Cartesian3.fromDegrees(latest.estimatedVesselLon, latest.estimatedVesselLat, 50.0),
+            label: {{
+              text: `Estimated: ${{trackId.replace("_estimated", "")}}`,
+              font: "14px Segoe UI",
+              fillColor: Cesium.Color.fromCssColorString("#7ee787"),
               outlineColor: Cesium.Color.BLACK,
               outlineWidth: 2,
               style: Cesium.LabelStyle.FILL_AND_OUTLINE,
@@ -783,9 +882,12 @@ class CesiumGlobeViewerBuilder:
         <div><b>Aircraft Heading:</b> ${{point.aircraftHeadingDeg == null ? "n/a" : Number(point.aircraftHeadingDeg).toFixed(2) + " deg"}}</div>
         <div><b>Aircraft Speed:</b> ${{point.aircraftSpeedMps == null ? "n/a" : Number(point.aircraftSpeedMps).toFixed(2) + " m/s (" + Number(point.aircraftSpeedKnots).toFixed(2) + " kn)"}}</div>
         <div><b>Vessel Position:</b> ${{point.vesselLat == null ? "n/a" : Number(point.vesselLat).toFixed(3) + ", " + Number(point.vesselLon).toFixed(3)}}</div>
+        <div><b>Estimated Vessel Position:</b> ${{point.estimatedVesselLat == null ? "n/a" : Number(point.estimatedVesselLat).toFixed(3) + ", " + Number(point.estimatedVesselLon).toFixed(3)}}</div>
         <div><b>Vessel Heading:</b> ${{point.vesselHeadingDeg == null ? "n/a" : Number(point.vesselHeadingDeg).toFixed(2) + " deg"}}</div>
         <div><b>Vessel Speed:</b> ${{point.vesselSpeedMps == null ? "n/a" : Number(point.vesselSpeedMps).toFixed(2) + " m/s (" + Number(point.vesselSpeedKnots).toFixed(2) + " kn)"}}</div>
         <div><b>Range To Vessel:</b> ${{point.rangeToVesselM == null ? "n/a" : (Number(point.rangeToVesselM) / 1000.0).toFixed(3) + " km"}}</div>
+        <div><b>Tracking Error:</b> ${{point.trackingErrorM == null ? "n/a" : (Number(point.trackingErrorM) / 1000.0).toFixed(3) + " km"}}</div>
+        <div><b>Tracking Confidence:</b> ${{point.trackingConfidence == null ? "n/a" : Number(point.trackingConfidence).toFixed(4)}}</div>
         <div><b>Threshold Filter:</b> ${{Number(document.getElementById("scoreThresholdSlider").value || 0.0).toFixed(3)}}</div>
         <div><b>Decision:</b> ${{Number(point.anomalyScore || 0.0) >= Number(document.getElementById("scoreThresholdSlider").value || 0.0) ? "above filter" : "below filter"}}</div>
         <div><b>Timestamp:</b> ${{point.timestamp}}</div>

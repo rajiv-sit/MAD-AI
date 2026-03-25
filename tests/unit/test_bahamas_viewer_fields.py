@@ -38,6 +38,10 @@ class BahamasViewerFieldsTestCase(unittest.TestCase):
                 encoding="utf-8",
             )
             frame = load_bahamas_mad_ascii(source)
+            frame["estimated_vessel_latitude_deg"] = frame["vessel_latitude_deg"] + 0.01
+            frame["estimated_vessel_longitude_deg"] = frame["vessel_longitude_deg"] - 0.01
+            frame["tracking_error_m"] = [1200.0, 1400.0]
+            frame["confidence"] = [0.2, 0.3]
             payload = CesiumGlobeViewerBuilder()._to_payload(frame)
             first = payload[0]
             self.assertIn("trackId", first)
@@ -45,6 +49,8 @@ class BahamasViewerFieldsTestCase(unittest.TestCase):
             self.assertIn("vesselSpeedMps", first)
             self.assertIn("vesselLat", first)
             self.assertIn("rangeToVesselM", first)
+            self.assertIn("estimatedVesselLat", first)
+            self.assertIn("trackingErrorM", first)
 
     def test_viewer_html_contains_time_sync_bridge(self) -> None:
         with workspace_temp_dir() as tmp_dir:

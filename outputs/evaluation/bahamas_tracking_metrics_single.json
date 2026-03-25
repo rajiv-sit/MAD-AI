@@ -1,0 +1,12 @@
+{
+  "rows": 503041,
+  "mean_tracking_error_m": 12995.564353618582,
+  "median_tracking_error_m": 9112.323285834378,
+  "max_tracking_error_m": 93562.77094007796,
+  "mean_innovation_nt": -53540.44133793576,
+  "mean_estimated_magnetic_moment_am2": 1908008796.0411537,
+  "estimated_csv": "outputs\\evaluation\\bahamas_tracking_estimates_single.csv",
+  "initialization_strategy": "magnetic_bearing_grid",
+  "tracker_mode": "single",
+  "note": "This is a first-pass magnetic tracker. The estimate path uses magnetic residuals and aircraft geometry; the reference vessel track is used for evaluation only."
+}

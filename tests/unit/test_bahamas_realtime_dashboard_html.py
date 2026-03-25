@@ -26,6 +26,10 @@ class BahamasRealtimeDashboardHTMLTestCase(unittest.TestCase):
             frame["residual_total_nt"] = frame["observed_total_nt"] - frame["baseline_total_nt"]
             frame["final_anomaly_score"] = [0.1, 0.2, 0.8]
             frame["is_anomaly"] = [False, False, True]
+            frame["estimated_vessel_latitude_deg"] = frame["vessel_latitude_deg"] + 0.01
+            frame["estimated_vessel_longitude_deg"] = frame["vessel_longitude_deg"] - 0.01
+            frame["tracking_error_m"] = [1200.0, 1400.0, 1600.0]
+            frame["confidence"] = [0.2, 0.3, 0.4]
 
             output = BahamasRealtimeDashboardHTMLBuilder(globe_relative_path="cesium_bahamas_noaa_combined.html").render(
                 frame,
@@ -35,6 +39,7 @@ class BahamasRealtimeDashboardHTMLTestCase(unittest.TestCase):
             content = output.read_text(encoding="utf-8")
             self.assertIn("Realtime Anomaly Strip Chart", content)
             self.assertIn("Vessel Proximity vs Anomaly", content)
+            self.assertIn("Estimated Magnetic Track vs True Vessel Track", content)
             self.assertIn("Along-Track Residual Profile", content)
             self.assertIn("cesium_bahamas_noaa_combined.html", content)
 
