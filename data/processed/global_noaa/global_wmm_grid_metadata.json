@@ -1,7 +1,7 @@
 {
-  "rows": 10804,
-  "lat_step_deg": 5.0,
-  "lon_step_deg": 5.0,
+  "rows": 65884,
+  "lat_step_deg": 2.0,
+  "lon_step_deg": 2.0,
   "altitudes_m": [
     0.0,
     1000.0,

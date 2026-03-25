@@ -41,27 +41,32 @@ def make_global_wmm_grid(
     latitudes = np.arange(-90.0, 90.0 + 1e-9, lat_step_deg)
     longitudes = np.arange(-180.0, 180.0 + 1e-9, lon_step_deg)
 
+    coordinate_rows = [(float(lat), float(lon)) for lat in latitudes for lon in longitudes]
+    query_rows = [(lat, lon, float(altitude_m), timestamp) for lat, lon in coordinate_rows]
+    if hasattr(model, "get_fields"):
+        fields = model.get_fields(query_rows)
+    else:
+        fields = [model.get_field(lat, lon, altitude_m, timestamp) for lat, lon in coordinate_rows]
+
     rows: list[dict[str, float | datetime | str]] = []
-    for lat in latitudes:
-        for lon in longitudes:
-            field = model.get_field(float(lat), float(lon), altitude_m, timestamp)
-            rows.append(
-                {
-                    "latitude_deg": float(lat),
-                    "longitude_deg": float(lon),
-                    "altitude_m": float(altitude_m),
-                    "timestamp": timestamp,
-                    "baseline_total_nt": float(field["total_intensity_nt"]),
-                    "baseline_declination_deg": float(field["declination_deg"]),
-                    "baseline_inclination_deg": float(field["inclination_deg"]),
-                    "horizontal_intensity_nt": float(field["horizontal_intensity_nt"]),
-                    "north_nt": float(field["north_nt"]),
-                    "east_nt": float(field["east_nt"]),
-                    "down_nt": float(field["down_nt"]),
-                    "source": str(field["source"]),
-                    "residual_total_nt": 0.0,
-                }
-            )
+    for (lat, lon), field in zip(coordinate_rows, fields):
+        rows.append(
+            {
+                "latitude_deg": float(lat),
+                "longitude_deg": float(lon),
+                "altitude_m": float(altitude_m),
+                "timestamp": timestamp,
+                "baseline_total_nt": float(field["total_intensity_nt"]),
+                "baseline_declination_deg": float(field["declination_deg"]),
+                "baseline_inclination_deg": float(field["inclination_deg"]),
+                "horizontal_intensity_nt": float(field["horizontal_intensity_nt"]),
+                "north_nt": float(field["north_nt"]),
+                "east_nt": float(field["east_nt"]),
+                "down_nt": float(field["down_nt"]),
+                "source": str(field["source"]),
+                "residual_total_nt": 0.0,
+            }
+        )
 
     return pd.DataFrame(rows)
 

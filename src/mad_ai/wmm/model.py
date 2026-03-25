@@ -65,6 +65,7 @@ class WMMMagneticModel(BaseMagneticModel):
         self._fallback = AnalyticMagneticModel()
         self.cache_path = Path(cache_path) if cache_path is not None else None
         self._disk_cache: dict[str, dict[str, float | str]] | None = None
+        self._cache_dirty = False
 
     def get_field(self, lat: float, lon: float, alt: float, timestamp: datetime | None = None) -> dict[str, float | str]:
         query_date = _coerce_date(timestamp)
@@ -82,6 +83,33 @@ class WMMMagneticModel(BaseMagneticModel):
         fallback = self._fallback.get_field(lat, lon, alt, timestamp)
         self._set_disk_cached(cache_key, fallback)
         return fallback
+
+    def get_fields(
+        self,
+        queries: list[tuple[float, float, float, datetime | date | None]],
+    ) -> list[dict[str, float | str]]:
+        results: list[dict[str, float | str]] = []
+        for lat, lon, alt, timestamp in queries:
+            query_date = _coerce_date(timestamp)
+            cache_key = _make_cache_key(float(lat), float(lon), float(alt), query_date)
+
+            cached = self._get_disk_cached(cache_key)
+            if cached is not None:
+                results.append(cached)
+                continue
+
+            backend = self._cached_backend_query(float(lat), float(lon), float(alt), query_date.isoformat() if query_date else "")
+            if backend is not None:
+                self._set_disk_cached(cache_key, backend, persist=False)
+                results.append(backend)
+                continue
+
+            fallback = self._fallback.get_field(lat, lon, alt, timestamp if isinstance(timestamp, datetime) else None)
+            self._set_disk_cached(cache_key, fallback, persist=False)
+            results.append(fallback)
+
+        self._flush_disk_cache()
+        return results
 
     @staticmethod
     @lru_cache(maxsize=4096)
@@ -110,13 +138,21 @@ class WMMMagneticModel(BaseMagneticModel):
         cache = self._load_disk_cache()
         return cache.get(cache_key)
 
-    def _set_disk_cached(self, cache_key: str, value: dict[str, float | str]) -> None:
+    def _set_disk_cached(self, cache_key: str, value: dict[str, float | str], persist: bool = True) -> None:
         if self.cache_path is None:
             return
         cache = self._load_disk_cache()
         cache[cache_key] = value
+        self._cache_dirty = True
+        if persist:
+            self._flush_disk_cache()
+
+    def _flush_disk_cache(self) -> None:
+        if self.cache_path is None or not self._cache_dirty:
+            return
         self.cache_path.parent.mkdir(parents=True, exist_ok=True)
-        self.cache_path.write_text(json.dumps(cache, indent=2), encoding="utf-8")
+        self.cache_path.write_text(json.dumps(self._load_disk_cache(), indent=2), encoding="utf-8")
+        self._cache_dirty = False
 
     def _load_disk_cache(self) -> dict[str, dict[str, float | str]]:
         if self._disk_cache is not None:
@@ -134,7 +170,7 @@ def _query_geomag(lat: float, lon: float, alt: float, timestamp: date | None) ->
     except ImportError:
         return None
 
-    model = geomag.GeoMag()
+    model = _get_geomag_model(geomag)
     altitude_ft = alt * 3.280839895
     result = model.GeoMag(lat, lon, h=altitude_ft, time=timestamp or date.today())
     return {
@@ -178,6 +214,11 @@ def _query_wmm2020(lat: float, lon: float, alt: float, timestamp: date | None) -
         "down_nt": down,
         "source": "wmm2020",
     }
+
+
+@lru_cache(maxsize=1)
+def _get_geomag_model(geomag_module: object):
+    return geomag_module.GeoMag()
 
 
 def _coerce_date(timestamp: datetime | date | None) -> date | None:

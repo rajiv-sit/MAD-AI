@@ -48,6 +48,24 @@ class PersistenceAndCacheTestCase(unittest.TestCase):
             field_again = reloaded.get_field(43.7, -79.4, 0.0, datetime(2026, 3, 24))
             self.assertEqual(field_again["total_intensity_nt"], field["total_intensity_nt"])
 
+    def test_wmm_model_batch_query_persists_cache_once_for_multiple_points(self) -> None:
+        with workspace_temp_dir() as tmp_dir:
+            cache_path = tmp_dir / "wmm_cache.json"
+            model = WMMMagneticModel(cache_path=cache_path)
+            queries = [
+                (43.7, -79.4, 0.0, datetime(2026, 3, 24)),
+                (44.0, -79.0, 1000.0, datetime(2026, 3, 24)),
+                (45.0, -78.5, 5000.0, datetime(2026, 3, 24)),
+            ]
+
+            fields = model.get_fields(queries)
+
+            self.assertEqual(len(fields), 3)
+            self.assertTrue(cache_path.exists())
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            self.assertEqual(len(cached), 3)
+            self.assertTrue(all("total_intensity_nt" in field for field in fields))
+
 
 if __name__ == "__main__":
     unittest.main()
