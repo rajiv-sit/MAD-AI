@@ -17,7 +17,7 @@ A working prototype that accepts geographic and time-based magnetic inputs, comp
 
 ## Current Status
 
-Implementation is well beyond the initial scaffold stage and now includes a working end-to-end prototype with an interactive globe visualizer.
+Implementation is complete at the prototype milestone level and includes a working end-to-end system with an interactive globe visualizer.
 
 Completed so far:
 
@@ -577,7 +577,7 @@ Latest local verification completed on March 25, 2026:
 
 - `python -m unittest discover -s tests\unit -p 'test_*.py' -v` passed
 - unit-test coverage for `src/mad_ai` measured at 85%
-- the current unit suite count is 32 passing tests
+- the current unit suite count is 44 passing tests
 - `python scripts\train_spatial.py` ran successfully
 - `python scripts\train_temporal.py` ran successfully
 - `python scripts\train_spatial.py` saved spatial metrics, threshold, comparison CSV, and histogram artifacts

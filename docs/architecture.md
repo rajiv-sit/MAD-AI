@@ -2,461 +2,329 @@
 
 ## Goal
 
-Define a Python-only architecture for magnetic anomaly detection that is modular, testable, object-oriented, and scalable enough for both offline training and online anomaly inference.
+Define a Python-only architecture for magnetic anomaly detection that is modular, testable, and usable for both offline model development and interactive anomaly review.
 
-## Project Structure
+## Current Repo Structure
 
 ```text
 MAD-AI/
-├── .venv/                          # Local virtual environment (optional, not committed)
-├── config/                         # YAML/JSON configs for data, training, inference, thresholds
-│   ├── default.yaml
-│   ├── training.yaml
-│   └── inference.yaml
-├── data/
-│   ├── raw/                        # Raw sensor files and source datasets
-│   ├── interim/                    # Cleaned and aligned intermediate data
-│   ├── processed/                  # Model-ready tensors, grids, sequences
-│   └── cache/                      # Cached WMM query results and reusable artifacts
-├── docs/
-│   ├── architecture.md             # This document
-│   └── milestone.md                # Project milestone and delivery plan
-├── notebooks/                      # Research notebooks and validation experiments
-├── outputs/
-│   ├── figures/                    # Heatmaps, plots, anomaly overlays
-│   ├── reports/                    # Evaluation summaries and anomaly reports
-│   └── logs/                       # Training and inference logs
-├── scripts/                        # Entry-point scripts for training, visualization, inference
-│   ├── train_spatial.py
-│   ├── train_temporal.py
-│   ├── run_inference.py
-│   ├── generate_heatmaps.py
-│   └── launch_visualizer.py
-├── src/
-│   └── mad_ai/
-│       ├── __init__.py
-│       ├── core/                   # Base classes, shared interfaces, config loading
-│       ├── wmm/                    # WMM access and baseline magnetic modeling
-│       ├── ingest/                 # Sensor readers and normalization
-│       ├── features/               # Residual features and preprocessing
-│       ├── datasets/               # Spatial grids and temporal sequences
-│       ├── models/
-│       │   ├── spatial/            # CNN anomaly models
-│       │   └── temporal/           # RNN/LSTM anomaly models
-│       ├── inference/              # Scoring, thresholding, and fusion
-│       ├── viz/                    # Heatmaps, diagnostic plots, and visualizer UI
-│       ├── visualizer/             # Interactive visualizer application layer
-│       └── utils/                  # File helpers, caching, metrics, timing
-├── tests/
-│   ├── unit/                       # Unit tests for modules and class contracts
-│   ├── integration/                # Pipeline-level tests
-│   └── fixtures/                   # Small test datasets
-├── pyproject.toml                  # Python packaging, dependencies, tooling
-├── README.md
-└── mad-ai-milestone.md
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml                    # Unit-test workflow
+|-- config/
+|   |-- default.yaml
+|   |-- inference.yaml
+|   |-- training.yaml
+|   `-- real_batch.yaml              # Schema mapping and split-based real-data workflow
+|-- data/
+|   |-- raw/
+|   |   |-- noaa_wmm2025/            # Imported NOAA WMM bundle
+|   |   |-- real_batch/              # Sample folder-based real-data workflow
+|   |   `-- sample_sensor.csv
+|   |-- processed/
+|   |   |-- global_noaa/
+|   |   |-- observed_scored/
+|   |   `-- real_batch_scored/
+|   `-- cache/                       # WMM cache artifacts
+|-- docs/
+|   |-- architecture.md
+|   `-- mad-ai-milestone.md
+|-- outputs/
+|   |-- calibration/
+|   |-- evaluation/
+|   |-- figures/
+|   |-- models/
+|   `-- viewer/
+|-- scripts/
+|   |-- train_spatial.py
+|   |-- train_temporal.py
+|   |-- evaluate_fusion_models.py
+|   |-- evaluate_real_batch_models.py
+|   |-- score_real_batch_folder.py
+|   |-- build_observed_anomaly_cesium_viewer.py
+|   |-- build_real_batch_cesium_viewer.py
+|   |-- generate_global_noaa_visualizations.py
+|   |-- build_global_noaa_grid.py
+|   `-- serve_cesium_viewer.py
+|-- src/
+|   `-- mad_ai/
+|       |-- core/
+|       |-- datasets/
+|       |-- features/
+|       |-- inference/
+|       |-- ingest/
+|       |-- models/
+|       |   |-- spatial/
+|       |   `-- temporal/
+|       |-- utils/
+|       |-- visualizer/
+|       |-- viz/
+|       `-- wmm/
+|-- tests/
+|   `-- unit/
+|-- README.md
+`-- pyproject.toml
 ```
 
-## Architectural Style
-
-The project uses a layered Python architecture:
+## Architecture Layers
 
 1. Data access layer
-   Handles WMM queries and sensor ingestion.
+   Handles NOAA/WMM baseline access and sensor ingestion.
 
 2. Feature layer
-   Aligns observed readings with baseline values and computes residual features.
+   Aligns observed data with WMM baseline values and computes residual features.
 
 3. Dataset layer
-   Produces tensors for spatial and temporal models.
+   Builds spatial tensors and temporal sequences for learning and inference.
 
 4. Model layer
-   Trains and runs anomaly detection models.
+   Contains the CNN and LSTM anomaly models plus save/load contracts.
 
 5. Inference layer
-   Combines model outputs into a final anomaly decision.
+   Scores spatial and temporal behavior, calibrates thresholds, and fuses anomaly outputs.
 
 6. Visualization layer
-   Produces heatmaps, diagnostics, reports, and an interactive review surface.
+   Produces static figures and an interactive Cesium review globe.
 
-## Object-Oriented Design
+## Core Interfaces
 
-The codebase should use classes for all major subsystems, with inheritance and polymorphism where it improves extensibility and keeps orchestration code clean.
+The project keeps stable class contracts in [src/mad_ai/core/base.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/core/base.py):
 
-### Core Base Classes
+- `BaseMagneticModel`
+- `BaseDataIngestor`
+- `BaseFeatureBuilder`
+- `BaseDatasetBuilder`
+- `BaseAnomalyModel`
+- `BaseVisualizer`
+- `BaseViewModel`
 
-```python
-class BaseMagneticModel:
-    def get_field(self, lat: float, lon: float, alt: float, timestamp=None) -> dict:
-        raise NotImplementedError
-
-
-class BaseDataIngestor:
-    def load(self, source: str):
-        raise NotImplementedError
-
-
-class BaseFeatureBuilder:
-    def transform(self, data):
-        raise NotImplementedError
-
-
-class BaseDatasetBuilder:
-    def build(self, data):
-        raise NotImplementedError
-
-
-class BaseAnomalyModel:
-    def train(self, train_data, val_data=None) -> None:
-        raise NotImplementedError
-
-    def score(self, batch):
-        raise NotImplementedError
-
-    def save(self, path: str) -> None:
-        raise NotImplementedError
-
-    def load(self, path: str) -> None:
-        raise NotImplementedError
-
-
-class BaseVisualizer:
-    def render(self, data, output_path: str) -> None:
-        raise NotImplementedError
-
-
-class BaseViewModel:
-    def build_view_state(self, data):
-        raise NotImplementedError
-```
-
-### Inheritance Examples
+These are the main inheritance paths in the current repo:
 
 - `BaseMagneticModel` -> `WMMMagneticModel`
-- `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `LiveSensorIngestor`
+- `BaseDataIngestor` -> `CsvSensorIngestor`, `ParquetSensorIngestor`, `SchemaMappedSensorIngestor`, `BatchSensorIngestor`
 - `BaseFeatureBuilder` -> `ResidualFeatureBuilder`, `TemporalFeatureBuilder`
 - `BaseDatasetBuilder` -> `SpatialGridBuilder`, `TemporalSequenceBuilder`
 - `BaseAnomalyModel` -> `CNNAnomalyModel`, `LSTMAnomalyModel`
-- `BaseVisualizer` -> `HeatmapVisualizer`, `ReportVisualizer`
-- `BaseViewModel` -> `MapViewModel`, `TimelineViewModel`, `AnomalyReviewViewModel`
-
-### Polymorphism Requirement
-
-Training and inference code should operate against base interfaces where possible. That allows the pipeline to swap a temporal model, spatial model, or data source without rewriting orchestration logic.
-
-Example:
-
-```python
-def run_training(model: BaseAnomalyModel, dataset_builder: BaseDatasetBuilder, data):
-    dataset = dataset_builder.build(data)
-    model.train(dataset)
-```
+- `BaseVisualizer` -> `HeatmapVisualizer`, `ContourMapVisualizer`, `Surface3DVisualizer`, `Globe3DVisualizer`, `AnomalyReportVisualizer`
 
 ## Main Components
 
-### 1. WMM Module
+### WMM Layer
 
-Responsibility:
+Located under [src/mad_ai/wmm](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/wmm).
 
-- query WMM using `lat`, `lon`, `alt`, and optional time
-- return baseline magnetic components
-- cache repeated regional lookups when useful
+Responsibilities:
 
-Primary class:
+- query geomagnetic baseline values from WMM-backed providers
+- cache repeated lookups
+- expose total field, declination, inclination, and vector components
 
-- `WMMMagneticModel`
+Primary implementation:
 
-Expected outputs:
+- [src/mad_ai/wmm/model.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/wmm/model.py)
 
-- declination
-- inclination
-- total intensity
-- horizontal intensity
-- north/east/down components when supported
+### Ingestion Layer
 
-### 2. Ingestion Module
+Located under [src/mad_ai/ingest](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/ingest).
 
-Responsibility:
+Responsibilities:
 
-- load raw sensor readings
-- normalize coordinate systems, units, and timestamps
-- validate required columns
+- load CSV and Parquet sensor files
+- normalize timestamps
+- map non-canonical sensor schemas into the project schema
+- batch-load folders of files
+- load split-based real-data workflows
 
-Primary classes:
+Primary implementations:
 
-- `CsvSensorIngestor`
-- `ParquetSensorIngestor`
-- `LiveSensorIngestor`
+- [src/mad_ai/ingest/sensor.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/ingest/sensor.py)
 
-### 3. Feature Engineering Module
+### Feature Layer
 
-Responsibility:
+Located under [src/mad_ai/features](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/features).
 
-- align observations with WMM baseline
-- compute residual features
-- generate temporal deltas and rolling statistics
+Responsibilities:
 
-Primary classes:
+- compute WMM baseline joins
+- compute total/declination/inclination residuals
+- add temporal delta and rolling features
 
-- `ResidualFeatureBuilder`
-- `TemporalFeatureBuilder`
+Primary implementations:
 
-Key features:
+- [src/mad_ai/features/builders.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/features/builders.py)
 
-- `observed_total - wmm_total`
-- `observed_declination - wmm_declination`
-- `observed_inclination - wmm_inclination`
-- local spatial gradients
-- moving averages and sequence deltas
+### Dataset Layer
 
-### 4. Dataset Module
+Located under [src/mad_ai/datasets](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/datasets).
 
-Responsibility:
+Responsibilities:
 
-- convert tabular features into model-ready tensors
+- build spatial grids for CNN training and inference
+- build temporal windows for LSTM training and inference
 
-Primary classes:
+Primary implementations:
 
-- `SpatialGridBuilder`
-- `TemporalSequenceBuilder`
+- [src/mad_ai/datasets/builders.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/datasets/builders.py)
 
-Outputs:
+### Model Layer
 
-- CNN tensors shaped as region grids with feature channels
-- RNN/LSTM tensors shaped as fixed-length sequences
+Located under:
 
-### 5. Spatial Model Module
+- [src/mad_ai/models/spatial](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/models/spatial)
+- [src/mad_ai/models/temporal](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/models/temporal)
 
-Responsibility:
+Responsibilities:
 
-- learn normal spatial magnetic structure
-- score deviations from normal patterns
+- train on nominal residual behavior
+- produce anomaly scores
+- persist checkpoints and training metadata
 
-Primary class:
+Primary implementations:
 
-- `CNNAnomalyModel`
+- [src/mad_ai/models/spatial/cnn.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/models/spatial/cnn.py)
+- [src/mad_ai/models/temporal/lstm.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/models/temporal/lstm.py)
 
-Possible strategies:
+### Inference Layer
 
-- autoencoder reconstruction error
-- one-class embedding distance
-- prediction error against baseline targets
+Located under [src/mad_ai/inference](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/inference).
 
-### 6. Temporal Model Module
+Responsibilities:
 
-Responsibility:
+- score observed residuals
+- calibrate thresholds
+- fuse spatial and temporal outputs
+- score global NOAA grids
+- score observed CSV and real-batch folders
 
-- learn normal temporal magnetic behavior
-- score unusual sequence evolution
+Primary implementations:
 
-Primary class:
+- [src/mad_ai/inference/engine.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/inference/engine.py)
+- [src/mad_ai/inference/observed_scoring.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/inference/observed_scoring.py)
+- [src/mad_ai/inference/global_scoring.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/inference/global_scoring.py)
 
-- `LSTMAnomalyModel`
+### Visualization Layer
 
-Possible strategies:
+Static visualizations:
 
-- sequence autoencoder
-- sequence forecasting error
-- hidden-state distance thresholding
+- [src/mad_ai/viz/plots.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/viz/plots.py)
 
-### 7. Inference Module
+Interactive review:
 
-Responsibility:
+- [src/mad_ai/visualizer/cesium_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/src/mad_ai/visualizer/cesium_viewer.py)
 
-- run spatial and temporal models
-- combine scores
-- apply thresholds
-- emit final anomaly flags
+Current interactive capabilities:
 
-Primary classes:
+- OpenStreetMap earth layer
+- day/night lighting and earth rotation
+- full-earth magnetic overlays
+- component switching
+- altitude and time controls
+- click-on-surface inspection
+- comparison swipe mode
+- hotspot jumping
+- anomaly-only and score-threshold filtering
+- export of selected anomalies, review bundle JSON, and screenshots
+- baseline-only versus fused anomaly comparison in the real-batch path
 
-- `SpatialScorer`
-- `TemporalScorer`
-- `AnomalyFusionEngine`
+## Runtime Flows
 
-Output contract:
+### Global Baseline Flow
 
-```python
-{
-    "spatial_score": float,
-    "temporal_score": float,
-    "final_score": float,
-    "is_anomaly": bool
-}
-```
+1. Build the global NOAA grid.
+2. Compute global magnetic overlays.
+3. Optionally score anomaly overlays on the global grid.
+4. Review in the Cesium globe.
 
-### 8. Visualization Module
+Main scripts:
 
-Responsibility:
+- [scripts/build_global_noaa_grid.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_global_noaa_grid.py)
+- [scripts/generate_global_noaa_visualizations.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/generate_global_noaa_visualizations.py)
+- [scripts/score_global_noaa_anomalies.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/score_global_noaa_anomalies.py)
 
-- generate magnetic heatmaps
-- show anomaly overlays
-- export evaluation plots and reports
-- support interactive inspection of magnetic fields, residuals, and anomaly scores
+### Observed CSV Flow
 
-Primary classes:
+1. Load a CSV file.
+2. Compute WMM residual features.
+3. Score with the trained spatial, temporal, and fused models.
+4. Build the observed anomaly globe.
 
-- `HeatmapVisualizer`
-- `AnomalyReportVisualizer`
+Main scripts:
 
-### 9. Visualizer Application
+- [scripts/score_observed_csv_anomalies.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/score_observed_csv_anomalies.py)
+- [scripts/build_observed_anomaly_cesium_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_observed_anomaly_cesium_viewer.py)
 
-Responsibility:
+### Real Batch Flow
 
-- provide an operator-facing interface for exploring magnetic data
-- display WMM baseline maps and observed sensor maps side by side
-- visualize residual magnitude and anomaly regions
-- inspect temporal sequences and anomaly-score timelines
-- load saved model outputs and evaluation artifacts
+1. Load split folders from [config/real_batch.yaml](c:/Users/MrSit/source/repos/MAD-AI/config/real_batch.yaml).
+2. Train on nominal real-batch splits.
+3. Calibrate on nominal calibration splits.
+4. Evaluate anomalous splits.
+5. Score a target folder.
+6. Review baseline-only and fused anomaly overlays in the real-batch globe.
 
-Recommended implementation:
+Main scripts:
 
-- Python desktop application using `PySide6` and `matplotlib`
-- start simple with a local desktop tool instead of a web app
-- keep plotting logic separate from UI widgets
-
-Primary classes:
-
-- `VisualizerApp`
-- `MapPanel`
-- `TimelinePanel`
-- `AnomalyTablePanel`
-- `MapViewModel`
-- `TimelineViewModel`
-
-Key screens:
-
-- regional magnetic heatmap view
-- observed versus WMM residual map
-- anomaly-score timeline
-- anomaly event list with drill-down details
-
-Key inputs:
-
-- processed grid data
-- processed temporal sequences
-- saved inference outputs
-- cached WMM baseline values
-
-Key outputs:
-
-- interactive anomaly review
-- exported figures
-- exported anomaly summaries
+- [scripts/evaluate_real_batch_models.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/evaluate_real_batch_models.py)
+- [scripts/score_real_batch_folder.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/score_real_batch_folder.py)
+- [scripts/build_real_batch_cesium_viewer.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/build_real_batch_cesium_viewer.py)
 
 ## Data Flow
 
 ```text
-Sensor Data + Coordinates
+Observed sensor files + coordinates + timestamps
         |
         v
-Sensor Ingestor
+Ingestion layer
         |
         v
-WMM Baseline Query
+WMM baseline queries
         |
         v
-Feature Builder
+Residual and temporal feature builders
         |
-        +--------------------+
-        |                    |
-        v                    v
-Spatial Grid Builder   Temporal Sequence Builder
-        |                    |
-        v                    v
-CNN Model              LSTM/RNN Model
-        |                    |
-        +---------+----------+
+        +-------------------+
+        |                   |
+        v                   v
+Spatial grids         Temporal sequences
+        |                   |
+        v                   v
+CNN model             LSTM model
+        |                   |
+        +---------+---------+
                   |
                   v
-         Anomaly Fusion Engine
+          Fusion engine + thresholds
                   |
-        +---------+----------+
-        |                    |
-        v                    v
-  Reports and Artifacts    Visualizer App
+        +---------+---------+
+        |                   |
+        v                   v
+ Saved scored artifacts   Cesium review globe
 ```
 
-## Complexity Considerations
+## Complexity Notes
 
-Time and space complexity must be treated as design requirements, not afterthoughts.
+- WMM queries are designed to stay near `O(n)` for `n` queried points, with cache-backed reuse for repeated lookups.
+- Feature engineering is near-linear and avoids repeated joins where possible.
+- Spatial grid building is direct-placement `O(n)` in the common case.
+- Temporal window building is bounded by configured window sizes.
+- Online scoring does not retrain models and uses persisted checkpoints and calibration artifacts.
 
-### WMM Queries
+## Testing and CI
 
-- target: `O(n)` for `n` points queried
-- memory: `O(n)` for stored outputs
-- optimization: cache repeated coordinate/time queries for fixed regions
+Unit tests live in [tests/unit](c:/Users/MrSit/source/repos/MAD-AI/tests/unit).
 
-### Feature Engineering
+Current status:
 
-- target: near-linear scaling with batch/vectorized transforms
-- avoid repeated joins and repeated WMM recomputation for the same samples
-- memory usage should avoid duplicating large intermediate tables unnecessarily
-
-### Spatial Grid Construction
-
-- target: `O(n)` when point-to-grid indexing is direct
-- avoid full-grid rescans for each data point
-- keep grid resolution bounded and configurable
-
-### Temporal Sequence Construction
-
-- target: `O(n)` to `O(n * w)` depending on sliding-window size `w`
-- reuse buffers where possible
-- set an explicit maximum sequence length for online inference
-
-### Model Inference
-
-- online anomaly scoring should be bounded and predictable
-- inference should not trigger training-time preprocessing or full-dataset scans
-- keep both spatial and temporal models batchable
-
-### Storage
-
-- use compact formats such as Parquet, NumPy arrays, or framework tensor files
-- persist processed datasets instead of recomputing expensive transformations repeatedly
-- version model checkpoints with thresholds and config metadata
-
-## Recommended Entrypoints
-
-- `scripts/generate_heatmaps.py`
-  Generate WMM-based validation heatmaps for a region.
-
-- `scripts/train_spatial.py`
-  Train the CNN-based anomaly detector.
-
-- `scripts/train_temporal.py`
-  Train the LSTM/RNN-based anomaly detector.
-
-- `scripts/run_inference.py`
-  Score new observations and emit anomaly results.
-
-- `scripts/launch_visualizer.py`
-  Open the local visualizer for reviewing heatmaps, residuals, and anomaly outputs.
-
-## Testing Strategy
-
-### Unit Tests
-
-- WMM query correctness and schema validation
-- ingestion schema checks
-- feature-generation correctness
-- dataset shape validation
-- model score output contracts
-
-### Integration Tests
-
-- raw sensor input to processed features
-- processed features to tensors
-- tensors to anomaly scores
-- end-to-end scoring on a small fixture dataset
+- `44` passing unit tests
+- CI workflow at [.github/workflows/ci.yml](c:/Users/MrSit/source/repos/MAD-AI/.github/workflows/ci.yml)
 
 ## Design Rules
 
 - Python only
-- class-based architecture
-- inheritance only where shared behavior is meaningful
+- class-based design
+- inheritance where shared behavior is meaningful
 - polymorphism through stable base interfaces
-- favor composition over deep inheritance trees
+- prefer composition over deep inheritance trees
 - keep online inference lightweight
-- keep visualization responsive by loading cached artifacts rather than recomputing heavy pipelines in the UI thread
-- keep documentation in `docs/architecture.md` aligned with implementation
+- keep heavy preprocessing out of the interactive review path
+- keep this document aligned with the code

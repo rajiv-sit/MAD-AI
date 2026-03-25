@@ -21,7 +21,10 @@ The repo currently includes a working end-to-end prototype with:
   - altitude slider
   - click-on-surface magnetic inspection
   - overlay legend showing the active value range
+  - comparison swipe mode
+  - anomaly filtering and hotspot jumps
   - observed anomaly globe generation from CSV inputs
+  - real-batch globe generation from folder-based inputs
 
 ## Repo Layout
 
@@ -116,12 +119,16 @@ If you already have the local server running, you can just reopen that URL in th
 - OpenStreetMap earth layer
 - full-earth magnetic overlay for the active component
 - magnetic component switching
+- comparison swipe mode
 - altitude slider
 - time slider
 - earth rotation
 - day/night lighting
 - click-on-surface inspection of magnetic values
 - live min/mid/max legend for the active overlay
+- anomaly-only and score-threshold filtering
+- lat/lon jump and hotspot navigation
+- export of selected anomalies, review bundle JSON, and screenshots
 
 ### How To Use It
 
@@ -175,6 +182,7 @@ The observed anomaly globe supports:
 - spatial anomaly score
 - temporal anomaly score
 - final anomaly score
+- comparison swipe between baseline-style and fused views when applicable
 
 ### Real Batch Workflow
 
@@ -279,6 +287,12 @@ Current settings:
 - `python scripts\build_real_batch_cesium_viewer.py [config_path] [output_html]`
 
 ## Testing
+
+Current verification snapshot:
+
+- all project phases are functionally complete
+- `44` unit tests are passing
+- CI runs the unit suite on pushes and pull requests
 
 Run the unit test suite:
 
