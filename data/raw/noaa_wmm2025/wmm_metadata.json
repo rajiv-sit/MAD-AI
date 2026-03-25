@@ -1,0 +1,7 @@
+{
+  "model_name": "WMM-2025",
+  "epoch": 2025.0,
+  "source_zip": "data\\raw\\noaa_wmm2025.zip",
+  "coefficient_file": "data\\raw\\noaa_wmm2025\\WMM2025COF\\WMM.COF",
+  "line_count": 93
+}

@@ -1,0 +1,15 @@
+project_name: MAD-AI
+region:
+  lat_min: 43.0
+  lat_max: 45.0
+  lon_min: -81.0
+  lon_max: -78.0
+  altitude_m: 0.0
+  rows: 24
+  cols: 24
+inference:
+  spatial_weight: 0.5
+  temporal_weight: 0.5
+  anomaly_threshold: 0.35
+visualizer:
+  figure_dpi: 120

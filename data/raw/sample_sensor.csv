@@ -1,0 +1,4 @@
+latitude_deg,longitude_deg,altitude_m,timestamp,observed_total_nt,observed_declination_deg,observed_inclination_deg
+43.7,-79.4,0.0,2026-03-24T00:00:00,52000.0,-8.0,58.0
+43.8,-79.3,1.0,2026-03-24T00:05:00,52010.0,-8.1,58.1
+43.9,-79.2,2.0,2026-03-24T00:10:00,52020.0,-8.2,58.2

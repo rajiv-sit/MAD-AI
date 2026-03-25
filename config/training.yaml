@@ -1,0 +1,6 @@
+spatial:
+  epochs: 10
+  batch_size: 16
+temporal:
+  epochs: 10
+  batch_size: 16

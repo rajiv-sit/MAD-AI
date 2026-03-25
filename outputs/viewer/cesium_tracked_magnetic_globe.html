@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAD-AI Tracked Magnetic Globe</title>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Cesium.js"></script>
+  <style>
+    html, body, #cesiumContainer { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #07111f; }
+    #panel {
+      position: absolute; top: 12px; left: 12px; z-index: 10; width: 320px;
+      background: rgba(8, 16, 28, 0.84); color: #dfe9f6; padding: 14px 16px; border-radius: 12px;
+      font-family: Segoe UI, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    #panel h1 { margin: 0 0 8px 0; font-size: 18px; }
+    #panel p { margin: 0 0 6px 0; font-size: 13px; line-height: 1.4; }
+    .legend { display: flex; gap: 10px; margin-top: 10px; font-size: 12px; align-items: center; flex-wrap: wrap; }
+    .swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    select {
+      margin-top: 8px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08); color: #eef5ff;
+    }
+    input[type="range"] { width: 100%; margin-top: 8px; }
+    .time-row { margin-top: 10px; font-size: 12px; }
+    button {
+      margin-top: 8px; margin-right: 6px; padding: 6px 10px; border-radius: 8px; border: 0;
+      background: #1f7ae0; color: white; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <h1>MAD-AI Tracked Magnetic Globe</h1>
+    <p>Interactive Cesium globe adapted from the ConstellationVizFrontend approach.</p>
+    <p>Points are plotted from magnetic samples using latitude and longitude. Red points exceed |residual| >= 250.0 nT.</p>
+    <label for="componentSelect">Displayed Component</label>
+    <select id="componentSelect"></select>
+    <div class="time-row">
+      <label for="timeSlider">Time Slice</label>
+      <input id="timeSlider" type="range" min="0" max="0" value="0" step="1" />
+      <div id="timeLabel">Single timestamp</div>
+      <button id="playPauseBtn" type="button">Play</button>
+    </div>
+    <div class="time-row">
+      <label for="altitudeSelect">Altitude Layer</label>
+      <select id="altitudeSelect"></select>
+    </div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#4fc3f7"></span> Non-anomalous sample</span>
+      <span><span class="swatch" style="background:#ff6b6b"></span> Anomaly or flagged sample</span>
+      <span><span class="swatch" style="background:#ffd166"></span> Track path</span>
+      <span><span class="swatch" style="background:#ffffff"></span> Current platform position</span>
+    </div>
+  </div>
+  <div id="cesiumContainer"></div>
+  <script>
+    const sampleData = [{"lat": 35.0, "lon": -125.0, "alt": 0.0, "baseline": 45391.552357886176, "residual": 4608.447642113824, "components": {"Observed Total": 50000.0, "Baseline Total": 45391.552357886176, "Residual Total": 4608.447642113824, "Observed Declination": -11.65, "Baseline Declination": 12.485185870287967}, "timestamp": "2026-03-24 00:00:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 43.0, "lon": -113.0, "alt": 500.0, "baseline": 51745.93870932075, "residual": -1037.2992533592842, "components": {"Observed Total": 50708.639455961464, "Baseline Total": 51745.93870932075, "Residual Total": -1037.2992533592842, "Observed Declination": -9.65, "Baseline Declination": 11.26233118113691}, "timestamp": "2026-03-24 00:00:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 39.0, "lon": -119.0, "alt": 250.0, "baseline": 48701.59538009134, "residual": 1675.5922081096578, "components": {"Observed Total": 50377.187588201, "Baseline Total": 48701.59538009134, "Residual Total": 1675.5922081096578, "Observed Declination": -10.65, "Baseline Declination": 12.302245800721511}, "timestamp": "2026-03-24 00:00:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 35.63636363636363, "lon": -122.27272727272727, "alt": 109.0909090909091, "baseline": 46237.44297404741, "residual": 4357.261925153747, "components": {"Observed Total": 50594.704899201155, "Baseline Total": 46237.44297404741, "Residual Total": 4357.261925153747, "Observed Declination": -11.705561263509086, "Baseline Declination": 12.264290894829816}, "timestamp": "2026-03-24 00:10:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 43.63636363636363, "lon": -110.45454545454545, "alt": 609.0909090909091, "baseline": 52388.60785764914, "residual": -1337.6070159241863, "components": {"Observed Total": 51051.000841724956, "Baseline Total": 52388.60785764914, "Residual Total": -1337.6070159241863, "Observed Declination": -9.705561263509086, "Baseline Declination": 10.352771234475291}, "timestamp": "2026-03-24 00:10:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 39.63636363636363, "lon": -116.36363636363636, "alt": 359.0909090909091, "baseline": 49478.60156936612, "residual": 1397.358376254262, "components": {"Observed Total": 50875.95994562038, "Baseline Total": 49478.60156936612, "Residual Total": 1397.358376254262, "Observed Declination": -10.705561263509086, "Baseline Declination": 11.779920230508386}, "timestamp": "2026-03-24 00:10:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 36.27272727272727, "lon": -119.54545454545455, "alt": 218.1818181818182, "baseline": 47071.38155751709, "residual": 3929.213637372879, "components": {"Observed Total": 51000.59519488997, "Baseline Total": 47071.38155751709, "Residual Total": 3929.213637372879, "Observed Declination": -11.85460474544934, "Baseline Declination": 11.919301221743016}, "timestamp": "2026-03-24 00:20:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 44.27272727272727, "lon": -107.9090909090909, "alt": 718.1818181818182, "baseline": 52984.093235403634, "residual": -1924.4163491457584, "components": {"Observed Total": 51059.676886257876, "Baseline Total": 52984.093235403634, "Residual Total": -1924.4163491457584, "Observed Declination": -9.85460474544934, "Baseline Declination": 9.259187424903832}, "timestamp": "2026-03-24 00:20:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 40.27272727272727, "lon": -113.72727272727273, "alt": 468.1818181818182, "baseline": 50223.29910342755, "residual": 873.3221061149598, "components": {"Observed Total": 51096.62120954251, "Baseline Total": 50223.29910342755, "Residual Total": 873.3221061149598, "Observed Declination": -10.85460474544934, "Baseline Declination": 11.101707741295252}, "timestamp": "2026-03-24 00:20:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 36.90909090909091, "lon": -116.81818181818181, "alt": 327.27272727272725, "baseline": 47885.86492958577, "residual": 3202.9386564832603, "components": {"Observed Total": 51088.80358606903, "Baseline Total": 47885.86492958577, "Residual Total": 3202.9386564832603, "Observed Declination": -12.04981019339565, "Baseline Declination": 11.435219531525176}, "timestamp": "2026-03-24 00:30:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 44.90909090909091, "lon": -105.36363636363636, "alt": 827.2727272727273, "baseline": 53527.92634207565, "residual": -2796.01333535264, "components": {"Observed Total": 50731.91300672301, "Baseline Total": 53527.92634207565, "Residual Total": -2796.01333535264, "Observed Declination": -10.04981019339565, "Baseline Declination": 7.972878376299856}, "timestamp": "2026-03-24 00:30:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 40.90909090909091, "lon": -111.0909090909091, "alt": 577.2727272727273, "baseline": 50929.25419529783, "residual": 39.85879249226855, "components": {"Observed Total": 50969.1129877901, "Baseline Total": 50929.25419529783, "Residual Total": 39.85879249226855, "Observed Declination": -11.04981019339565, "Baseline Declination": 10.25275011652446}, "timestamp": "2026-03-24 00:30:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": false}, {"lat": 37.54545454545455, "lon": -114.0909090909091, "alt": 436.3636363636364, "baseline": 48673.290710246765, "residual": 2158.033821542922, "components": {"Observed Total": 50831.32453178969, "Baseline Total": 48673.290710246765, "Residual Total": 2158.033821542922, "Observed Declination": -12.22920125688085, "Baseline Declination": 10.795887071393702}, "timestamp": "2026-03-24 00:40:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 45.54545454545455, "lon": -102.81818181818181, "alt": 936.3636363636364, "baseline": 54016.190151081355, "residual": -3844.418232077587, "components": {"Observed Total": 50171.77191900377, "Baseline Total": 54016.190151081355, "Residual Total": -3844.418232077587, "Observed Declination": -10.22920125688085, "Baseline Declination": 6.490389020615672}, "timestamp": "2026-03-24 00:40:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 41.54545454545455, "lon": -108.45454545454545, "alt": 686.3636363636364, "baseline": 51590.22039739997, "residual": -1056.3021575604726, "components": {"Observed Total": 50533.9182398395, "Baseline Total": 51590.22039739997, "Residual Total": -1056.3021575604726, "Observed Declination": -11.22920125688085, "Baseline Declination": 9.219790340635484}, "timestamp": "2026-03-24 00:40:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 46.18181818181818, "lon": -100.27272727272728, "alt": 1045.4545454545455, "baseline": 54445.67041666645, "residual": -4888.575955983237, "components": {"Observed Total": 49557.09446068321, "Baseline Total": 54445.67041666645, "Residual Total": -4888.575955983237, "Observed Declination": -10.335822540765074, "Baseline Declination": 4.815479400458067}, "timestamp": "2026-03-24 00:50:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 42.18181818181818, "lon": -105.81818181818181, "alt": 795.4545454545455, "baseline": 52200.27841532243, "residual": -2271.0701920965657, "components": {"Observed Total": 49929.20822322586, "Baseline Total": 52200.27841532243, "Residual Total": -2271.0701920965657, "Observed Declination": -11.335822540765074, "Baseline Declination": 7.992929018093187}, "timestamp": "2026-03-24 00:50:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 38.18181818181818, "lon": -111.36363636363636, "alt": 545.4545454545455, "baseline": 49425.981961119935, "residual": 883.9238514056415, "components": {"Observed Total": 50309.905812525576, "Baseline Total": 49425.981961119935, "Residual Total": 883.9238514056415, "Observed Declination": -12.335822540765074, "Baseline Declination": 9.985138574101086}, "timestamp": "2026-03-24 00:50:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 42.81818181818182, "lon": -103.18181818181819, "alt": 904.5454545454545, "baseline": 52754.01822638973, "residual": -2657.0441308424997, "components": {"Observed Total": 50096.97409554723, "Baseline Total": 52754.01822638973, "Residual Total": -2657.0441308424997, "Observed Declination": -11.335822540765074, "Baseline Declination": 6.567637880484308}, "timestamp": "2026-03-24 01:00:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 46.81818181818182, "lon": -97.72727272727272, "alt": 1154.5454545454545, "baseline": 54814.00582198723, "residual": -4980.969440312489, "components": {"Observed Total": 49833.03638167474, "Baseline Total": 54814.00582198723, "Residual Total": -4980.969440312489, "Observed Declination": -10.335822540765074, "Baseline Declination": 2.9609438365900673}, "timestamp": "2026-03-24 01:00:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 38.81818181818182, "lon": -108.63636363636364, "alt": 654.5454545454545, "baseline": 50136.292707415385, "residual": 303.8014800590463, "components": {"Observed Total": 50440.09418747443, "Baseline Total": 50136.292707415385, "Residual Total": 303.8014800590463, "Observed Declination": -12.335822540765074, "Baseline Declination": 8.988427996231248}, "timestamp": "2026-03-24 01:00:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 43.45454545454545, "lon": -100.54545454545455, "alt": 1013.6363636363636, "baseline": 53246.74646848332, "residual": -4274.675390011529, "components": {"Observed Total": 48972.07107847179, "Baseline Total": 53246.74646848332, "Residual Total": -4274.675390011529, "Observed Declination": -11.22920125688085, "Baseline Declination": 4.946869549294989}, "timestamp": "2026-03-24 01:10:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 47.45454545454545, "lon": -95.18181818181819, "alt": 1263.6363636363635, "baseline": 55119.822094284966, "residual": -6219.714321755753, "components": {"Observed Total": 48900.10777252921, "Baseline Total": 55119.822094284966, "Residual Total": -6219.714321755753, "Observed Declination": -10.22920125688085, "Baseline Declination": 0.9499226794937803}, "timestamp": "2026-03-24 01:10:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 39.45454545454545, "lon": -105.9090909090909, "alt": 763.6363636363636, "baseline": 50796.79159008484, "residual": -1628.1161218745256, "components": {"Observed Total": 49168.67546821031, "Baseline Total": 50796.79159008484, "Residual Total": -1628.1161218745256, "Observed Declination": -12.22920125688085, "Baseline Declination": 7.794833088664174}, "timestamp": "2026-03-24 01:10:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 40.09090909090909, "lon": -103.18181818181819, "alt": 872.7272727272727, "baseline": 51400.50707616535, "residual": -2489.3106622343767, "components": {"Observed Total": 48911.19641393097, "Baseline Total": 51400.50707616535, "Residual Total": -2489.3106622343767, "Observed Declination": -12.04981019339565, "Baseline Declination": 6.39930248565701}, "timestamp": "2026-03-24 01:20:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 44.09090909090909, "lon": -97.9090909090909, "alt": 1122.7272727272727, "baseline": 53674.699532519335, "residual": -4751.171301536466, "components": {"Observed Total": 48923.52823098287, "Baseline Total": 53674.699532519335, "Residual Total": -4751.171301536466, "Observed Declination": -11.04981019339565, "Baseline Declination": 3.1430045037545495}, "timestamp": "2026-03-24 01:20:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 48.09090909090909, "lon": -92.63636363636364, "alt": 1372.7272727272727, "baseline": 55362.83625970709, "residual": -6296.4490855685435, "components": {"Observed Total": 49066.387174138545, "Baseline Total": 55362.83625970709, "Residual Total": -6296.4490855685435, "Observed Declination": -10.04981019339565, "Baseline Declination": -1.183712364162309}, "timestamp": "2026-03-24 01:20:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 44.72727272727273, "lon": -95.27272727272728, "alt": 1231.818181818182, "baseline": 54035.242647046805, "residual": -4818.485082875981, "components": {"Observed Total": 49216.757564170824, "Baseline Total": 54035.242647046805, "Residual Total": -4818.485082875981, "Observed Declination": -10.85460474544934, "Baseline Declination": 1.1792700781281737}, "timestamp": "2026-03-24 01:30:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 48.72727272727273, "lon": -90.0909090909091, "alt": 1481.818181818182, "baseline": 55543.91924721351, "residual": -6014.837195847627, "components": {"Observed Total": 49529.082051365884, "Baseline Total": 55543.91924721351, "Residual Total": -6014.837195847627, "Observed Declination": -9.85460474544934, "Baseline Declination": -3.396269604576741}, "timestamp": "2026-03-24 01:30:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 40.72727272727273, "lon": -100.45454545454545, "alt": 981.8181818181819, "baseline": 51941.2093480878, "residual": -2941.8045429777703, "components": {"Observed Total": 48999.40480511003, "Baseline Total": 51941.2093480878, "Residual Total": -2941.8045429777703, "Observed Declination": -11.85460474544934, "Baseline Declination": 4.804944023109791}, "timestamp": "2026-03-24 01:30:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 49.36363636363636, "lon": -87.54545454545455, "alt": 1590.909090909091, "baseline": 55665.10794444987, "residual": -5523.81789451254, "components": {"Observed Total": 50141.29004993733, "Baseline Total": 55665.10794444987, "Residual Total": -5523.81789451254, "Observed Declination": -9.705561263509086, "Baseline Declination": -5.636611691885201}, "timestamp": "2026-03-24 01:40:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 41.36363636363636, "lon": -97.72727272727273, "alt": 1090.909090909091, "baseline": 52413.70122434751, "residual": -3008.406123548666, "components": {"Observed Total": 49405.295100798845, "Baseline Total": 52413.70122434751, "Residual Total": -3008.406123548666, "Observed Declination": -11.705561263509086, "Baseline Declination": 3.0250640294964817}, "timestamp": "2026-03-24 01:40:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 45.36363636363636, "lon": -92.63636363636364, "alt": 1340.909090909091, "baseline": 54327.03664837185, "residual": -4568.375811763908, "components": {"Observed Total": 49758.660836607945, "Baseline Total": 54327.03664837185, "Residual Total": -4568.375811763908, "Observed Declination": -10.705561263509086, "Baseline Declination": -0.9097997875914576}, "timestamp": "2026-03-24 01:40:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 46.0, "lon": -90.0, "alt": 1450.0, "baseline": 54550.156431334566, "residual": -4172.968843133567, "components": {"Observed Total": 50377.187588201, "Baseline Total": 54550.156431334566, "Residual Total": -4172.968843133567, "Observed Declination": -10.65, "Baseline Declination": -3.079254594859189}, "timestamp": "2026-03-24 01:50:00", "trackId": "track_2", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 42.0, "lon": -95.0, "alt": 1200.0, "baseline": 52814.09182414879, "residual": -2814.091824148789, "components": {"Observed Total": 50000.0, "Baseline Total": 52814.09182414879, "Residual Total": -2814.091824148789, "Observed Declination": -11.65, "Baseline Declination": 1.0845732667197014}, "timestamp": "2026-03-24 01:50:00", "trackId": "track_1", "anomalyScore": 0.0, "isAnomaly": true}, {"lat": 50.0, "lon": -85.0, "alt": 1700.0, "baseline": 55729.56148561706, "residual": -5020.922029655594, "components": {"Observed Total": 50708.639455961464, "Baseline Total": 55729.56148561706, "Residual Total": -5020.922029655594, "Observed Declination": -9.65, "Baseline Declination": -7.84981901936681}, "timestamp": "2026-03-24 01:50:00", "trackId": "track_3", "anomalyScore": 0.0, "isAnomaly": true}];
+    const componentOptions = ["Observed Total", "Baseline Total", "Residual Total", "Observed Declination", "Baseline Declination"];
+    let currentComponent = "Observed Total";
+    const groupedByTime = new Map();
+    sampleData.forEach((point) => {
+      const key = point.timestamp || "Single timestamp";
+      if (!groupedByTime.has(key)) groupedByTime.set(key, []);
+      groupedByTime.get(key).push(point);
+    });
+    const timeKeys = Array.from(groupedByTime.keys()).sort((left, right) => Date.parse(left) - Date.parse(right));
+    const altitudeKeys = Array.from(new Set(sampleData.map(point => Number(point.alt).toFixed(1))));
+    let currentTimeIndex = 0;
+    let currentAltitudeKey = altitudeKeys[0] || "0.0";
+    let playTimer = null;
+    Cesium.Ion.defaultAccessToken = "";
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      animation: false,
+      timeline: false,
+      baseLayerPicker: false,
+      geocoder: false,
+      sceneMode: Cesium.SceneMode.SCENE3D
+    });
+
+    const globe = viewer.scene.globe;
+    globe.enableLighting = true;
+    globe.dynamicAtmosphereLighting = true;
+    globe.dynamicAtmosphereLightingFromSun = true;
+    globe.showGroundAtmosphere = true;
+    viewer.scene.skyAtmosphere.show = true;
+    viewer.scene.sun.show = true;
+    viewer.scene.moon.show = true;
+
+    try {
+      const layers = viewer.scene.globe.imageryLayers;
+      layers.removeAll();
+      layers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({ url: "https://a.tile.openstreetmap.org/" }));
+    } catch (err) {
+      console.warn("Imagery provider load failed", err);
+    }
+
+    function getComponentValue(point) {
+      return point.components[currentComponent] ?? point.baseline;
+    }
+
+    function colorForPoint(point) {
+      if (point.isAnomaly) return Cesium.Color.fromCssColorString("#ff6b6b");
+      const value = getComponentValue(point);
+      const activePoints = getActivePoints();
+      const scale = Math.max(1.0, ...activePoints.map(p => Math.abs(p.components[currentComponent] ?? 0)));
+      const magnitude = Math.min(1.0, Math.abs(value) / scale);
+      return Cesium.Color.fromBytes(
+        Math.round(79 + 80 * magnitude),
+        Math.round(195 - 40 * magnitude),
+        Math.round(247 - 80 * magnitude),
+        220
+      );
+    }
+
+    function isCurrentPoint(point) {
+      const activeTimestamp = timeKeys[currentTimeIndex];
+      return (point.timestamp || "Single timestamp") === activeTimestamp;
+    }
+
+    function descriptionForPoint(point) {
+      const value = getComponentValue(point);
+      const componentRows = Object.entries(point.components).map(([name, componentValue]) =>
+        `<p><b>${name}:</b> ${Number(componentValue).toFixed(2)}</p>`
+      ).join("");
+      return `
+          <h3>Magnetic Sample</h3>
+          <p><b>Latitude:</b> ${point.lat.toFixed(3)}</p>
+          <p><b>Longitude:</b> ${point.lon.toFixed(3)}</p>
+          <p><b>Altitude:</b> ${point.alt.toFixed(1)} m</p>
+          <p><b>Current Component:</b> ${currentComponent} = ${Number(value).toFixed(2)}</p>
+          <p><b>Baseline:</b> ${point.baseline.toFixed(2)} nT</p>
+          <p><b>Residual:</b> ${point.residual.toFixed(2)} nT</p>
+          <p><b>Anomaly Score:</b> ${Number(point.anomalyScore).toFixed(4)}</p>
+          <p><b>Anomaly:</b> ${point.isAnomaly}</p>
+          <p><b>Timestamp:</b> ${point.timestamp}</p>
+          <p><b>Track:</b> ${point.trackId || "Untracked"}</p>
+          ${componentRows}
+      `;
+    }
+
+    function buildPoint(point, index) {
+      const currentPoint = isCurrentPoint(point);
+      return viewer.entities.add({
+        id: `mag_${index}`,
+        position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt),
+        point: {
+          pixelSize: currentPoint ? 13 : (point.isAnomaly ? 10 : 7),
+          color: colorForPoint(point),
+          outlineColor: currentPoint ? Cesium.Color.WHITE : Cesium.Color.BLACK,
+          outlineWidth: currentPoint ? 2 : 1
+        },
+        label: point.trackId ? {
+          text: currentPoint ? point.trackId : "",
+          font: "13px Segoe UI",
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 2,
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          pixelOffset: new Cesium.Cartesian2(0, -20),
+          showBackground: true,
+          backgroundColor: Cesium.Color.fromCssColorString("rgba(8, 16, 28, 0.78)")
+        } : undefined,
+        description: descriptionForPoint(point)
+      });
+    }
+
+    let pointEntities = [];
+    let trackEntities = [];
+
+    function getActivePoints() {
+      const activeTimePoints = groupedByTime.get(timeKeys[currentTimeIndex]) || [];
+      return activeTimePoints.filter(point => Number(point.alt).toFixed(1) === currentAltitudeKey);
+    }
+
+    function getHistoricalTrackPoints() {
+      const visibleTimeKeys = new Set(timeKeys.slice(0, currentTimeIndex + 1));
+      return sampleData.filter((point) =>
+        point.trackId &&
+        visibleTimeKeys.has(point.timestamp || "Single timestamp") &&
+        Number(point.alt).toFixed(1) === currentAltitudeKey
+      );
+    }
+
+    function clearPoints() {
+      pointEntities.forEach(entity => viewer.entities.remove(entity));
+      pointEntities = [];
+      trackEntities.forEach(entity => viewer.entities.remove(entity));
+      trackEntities = [];
+    }
+
+    function parseTimeValue(point) {
+      const timestamp = point.timestamp || "";
+      const parsed = Date.parse(timestamp);
+      return Number.isNaN(parsed) ? 0 : parsed;
+    }
+
+    function buildTracks() {
+      const historicalPoints = getHistoricalTrackPoints();
+      const groupedByTrack = new Map();
+      historicalPoints.forEach((point) => {
+        if (!point.trackId) return;
+        if (!groupedByTrack.has(point.trackId)) groupedByTrack.set(point.trackId, []);
+        groupedByTrack.get(point.trackId).push(point);
+      });
+
+      trackEntities = Array.from(groupedByTrack.entries())
+        .filter(([, points]) => points.length >= 2)
+        .map(([trackId, points], index) => {
+          const orderedPoints = points
+            .slice()
+            .sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+          const positions = orderedPoints.map((point) =>
+            Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt)
+          );
+          return viewer.entities.add({
+            id: `track_${index}_${trackId}`,
+            name: `Track ${trackId}`,
+            polyline: {
+              positions,
+              width: 3,
+              material: Cesium.Color.fromCssColorString("#ffd166"),
+              clampToGround: false
+            },
+            description: `<h3>Track ${trackId}</h3><p><b>Visible History Samples:</b> ${orderedPoints.length}</p>`
+          });
+        });
+    }
+
+    function refreshPoints() {
+      clearPoints();
+      const activePoints = getActivePoints();
+      pointEntities = activePoints.map((point, index) => buildPoint(point, index));
+      buildTracks();
+      document.getElementById("timeLabel").textContent = timeKeys[currentTimeIndex];
+    }
+
+    const componentSelect = document.getElementById("componentSelect");
+    componentOptions.forEach((label) => {
+      const option = document.createElement("option");
+      option.value = label;
+      option.textContent = label;
+      option.selected = label === currentComponent;
+      componentSelect.appendChild(option);
+    });
+    componentSelect.addEventListener("change", (event) => {
+      currentComponent = event.target.value;
+      refreshPoints();
+    });
+
+    const timeSlider = document.getElementById("timeSlider");
+    timeSlider.max = String(Math.max(0, timeKeys.length - 1));
+    timeSlider.value = "0";
+    timeSlider.addEventListener("input", (event) => {
+      currentTimeIndex = Number(event.target.value);
+      refreshPoints();
+    });
+
+    const altitudeSelect = document.getElementById("altitudeSelect");
+    altitudeKeys.forEach((altitudeLabel) => {
+      const option = document.createElement("option");
+      option.value = altitudeLabel;
+      option.textContent = `${altitudeLabel} m`;
+      option.selected = altitudeLabel === currentAltitudeKey;
+      altitudeSelect.appendChild(option);
+    });
+    altitudeSelect.addEventListener("change", (event) => {
+      currentAltitudeKey = event.target.value;
+      refreshPoints();
+    });
+
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    playPauseBtn.addEventListener("click", () => {
+      if (playTimer) {
+        clearInterval(playTimer);
+        playTimer = null;
+        playPauseBtn.textContent = "Play";
+        return;
+      }
+      playTimer = setInterval(() => {
+        currentTimeIndex = (currentTimeIndex + 1) % timeKeys.length;
+        timeSlider.value = String(currentTimeIndex);
+        refreshPoints();
+      }, 900);
+      playPauseBtn.textContent = "Pause";
+    });
+
+    refreshPoints();
+
+    if (sampleData.length > 0) {
+      viewer.flyTo(viewer.entities, {
+        duration: 1.8
+      });
+    }
+  </script>
+</body>
+</html>

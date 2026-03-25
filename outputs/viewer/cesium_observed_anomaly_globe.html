@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAD-AI Observed Anomaly Globe</title>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Cesium.js"></script>
+  <style>
+    html, body, #cesiumContainer { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #07111f; }
+    #panel {
+      position: absolute; top: 12px; left: 12px; z-index: 10; width: 320px;
+      background: rgba(8, 16, 28, 0.84); color: #dfe9f6; padding: 14px 16px; border-radius: 12px;
+      font-family: Segoe UI, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    #panel h1 { margin: 0 0 8px 0; font-size: 18px; }
+    #panel p { margin: 0 0 6px 0; font-size: 13px; line-height: 1.4; }
+    .legend { display: flex; gap: 10px; margin-top: 10px; font-size: 12px; align-items: center; flex-wrap: wrap; }
+    .swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    select {
+      margin-top: 8px; width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08); color: #eef5ff;
+    }
+    input[type="range"] { width: 100%; margin-top: 8px; }
+    .time-row { margin-top: 10px; font-size: 12px; }
+    button {
+      margin-top: 8px; margin-right: 6px; padding: 6px 10px; border-radius: 8px; border: 0;
+      background: #1f7ae0; color: white; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <h1>MAD-AI Observed Anomaly Globe</h1>
+    <p>Interactive Cesium globe adapted from the ConstellationVizFrontend approach.</p>
+    <p>Points are plotted from magnetic samples using latitude and longitude. Red points exceed |residual| >= 250.0 nT.</p>
+    <label for="componentSelect">Displayed Component</label>
+    <select id="componentSelect"></select>
+    <div class="time-row">
+      <label for="timeSlider">Time Slice</label>
+      <input id="timeSlider" type="range" min="0" max="0" value="0" step="1" />
+      <div id="timeLabel">Single timestamp</div>
+      <button id="playPauseBtn" type="button">Play</button>
+    </div>
+    <div class="time-row">
+      <label for="altitudeSelect">Altitude Layer</label>
+      <select id="altitudeSelect"></select>
+    </div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#4fc3f7"></span> Non-anomalous sample</span>
+      <span><span class="swatch" style="background:#ff6b6b"></span> Anomaly or flagged sample</span>
+    </div>
+  </div>
+  <div id="cesiumContainer"></div>
+  <script>
+    const sampleData = [{"lat": 43.7, "lon": -79.4, "alt": 0.0, "baseline": 52921.45023109307, "residual": -921.4502310930693, "components": {"Observed Total": 52000.0, "Baseline Total": 52921.45023109307, "Residual Total": -921.4502310930693, "Temporal Anomaly Score": 0.0, "Final Anomaly Score": 0.0, "Anomaly Score": 0.0}, "timestamp": "2026-03-24 00:00:00", "anomalyScore": 0.0, "isAnomaly": false}, {"lat": 43.8, "lon": -79.3, "alt": 1.0, "baseline": 52955.17012231841, "residual": -945.1701223184136, "components": {"Observed Total": 52010.0, "Baseline Total": 52955.17012231841, "Residual Total": -945.1701223184136, "Temporal Anomaly Score": 0.0, "Final Anomaly Score": 0.0, "Anomaly Score": 0.0}, "timestamp": "2026-03-24 00:05:00", "anomalyScore": 0.0, "isAnomaly": false}, {"lat": 43.9, "lon": -79.2, "alt": 2.0, "baseline": 52988.660086553835, "residual": -968.6600865538348, "components": {"Observed Total": 52020.0, "Baseline Total": 52988.660086553835, "Residual Total": -968.6600865538348, "Temporal Anomaly Score": 120.09888458251953, "Final Anomaly Score": 160.25756454467773, "Anomaly Score": 160.25756454467773}, "timestamp": "2026-03-24 00:10:00", "anomalyScore": 160.25756454467773, "isAnomaly": true}];
+    const componentOptions = ["Observed Total", "Baseline Total", "Residual Total", "Temporal Anomaly Score", "Final Anomaly Score"];
+    let currentComponent = "Final Anomaly Score";
+    const groupedByTime = new Map();
+    sampleData.forEach((point) => {
+      const key = point.timestamp || "Single timestamp";
+      if (!groupedByTime.has(key)) groupedByTime.set(key, []);
+      groupedByTime.get(key).push(point);
+    });
+    const timeKeys = Array.from(groupedByTime.keys());
+    const altitudeKeys = Array.from(new Set(sampleData.map(point => Number(point.alt).toFixed(1))));
+    let currentTimeIndex = 0;
+    let currentAltitudeKey = altitudeKeys[0] || "0.0";
+    let playTimer = null;
+    Cesium.Ion.defaultAccessToken = "";
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      animation: false,
+      timeline: false,
+      baseLayerPicker: false,
+      geocoder: false,
+      sceneMode: Cesium.SceneMode.SCENE3D
+    });
+
+    const globe = viewer.scene.globe;
+    globe.enableLighting = true;
+    globe.dynamicAtmosphereLighting = true;
+    globe.dynamicAtmosphereLightingFromSun = true;
+    globe.showGroundAtmosphere = true;
+    viewer.scene.skyAtmosphere.show = true;
+    viewer.scene.sun.show = true;
+    viewer.scene.moon.show = true;
+
+    try {
+      const layers = viewer.scene.globe.imageryLayers;
+      layers.removeAll();
+      layers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({ url: "https://a.tile.openstreetmap.org/" }));
+    } catch (err) {
+      console.warn("Imagery provider load failed", err);
+    }
+
+    function getComponentValue(point) {
+      return point.components[currentComponent] ?? point.baseline;
+    }
+
+    function colorForPoint(point) {
+      if (point.isAnomaly) return Cesium.Color.fromCssColorString("#ff6b6b");
+      const value = getComponentValue(point);
+      const activePoints = getActivePoints();
+      const scale = Math.max(1.0, ...activePoints.map(p => Math.abs(p.components[currentComponent] ?? 0)));
+      const magnitude = Math.min(1.0, Math.abs(value) / scale);
+      return Cesium.Color.fromBytes(
+        Math.round(79 + 80 * magnitude),
+        Math.round(195 - 40 * magnitude),
+        Math.round(247 - 80 * magnitude),
+        220
+      );
+    }
+
+    function descriptionForPoint(point) {
+      const value = getComponentValue(point);
+      const componentRows = Object.entries(point.components).map(([name, componentValue]) =>
+        `<p><b>${name}:</b> ${Number(componentValue).toFixed(2)}</p>`
+      ).join("");
+      return `
+          <h3>Magnetic Sample</h3>
+          <p><b>Latitude:</b> ${point.lat.toFixed(3)}</p>
+          <p><b>Longitude:</b> ${point.lon.toFixed(3)}</p>
+          <p><b>Altitude:</b> ${point.alt.toFixed(1)} m</p>
+          <p><b>Current Component:</b> ${currentComponent} = ${Number(value).toFixed(2)}</p>
+          <p><b>Baseline:</b> ${point.baseline.toFixed(2)} nT</p>
+          <p><b>Residual:</b> ${point.residual.toFixed(2)} nT</p>
+          <p><b>Anomaly Score:</b> ${Number(point.anomalyScore).toFixed(4)}</p>
+          <p><b>Anomaly:</b> ${point.isAnomaly}</p>
+          <p><b>Timestamp:</b> ${point.timestamp}</p>
+          ${componentRows}
+      `;
+    }
+
+    function buildPoint(point, index) {
+      return viewer.entities.add({
+        id: `mag_${index}`,
+        position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt),
+        point: {
+          pixelSize: point.isAnomaly ? 10 : 7,
+          color: colorForPoint(point),
+          outlineColor: Cesium.Color.BLACK,
+          outlineWidth: 1
+        },
+        description: descriptionForPoint(point)
+      });
+    }
+
+    let pointEntities = [];
+
+    function getActivePoints() {
+      const activeTimePoints = groupedByTime.get(timeKeys[currentTimeIndex]) || [];
+      return activeTimePoints.filter(point => Number(point.alt).toFixed(1) === currentAltitudeKey);
+    }
+
+    function clearPoints() {
+      pointEntities.forEach(entity => viewer.entities.remove(entity));
+      pointEntities = [];
+    }
+
+    function refreshPoints() {
+      clearPoints();
+      const activePoints = getActivePoints();
+      pointEntities = activePoints.map((point, index) => buildPoint(point, index));
+      document.getElementById("timeLabel").textContent = timeKeys[currentTimeIndex];
+    }
+
+    const componentSelect = document.getElementById("componentSelect");
+    componentOptions.forEach((label) => {
+      const option = document.createElement("option");
+      option.value = label;
+      option.textContent = label;
+      option.selected = label === currentComponent;
+      componentSelect.appendChild(option);
+    });
+    componentSelect.addEventListener("change", (event) => {
+      currentComponent = event.target.value;
+      refreshPoints();
+    });
+
+    const timeSlider = document.getElementById("timeSlider");
+    timeSlider.max = String(Math.max(0, timeKeys.length - 1));
+    timeSlider.value = "0";
+    timeSlider.addEventListener("input", (event) => {
+      currentTimeIndex = Number(event.target.value);
+      refreshPoints();
+    });
+
+    const altitudeSelect = document.getElementById("altitudeSelect");
+    altitudeKeys.forEach((altitudeLabel) => {
+      const option = document.createElement("option");
+      option.value = altitudeLabel;
+      option.textContent = `${altitudeLabel} m`;
+      option.selected = altitudeLabel === currentAltitudeKey;
+      altitudeSelect.appendChild(option);
+    });
+    altitudeSelect.addEventListener("change", (event) => {
+      currentAltitudeKey = event.target.value;
+      refreshPoints();
+    });
+
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    playPauseBtn.addEventListener("click", () => {
+      if (playTimer) {
+        clearInterval(playTimer);
+        playTimer = null;
+        playPauseBtn.textContent = "Play";
+        return;
+      }
+      playTimer = setInterval(() => {
+        currentTimeIndex = (currentTimeIndex + 1) % timeKeys.length;
+        timeSlider.value = String(currentTimeIndex);
+        refreshPoints();
+      }, 900);
+      playPauseBtn.textContent = "Pause";
+    });
+
+    refreshPoints();
+
+    if (sampleData.length > 0) {
+      viewer.flyTo(viewer.entities, {
+        duration: 1.8
+      });
+    }
+  </script>
+</body>
+</html>

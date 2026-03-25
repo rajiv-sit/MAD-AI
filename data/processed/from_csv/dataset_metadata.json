@@ -1,0 +1,15 @@
+{
+  "enriched_rows": 3,
+  "temporal_rows": 3,
+  "spatial_grid_shape": [
+    24,
+    24,
+    2
+  ],
+  "temporal_sequences_shape": [
+    1,
+    12,
+    2
+  ],
+  "wmm_cache_path": "data\\cache\\wmm_cache.json"
+}
