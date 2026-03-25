@@ -1,18 +1,240 @@
 # MAD-AI
 
-Python implementation scaffold for magnetic anomaly detection using a magnetic baseline model, residual feature engineering, anomaly models, and a visualizer.
+`MAD-AI` is a Python project for magnetic anomaly detection using:
 
-## Quick Start
+- a geomagnetic baseline model based on NOAA World Magnetic Model data
+- residual feature engineering between observed and baseline magnetic values
+- spatial and temporal anomaly models
+- 2D/3D visualization, including an interactive Cesium globe
+
+The repo currently includes a working end-to-end prototype with:
+
+- NOAA/WMM-backed baseline generation
+- processed dataset builders
+- trainable reference anomaly models
+- evaluation and threshold calibration
+- a globe visualizer with:
+  - OpenStreetMap earth layer
+  - day/night lighting
+  - earth rotation
+  - full-earth magnetic overlay
+  - altitude slider
+  - click-on-surface magnetic inspection
+
+## Repo Layout
+
+```text
+MAD-AI/
+|-- config/                 # YAML config files
+|-- data/                   # raw, cache, and processed data artifacts
+|-- docs/                   # architecture and milestone docs
+|-- outputs/                # generated models, figures, calibration, evaluation, viewer assets
+|-- scripts/                # runnable project entry points
+|-- src/mad_ai/             # Python package
+`-- tests/unit/             # unit tests
+```
+
+Important docs:
+
+- [docs/architecture.md](c:/Users/MrSit/source/repos/MAD-AI/docs/architecture.md)
+- [docs/mad-ai-milestone.md](c:/Users/MrSit/source/repos/MAD-AI/docs/mad-ai-milestone.md)
+
+## Requirements
+
+- Python `3.10+`
+- Windows PowerShell commands below assume Windows, but the Python code is portable
+- internet access is useful for the Cesium/OpenStreetMap viewer layer
+
+## Installation
+
+Create a virtual environment and install the project:
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\Activate.ps1
-pip install -e .[dev]
-python scripts\generate_heatmaps.py
+pip install -e .
+```
+
+If you want the optional dependencies used by ML, WMM backends, and development tools:
+
+```powershell
+pip install -e .[ml,wmm,dev]
+```
+
+If you want the optional desktop UI dependency:
+
+```powershell
+pip install -e .[viz]
+```
+
+## Quick Start
+
+Build the sample artifacts and run the baseline inference path:
+
+```powershell
+python scripts\build_processed_datasets.py
 python scripts\run_inference.py
 ```
 
-## Project Docs
+Generate the global NOAA dataset and visualization artifacts:
 
-- `docs/architecture.md`
-- `docs/mad-ai-milestone.md`
+```powershell
+python scripts\build_global_noaa_grid.py
+python scripts\generate_global_noaa_visualizations.py
+```
+
+## Visualizer
+
+The main visualizer is the interactive Cesium globe:
+
+- [outputs/viewer/cesium_global_magnetic_globe.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_global_magnetic_globe.html)
+
+Visualizer preview:
+
+![MAD-AI Earth Visualizer](docs/EarthMag.png)
+
+### Recommended Way To Run It
+
+Do not rely on opening the HTML directly with `file://`. Serve the viewer directory over localhost:
+
+```powershell
+python scripts\serve_cesium_viewer.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8765/cesium_global_magnetic_globe.html
+```
+
+If you already have the local server running, you can just reopen that URL in the browser.
+
+### What The Visualizer Supports
+
+- OpenStreetMap earth layer
+- full-earth magnetic overlay for the active component
+- magnetic component switching
+- altitude slider
+- time slider
+- earth rotation
+- day/night lighting
+- click-on-surface inspection of magnetic values
+
+### How To Use It
+
+1. Start the local server:
+
+```powershell
+python scripts\serve_cesium_viewer.py
+```
+
+2. Generate or refresh the viewer assets if needed:
+
+```powershell
+python scripts\build_global_noaa_grid.py
+python scripts\generate_global_noaa_visualizations.py
+```
+
+3. Open:
+
+```text
+http://127.0.0.1:8765/cesium_global_magnetic_globe.html
+```
+
+4. In the viewer:
+
+- use `Displayed Component` to switch between `Total Field`, `Declination`, `Inclination`, and `Residual`
+- use the altitude slider to move between `0`, `1000`, `5000`, and `10000 m`
+- click anywhere on the earth surface to inspect the nearest magnetic sample on the active altitude/time layer
+- use `Pause Earth Spin` if you want a fixed globe view
+
+### Current Global Viewer Data
+
+The current global magnetic surface is built from:
+
+- [data/processed/global_noaa/global_wmm_grid.csv](c:/Users/MrSit/source/repos/MAD-AI/data/processed/global_noaa/global_wmm_grid.csv)
+- [data/processed/global_noaa/global_wmm_grid_metadata.json](c:/Users/MrSit/source/repos/MAD-AI/data/processed/global_noaa/global_wmm_grid_metadata.json)
+
+Current settings:
+
+- global grid resolution: `5 deg x 5 deg`
+- altitude layers: `0`, `1000`, `5000`, `10000 m`
+- timestamp: `2026-03-24T00:00:00`
+
+## Key Scripts
+
+### Data And Baseline
+
+- `python scripts\build_processed_datasets.py`
+  - builds processed artifacts from sample data
+- `python scripts\build_processed_datasets_from_csv.py <input_csv> [output_dir]`
+  - builds processed artifacts from a real CSV file
+- `python scripts\build_global_noaa_grid.py`
+  - builds the multi-altitude global NOAA/WMM dataset
+- `python scripts\import_noaa_wmm_coefficients.py`
+  - imports the official NOAA WMM coefficient bundle into `data/raw/`
+
+### Models And Inference
+
+- `python scripts\train_spatial.py`
+  - trains the spatial reference model
+- `python scripts\train_temporal.py`
+  - trains the temporal reference model
+- `python scripts\calibrate_thresholds.py`
+  - calibrates anomaly thresholds from nominal data
+- `python scripts\evaluate_models.py`
+  - computes evaluation metrics and saves evaluation artifacts
+- `python scripts\run_inference.py`
+  - runs the anomaly inference path
+
+### Visualization
+
+- `python scripts\generate_visualizations.py`
+  - general 2D/3D visual outputs
+- `python scripts\generate_noaa_wmm_visualizations.py`
+  - NOAA-labelled visual outputs
+- `python scripts\generate_global_noaa_visualizations.py`
+  - global 2D/3D/interactive NOAA outputs
+- `python scripts\serve_cesium_viewer.py`
+  - local HTTP server for the viewer assets
+- `python scripts\launch_visualizer.py`
+  - generates the broader visualizer artifact pack
+
+### Specialized Globe Variants
+
+- `python scripts\build_cesium_globe_viewer.py`
+- `python scripts\build_time_series_cesium_globe.py`
+- `python scripts\build_multi_altitude_cesium_globe.py`
+- `python scripts\build_tracked_cesium_globe.py`
+- `python scripts\build_observed_csv_cesium_viewer.py <input_csv>`
+- `python scripts\build_observed_anomaly_cesium_viewer.py <input_csv>`
+
+## Testing
+
+Run the unit test suite:
+
+```powershell
+python -m unittest discover -s tests\unit -p "test_*.py" -v
+```
+
+Run the Cesium viewer-focused tests:
+
+```powershell
+python -m unittest tests.unit.test_cesium_viewer -v
+```
+
+## Outputs
+
+Important output areas:
+
+- [outputs/models](c:/Users/MrSit/source/repos/MAD-AI/outputs/models)
+- [outputs/evaluation](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation)
+- [outputs/calibration](c:/Users/MrSit/source/repos/MAD-AI/outputs/calibration)
+- [outputs/figures](c:/Users/MrSit/source/repos/MAD-AI/outputs/figures)
+- [outputs/viewer](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer)
+
+## Notes
+
+- The global viewer is currently optimized for a `5 deg` global grid because denser full-earth builds become expensive with the current WMM query path.
+- The interactive globe is best run through `localhost`, not by double-clicking the HTML file.
+- The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.
