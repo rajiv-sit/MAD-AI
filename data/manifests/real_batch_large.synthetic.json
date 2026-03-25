@@ -1,0 +1,29 @@
+{
+  "dataset_name": "real_batch_large_synthetic",
+  "dataset_kind": "synthetic_scaling",
+  "provenance": {
+    "source_type": "generated_dataset",
+    "source_location": "data/raw/real_batch_large",
+    "time_span": "generated",
+    "platforms": [
+      "synthetic_platform_family"
+    ],
+    "altitude_range_m": [
+      0,
+      1000
+    ],
+    "label_quality": "synthetic_labels",
+    "notes": "Generated mixed-format dataset used for scaling, calibration, and tuning checks."
+  },
+  "split_definitions": {
+    "train": "Synthetic nominal runs used for model fitting.",
+    "calibration": "Synthetic nominal runs used for threshold calibration.",
+    "nominal_eval": "Synthetic held-out nominal runs used for false-positive inspection.",
+    "anomalous_eval": "Synthetic abnormal runs with injected disturbances used for evaluation."
+  },
+  "schema_mapping_ref": "config/real_batch_large.yaml",
+  "data_quality_issues": [
+    "Synthetic signals do not establish operational detection performance.",
+    "Runtime and workflow findings are more trustworthy than metric quality."
+  ]
+}

@@ -18,6 +18,7 @@ class RealBatchWorkflowTestCase(unittest.TestCase):
     def test_real_batch_config_loads_expected_splits(self) -> None:
         config = load_config("config/real_batch.yaml")
         self.assertIn("split_sources", config)
+        self.assertEqual(config["dataset_manifest"], "data/manifests/real_batch.sample.json")
         self.assertEqual(sorted(config["split_sources"].keys()), ["anomalous_eval", "calibration", "nominal_eval", "train"])
 
     def test_schema_mapped_real_batch_input_can_be_prepared(self) -> None:
@@ -38,6 +39,11 @@ class RealBatchWorkflowTestCase(unittest.TestCase):
         self.assertIn("robustness", payload)
         self.assertIn("fusion_thresholds", payload["robustness"])
         self.assertIn("baseline_thresholds", payload["robustness"])
+
+    def test_real_batch_metrics_include_dataset_manifest_metadata(self) -> None:
+        payload = json.loads(Path("outputs/evaluation/real_batch_metrics.json").read_text(encoding="utf-8"))
+        self.assertIn("dataset_manifest", payload)
+        self.assertEqual(payload["dataset_manifest"]["dataset_name"], "real_batch_sample")
 
     def test_large_real_batch_generator_writes_mixed_formats(self) -> None:
         with workspace_temp_dir() as tmp_dir:

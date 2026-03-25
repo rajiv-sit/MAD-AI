@@ -1,0 +1,29 @@
+{
+  "dataset_name": "real_batch_sample",
+  "dataset_kind": "bundled_sample",
+  "provenance": {
+    "source_type": "repository_sample",
+    "source_location": "data/raw/real_batch",
+    "time_span": "sample-bundled",
+    "platforms": [
+      "sample_platform"
+    ],
+    "altitude_range_m": [
+      0,
+      1000
+    ],
+    "label_quality": "synthetic_or_demo_level",
+    "notes": "Small bundled real-batch example used for pipeline verification rather than performance claims."
+  },
+  "split_definitions": {
+    "train": "Nominal runs used for model fitting.",
+    "calibration": "Nominal runs used for threshold calibration.",
+    "nominal_eval": "Held-out nominal runs used for false-positive inspection.",
+    "anomalous_eval": "Held-out abnormal or injected-anomaly runs used for evaluation."
+  },
+  "schema_mapping_ref": "config/real_batch.yaml",
+  "data_quality_issues": [
+    "Bundled sample only; not operationally representative.",
+    "Scale is too small for performance claims."
+  ]
+}

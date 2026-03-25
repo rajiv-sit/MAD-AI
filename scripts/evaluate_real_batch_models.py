@@ -10,6 +10,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from mad_ai.core.config import load_config
+from mad_ai.core.manifests import load_dataset_manifest
 from mad_ai.ingest import SplitBatchSensorIngestor
 from mad_ai.inference import ThresholdCalibrator
 from mad_ai.inference import prepare_observed_features, score_observed_features, train_observed_models
@@ -21,6 +22,7 @@ from mad_ai.wmm import AnalyticMagneticModel, WMMMagneticModel
 def main() -> None:
     config_path = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("config/real_batch.yaml")
     config = load_config(config_path)
+    dataset_manifest_path = config.get("dataset_manifest")
     schema_mapping = config.get("schema_mapping", {})
     split_sources = config.get("split_sources", {})
     training_config = config.get("training", {})
@@ -39,6 +41,7 @@ def main() -> None:
     temporal_weight = float(inference_config.get("temporal_weight", 0.5))
     calibration_percentile = float(inference_config.get("calibration_percentile", 97.5))
     robustness_percentiles = [float(value) for value in inference_config.get("robustness_percentiles", [90.0, 95.0, 97.5, 99.0])]
+    dataset_manifest = load_dataset_manifest(dataset_manifest_path) if dataset_manifest_path else None
 
     ingestor = SplitBatchSensorIngestor(
         schema_mapping=schema_mapping,
@@ -128,6 +131,8 @@ def main() -> None:
         },
         "magnetic_backend": str(config.get("magnetic_backend", "wmm")).lower(),
         "config_path": str(config_path),
+        "dataset_manifest_path": str(dataset_manifest_path) if dataset_manifest_path else None,
+        "dataset_manifest": dataset_manifest,
     }
     calibration_path.parent.mkdir(parents=True, exist_ok=True)
     calibration_path.write_text(json.dumps(calibration_payload, indent=2), encoding="utf-8")
@@ -155,6 +160,8 @@ def main() -> None:
                 "training_summary": training_summary,
                 "nominal_eval": nominal_summary,
                 "anomalous_eval": anomalous_summary,
+                "dataset_manifest_path": str(dataset_manifest_path) if dataset_manifest_path else None,
+                "dataset_manifest": dataset_manifest,
             },
             indent=2,
         ),

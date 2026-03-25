@@ -270,3 +270,72 @@ class AnomalyReportVisualizer(BaseVisualizer):
             )
         output.write_text("\n".join(rows), encoding="utf-8")
         return output
+
+
+class RealtimeAnomalyDashboardVisualizer(BaseVisualizer):
+    def __init__(
+        self,
+        title: str = "Bahamas Realtime Magnetic Anomaly Dashboard",
+        observed_column: str = "observed_total_nt",
+        baseline_column: str = "baseline_total_nt",
+        residual_column: str = "residual_total_nt",
+        anomaly_score_column: str = "final_anomaly_score",
+        threshold_column: str | None = None,
+        range_column: str = "range_to_vessel_m",
+    ) -> None:
+        self.title = title
+        self.observed_column = observed_column
+        self.baseline_column = baseline_column
+        self.residual_column = residual_column
+        self.anomaly_score_column = anomaly_score_column
+        self.threshold_column = threshold_column
+        self.range_column = range_column
+
+    def render(self, data, output_path: str | Path) -> Path:
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError("RealtimeAnomalyDashboardVisualizer requires a DataFrame input.")
+
+        output = Path(output_path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+
+        frame = data.sort_values("timestamp").copy()
+        time_axis = pd.to_datetime(frame["timestamp"]) if "timestamp" in frame.columns else np.arange(len(frame))
+        threshold_value = None
+        if self.threshold_column and self.threshold_column in frame.columns:
+            threshold_value = float(frame[self.threshold_column].iloc[0])
+
+        fig, axes = plt.subplots(3, 1, figsize=(14, 10), sharex=True)
+
+        axes[0].plot(time_axis, frame[self.observed_column], color="#ffd166", linewidth=1.1, label="Observed")
+        axes[0].plot(time_axis, frame[self.baseline_column], color="#4fc3f7", linewidth=1.1, label="NOAA/WMM Baseline")
+        axes[0].set_ylabel("Field (nT)")
+        axes[0].set_title(self.title)
+        axes[0].legend(loc="upper right")
+        axes[0].grid(alpha=0.25)
+
+        axes[1].plot(time_axis, frame[self.residual_column], color="#ff7b72", linewidth=1.0, label="Residual")
+        score_axis = axes[1].twinx()
+        score_axis.plot(time_axis, frame[self.anomaly_score_column], color="#7ee787", linewidth=1.0, label="Final Anomaly Score")
+        if threshold_value is not None:
+            score_axis.axhline(threshold_value, color="#d2a8ff", linestyle="--", linewidth=1.0, label="Threshold")
+        axes[1].set_ylabel("Residual (nT)")
+        score_axis.set_ylabel("Score")
+        axes[1].grid(alpha=0.25)
+        residual_lines, residual_labels = axes[1].get_legend_handles_labels()
+        score_lines, score_labels = score_axis.get_legend_handles_labels()
+        axes[1].legend(residual_lines + score_lines, residual_labels + score_labels, loc="upper right")
+
+        if self.range_column in frame.columns:
+            axes[2].plot(time_axis, frame[self.range_column], color="#58a6ff", linewidth=1.0, label="Range To Vessel")
+            axes[2].invert_yaxis()
+            axes[2].set_ylabel("Range (m)")
+            axes[2].legend(loc="upper right")
+        else:
+            axes[2].text(0.5, 0.5, "Range-to-vessel data not available", transform=axes[2].transAxes, ha="center", va="center")
+        axes[2].set_xlabel("Time")
+        axes[2].grid(alpha=0.25)
+
+        fig.tight_layout()
+        fig.savefig(output, dpi=160)
+        plt.close(fig)
+        return output

@@ -1,0 +1,133 @@
+{
+  "rows": 503041,
+  "threshold": 0.10574305802583694,
+  "spatial_scale": 1.0,
+  "temporal_scale": 1.0,
+  "spatial_mean": 0.006216422654688358,
+  "temporal_mean": 0.1239098533987999,
+  "final_mean": 0.06506313628122361,
+  "anomaly_count": 35256,
+  "calibration": {
+    "threshold": 0.10574305802583694,
+    "percentile": 97.5,
+    "mean_score": 0.02064989584297565,
+    "std_score": 0.02752876241174795,
+    "min_score": 0.004506158176809549,
+    "max_score": 0.1168636828660965,
+    "sample_count": 37728
+  },
+  "reference_strategy": {
+    "mode": "stable_window",
+    "warmup_fraction": 0.3,
+    "reference_start_row": 169776,
+    "reference_end_row": 320688,
+    "reference_rows": 150912,
+    "training_rows": 113184,
+    "calibration_rows": 37728,
+    "calibration_fraction_of_warmup": 0.25,
+    "notes": "A stability-based reference window was selected using the lowest combined residual magnitude and residual-change score."
+  },
+  "baseline_reference": {
+    "threshold": 51020.38071254943,
+    "percentile": 97.5,
+    "mean_score": 50923.172537467115,
+    "std_score": 72.98521073655476,
+    "min_score": 50787.908760980165,
+    "max_score": 51021.54691621792,
+    "sample_count": 37728
+  },
+  "baseline_threshold": 51020.38071254943,
+  "baseline_anomaly_count": 271486,
+  "fused_anomaly_count": 35256,
+  "training_summary": {
+    "spatial_sample_count": 18861,
+    "temporal_sample_count": 18863
+  },
+  "top_anomalies": [
+    {
+      "timestamp": "2008-02-19 15:34:36.593750",
+      "latitude_deg": 24.73955613,
+      "longitude_deg": -76.69823619,
+      "altitude_m": 1106.657311997688,
+      "final_anomaly_score": 1.00643489533104,
+      "residual_total_nt": -50585.45639059965
+    },
+    {
+      "timestamp": "2008-02-19 15:34:36.687500",
+      "latitude_deg": 24.73960928,
+      "longitude_deg": -76.6981309,
+      "altitude_m": 1106.662044709584,
+      "final_anomaly_score": 1.00643489533104,
+      "residual_total_nt": -50585.428306313486
+    },
+    {
+      "timestamp": "2008-02-19 15:34:36.656250",
+      "latitude_deg": 24.73959154,
+      "longitude_deg": -76.69816597,
+      "altitude_m": 1106.660642897808,
+      "final_anomaly_score": 1.00643489533104,
+      "residual_total_nt": -50585.4354685457
+    },
+    {
+      "timestamp": "2008-02-19 15:34:36.562500",
+      "latitude_deg": 24.73953846,
+      "longitude_deg": -76.69827132,
+      "altitude_m": 1106.6553874600081,
+      "final_anomaly_score": 1.00643489533104,
+      "residual_total_nt": -50585.43438138991
+    },
+    {
+      "timestamp": "2008-02-19 15:34:36.718750",
+      "latitude_deg": 24.73962706,
+      "longitude_deg": -76.69809584,
+      "altitude_m": 1106.663267439168,
+      "final_anomaly_score": 1.00643489533104,
+      "residual_total_nt": -50585.43639271765
+    },
+    {
+      "timestamp": "2008-02-19 15:34:36.625000",
+      "latitude_deg": 24.73957382,
+      "longitude_deg": -76.69820107,
+      "altitude_m": 1106.6590645428241,
+      "final_anomaly_score": 1.00643489533104,
+      "residual_total_nt": -50585.45103431535
+    },
+    {
+      "timestamp": "2008-02-19 15:34:35.031250",
+      "latitude_deg": 24.7387074,
+      "longitude_deg": -76.7000143,
+      "altitude_m": 1106.3656776081361,
+      "final_anomaly_score": 1.0064345833379775,
+      "residual_total_nt": -50585.46537328296
+    },
+    {
+      "timestamp": "2008-02-19 15:34:34.937500",
+      "latitude_deg": 24.73865875,
+      "longitude_deg": -76.70012228,
+      "altitude_m": 1106.33526636492,
+      "final_anomaly_score": 1.0064345833379775,
+      "residual_total_nt": -50585.47920504769
+    },
+    {
+      "timestamp": "2008-02-19 15:34:34.906250",
+      "latitude_deg": 24.7386426,
+      "longitude_deg": -76.70015831,
+      "altitude_m": 1106.324767595976,
+      "final_anomaly_score": 1.0064345833379775,
+      "residual_total_nt": -50585.49081594537
+    },
+    {
+      "timestamp": "2008-02-19 15:34:35.000000",
+      "latitude_deg": 24.73869115,
+      "longitude_deg": -76.70005028,
+      "altitude_m": 1106.3557248,
+      "final_anomaly_score": 1.0064345833379775,
+      "residual_total_nt": -50585.46167856773
+    }
+  ],
+  "input_asc": "inspection\\external_mad_repo\\data\\raw\\mad_data.asc",
+  "output_csv": "data\\processed\\bahamas\\bahamas_mad_scored.csv",
+  "magnetic_backend": "analytic",
+  "reference_window_mode": "stable_window",
+  "runtime_seconds": 501.97133219987154
+}

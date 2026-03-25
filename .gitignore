@@ -10,3 +10,5 @@ data/processed/real_batch_scored/
 data/processed/global_noaa_2deg/
 data/processed/global_noaa_3deg/
 outputs/test_artifacts/
+data/processed/bahamas/
+outputs/viewer/magnetic_overlay_*.png

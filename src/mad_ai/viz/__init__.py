@@ -6,6 +6,7 @@ from .plots import (
     ContourMapVisualizer,
     Globe3DVisualizer,
     HeatmapVisualizer,
+    RealtimeAnomalyDashboardVisualizer,
     Surface3DVisualizer,
 )
 
@@ -15,5 +16,6 @@ __all__ = [
     "ContourMapVisualizer",
     "Globe3DVisualizer",
     "HeatmapVisualizer",
+    "RealtimeAnomalyDashboardVisualizer",
     "Surface3DVisualizer",
 ]

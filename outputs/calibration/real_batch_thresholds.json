@@ -1,44 +1,74 @@
 {
-  "threshold": 0.1844499707221985,
-  "spatial_weight": 0.45,
-  "temporal_weight": 0.55,
-  "baseline_threshold": 1299.7755471009318,
+  "threshold": 0.5600365996360779,
+  "spatial_weight": 0.5,
+  "temporal_weight": 0.5,
+  "baseline_threshold": 873.745117726788,
   "training_summary": {
-    "spatial_sample_count": 432,
-    "temporal_sample_count": 450
+    "spatial_sample_count": 2,
+    "temporal_sample_count": 2
   },
   "calibration": {
-    "threshold": 0.1844499707221985,
+    "threshold": 0.5600365996360779,
     "percentile": 97.5,
-    "mean_score": 0.12947051482344116,
-    "std_score": 0.023612335088549954,
-    "min_score": 0.08880282938480377,
-    "max_score": 0.23238420486450195,
-    "sample_count": 864
+    "mean_score": 0.5600365996360779,
+    "std_score": 0.0,
+    "min_score": 0.5600365996360779,
+    "max_score": 0.5600365996360779,
+    "sample_count": 4
   },
   "robustness": {
     "fusion_thresholds": {
-      "90.0": 0.16312047429382803,
-      "95.0": 0.1748247713223099,
-      "97.5": 0.1844499755650759,
-      "99.0": 0.2056737642735243
+      "90.0": 0.6054057776927948,
+      "95.0": 0.6054057776927948,
+      "97.5": 0.6054057776927948,
+      "99.0": 0.6054057776927948
     },
     "baseline_thresholds": {
-      "90.0": 1209.2244433083374,
-      "95.0": 1255.796458607019,
-      "97.5": 1299.7755471009318,
-      "99.0": 1341.637201749312
+      "90.0": 872.9455842185904,
+      "95.0": 873.4786065573887,
+      "97.5": 873.745117726788,
+      "99.0": 873.9050244284275
     }
   },
   "training": {
     "spatial_window_size": 12,
-    "temporal_sequence_length": 8,
-    "stride": 4,
-    "spatial_epochs": 3,
-    "temporal_epochs": 4,
+    "temporal_sequence_length": 6,
+    "stride": 3,
+    "spatial_epochs": 8,
+    "temporal_epochs": 10,
     "spatial_batch_size": 16,
-    "temporal_batch_size": 24
+    "temporal_batch_size": 32
   },
-  "magnetic_backend": "analytic",
-  "config_path": "config\\real_batch_large.yaml"
+  "magnetic_backend": "wmm",
+  "config_path": "config\\real_batch.yaml",
+  "dataset_manifest_path": "data/manifests/real_batch.sample.json",
+  "dataset_manifest": {
+    "dataset_name": "real_batch_sample",
+    "dataset_kind": "bundled_sample",
+    "provenance": {
+      "source_type": "repository_sample",
+      "source_location": "data/raw/real_batch",
+      "time_span": "sample-bundled",
+      "platforms": [
+        "sample_platform"
+      ],
+      "altitude_range_m": [
+        0,
+        1000
+      ],
+      "label_quality": "synthetic_or_demo_level",
+      "notes": "Small bundled real-batch example used for pipeline verification rather than performance claims."
+    },
+    "split_definitions": {
+      "train": "Nominal runs used for model fitting.",
+      "calibration": "Nominal runs used for threshold calibration.",
+      "nominal_eval": "Held-out nominal runs used for false-positive inspection.",
+      "anomalous_eval": "Held-out abnormal or injected-anomaly runs used for evaluation."
+    },
+    "schema_mapping_ref": "config/real_batch.yaml",
+    "data_quality_issues": [
+      "Bundled sample only; not operationally representative.",
+      "Scale is too small for performance claims."
+    ]
+  }
 }

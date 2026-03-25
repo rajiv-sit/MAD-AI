@@ -39,11 +39,19 @@ class CesiumGlobeViewerBuilder:
         self.world_geojson_path = Path(world_geojson_path) if world_geojson_path is not None else None
 
     def build(self, data: pd.DataFrame, output_path: str | Path) -> Path:
+        return self.build_with_overlay_data(data, output_path, overlay_data=data)
+
+    def build_with_overlay_data(
+        self,
+        data: pd.DataFrame,
+        output_path: str | Path,
+        overlay_data: pd.DataFrame,
+    ) -> Path:
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         payload = self._to_payload(data)
         world_texture_filename = self._write_world_texture_asset(output_path)
-        overlay_assets = self._write_magnetic_overlay_assets(data, output_path)
+        overlay_assets = self._write_magnetic_overlay_assets(overlay_data, output_path)
         output_path.write_text(self._render_html(payload, world_texture_filename, overlay_assets), encoding="utf-8")
         return output_path
 
@@ -67,6 +75,15 @@ class CesiumGlobeViewerBuilder:
                     "components": components,
                     "timestamp": str(getattr(row, "timestamp", "")),
                     "trackId": str(getattr(row, self.track_id_column, "")),
+                    "displayMode": str(getattr(row, "display_mode", "noaa_plus_anomaly")),
+                    "aircraftHeadingDeg": float(getattr(row, "aircraft_heading_deg", 0.0)) if hasattr(row, "aircraft_heading_deg") else None,
+                    "aircraftSpeedMps": float(getattr(row, "aircraft_speed_mps", 0.0)) if hasattr(row, "aircraft_speed_mps") else None,
+                    "aircraftSpeedKnots": float(getattr(row, "aircraft_speed_knots", 0.0)) if hasattr(row, "aircraft_speed_knots") else None,
+                    "vesselLat": float(getattr(row, "vessel_latitude_deg", 0.0)) if hasattr(row, "vessel_latitude_deg") else None,
+                    "vesselLon": float(getattr(row, "vessel_longitude_deg", 0.0)) if hasattr(row, "vessel_longitude_deg") else None,
+                    "vesselHeadingDeg": float(getattr(row, "vessel_heading_deg", 0.0)) if hasattr(row, "vessel_heading_deg") else None,
+                    "vesselSpeedMps": float(getattr(row, "vessel_speed_mps", 0.0)) if hasattr(row, "vessel_speed_mps") else None,
+                    "vesselSpeedKnots": float(getattr(row, "vessel_speed_knots", 0.0)) if hasattr(row, "vessel_speed_knots") else None,
                     "anomalyScore": float(getattr(row, self.anomaly_score_column, 0.0))
                     if hasattr(row, self.anomaly_score_column)
                     else 0.0,
@@ -197,6 +214,14 @@ class CesiumGlobeViewerBuilder:
       <div id="altitudeLabel">0.0 m</div>
     </div>
     <div class="time-row">
+      <label for="viewModeSelect">View Mode</label>
+      <select id="viewModeSelect">
+        <option value="noaa_only">NOAA Only</option>
+        <option value="noaa_plus_anomaly" selected>NOAA + Anomaly</option>
+      </select>
+      <div class="subtle">NOAA/WMM baseline is always the surface overlay. The anomaly mode adds the scored flight track on top.</div>
+    </div>
+    <div class="time-row">
       <label for="scoreThresholdSlider">Score Threshold Filter</label>
       <input id="scoreThresholdSlider" type="range" min="0" max="1" value="0" step="0.001" />
       <div id="scoreThresholdLabel">0.000</div>
@@ -240,7 +265,8 @@ class CesiumGlobeViewerBuilder:
     </div>
     <div class="legend">
       <span><span class="swatch" style="background:#4fc3f7"></span> Magnetic overlay</span>
-      <span><span class="swatch" style="background:#ffd166"></span> Track path</span>
+      <span><span class="swatch" style="background:#ffd166"></span> Aircraft track</span>
+      <span><span class="swatch" style="background:#ff7b72"></span> Vessel track</span>
       <span><span class="swatch" style="background:#ffffff"></span> Surface selection</span>
     </div>
   </div>
@@ -270,6 +296,7 @@ class CesiumGlobeViewerBuilder:
     const maxAnomalyScore = anomalyScores.length > 0 ? Math.max(...anomalyScores) : 1.0;
     let currentTimeIndex = 0;
     let currentAltitudeKey = altitudeKeys[0] || "0.0";
+    let currentViewMode = "noaa_plus_anomaly";
     let playTimer = null;
     let primaryMagneticOverlayLayer = null;
     let secondaryMagneticOverlayLayer = null;
@@ -435,9 +462,10 @@ class CesiumGlobeViewerBuilder:
       const threshold = Number(document.getElementById("scoreThresholdSlider").value || 0.0);
       const anomalyOnly = document.getElementById("anomalyOnlyCheckbox").checked;
       return getActivePoints().filter((point) => {{
+        const matchesViewMode = currentViewMode !== "noaa_only" && (point.displayMode || "noaa_plus_anomaly") === currentViewMode;
         const passesThreshold = Number(point.anomalyScore || 0.0) >= threshold;
         const passesAnomaly = !anomalyOnly || Boolean(point.isAnomaly);
-        return passesThreshold && passesAnomaly;
+        return matchesViewMode && passesThreshold && passesAnomaly;
       }});
     }}
 
@@ -459,11 +487,18 @@ class CesiumGlobeViewerBuilder:
           <p><b>Anomaly Score:</b> ${{Number(point.anomalyScore).toFixed(4)}}</p>
           <p><b>Anomaly:</b> ${{point.isAnomaly}}</p>
           <p><b>Timestamp:</b> ${{point.timestamp}}</p>
-          <p><b>Track:</b> ${{point.trackId || "Untracked"}}</p>
+          <p><b>Track ID:</b> ${{point.trackId || "Untracked"}}</p>
+          <p><b>Aircraft Heading:</b> ${{point.aircraftHeadingDeg == null ? "n/a" : Number(point.aircraftHeadingDeg).toFixed(2) + " deg"}}</p>
+          <p><b>Aircraft Speed:</b> ${{point.aircraftSpeedMps == null ? "n/a" : Number(point.aircraftSpeedMps).toFixed(2) + " m/s (" + Number(point.aircraftSpeedKnots).toFixed(2) + " kn)"}}</p>
+          <p><b>Vessel Position:</b> ${{point.vesselLat == null ? "n/a" : Number(point.vesselLat).toFixed(3) + ", " + Number(point.vesselLon).toFixed(3)}}</p>
+          <p><b>Vessel Heading:</b> ${{point.vesselHeadingDeg == null ? "n/a" : Number(point.vesselHeadingDeg).toFixed(2) + " deg"}}</p>
+          <p><b>Vessel Speed:</b> ${{point.vesselSpeedMps == null ? "n/a" : Number(point.vesselSpeedMps).toFixed(2) + " m/s (" + Number(point.vesselSpeedKnots).toFixed(2) + " kn)"}}</p>
           ${{componentRows}}
       `;
     }}
     let trackEntities = [];
+    let vesselTrackEntities = [];
+    let trackLabelEntities = [];
     let selectionEntity = null;
 
     function getHistoricalTrackPoints() {{
@@ -478,6 +513,10 @@ class CesiumGlobeViewerBuilder:
     function clearDynamicEntities() {{
       trackEntities.forEach((entity) => viewer.entities.remove(entity));
       trackEntities = [];
+      vesselTrackEntities.forEach((entity) => viewer.entities.remove(entity));
+      vesselTrackEntities = [];
+      trackLabelEntities.forEach((entity) => viewer.entities.remove(entity));
+      trackLabelEntities = [];
       if (selectionEntity) {{
         viewer.entities.remove(selectionEntity);
         selectionEntity = null;
@@ -495,13 +534,13 @@ class CesiumGlobeViewerBuilder:
       const threshold = Number(document.getElementById("scoreThresholdSlider").value || 0.0);
       const anomalyOnly = document.getElementById("anomalyOnlyCheckbox").checked;
       const historicalPoints = getHistoricalTrackPoints();
-      const groupedByTrack = new Map();
-      historicalPoints.forEach((point) => {{
+      const filteredHistoricalPoints = historicalPoints.filter((point) => {{
         const passesThreshold = Number(point.anomalyScore || 0.0) >= threshold;
         const passesAnomaly = !anomalyOnly || Boolean(point.isAnomaly);
-        if (!passesThreshold || !passesAnomaly) {{
-          return;
-        }}
+        return passesThreshold && passesAnomaly;
+      }});
+      const groupedByTrack = new Map();
+      filteredHistoricalPoints.forEach((point) => {{
         if (!point.trackId) return;
         if (!groupedByTrack.has(point.trackId)) groupedByTrack.set(point.trackId, []);
         groupedByTrack.get(point.trackId).push(point);
@@ -514,16 +553,94 @@ class CesiumGlobeViewerBuilder:
           const positions = orderedPoints.map((point) => Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt));
           return viewer.entities.add({{
             id: `track_${{index}}_${{trackId}}`,
-            name: `Track ${{trackId}}`,
+            name: `Aircraft Track ${{trackId}}`,
             polyline: {{
               positions,
-              width: 3,
+              width: 4,
               material: Cesium.Color.fromCssColorString("#ffd166"),
               clampToGround: false
             }},
-            description: `<h3>Track ${{trackId}}</h3><p><b>Visible History Samples:</b> ${{orderedPoints.length}}</p>`
+            description: `<h3>Aircraft Track ${{trackId}}</h3><p><b>Visible History Samples:</b> ${{orderedPoints.length}}</p><p><b>Latest Speed:</b> ${{orderedPoints[orderedPoints.length - 1].aircraftSpeedMps == null ? "n/a" : Number(orderedPoints[orderedPoints.length - 1].aircraftSpeedMps).toFixed(2) + " m/s (" + Number(orderedPoints[orderedPoints.length - 1].aircraftSpeedKnots).toFixed(2) + " kn)"}}</p>`
           }});
         }});
+
+      const groupedVesselTrack = new Map();
+      historicalPoints.forEach((point) => {{
+        if (point.vesselLat == null || point.vesselLon == null || !point.trackId) {{
+          return;
+        }}
+        const vesselTrackId = `${{point.trackId}}_vessel`;
+        if (!groupedVesselTrack.has(vesselTrackId)) groupedVesselTrack.set(vesselTrackId, []);
+        groupedVesselTrack.get(vesselTrackId).push(point);
+      }});
+
+      vesselTrackEntities = Array.from(groupedVesselTrack.entries())
+        .filter(([, points]) => points.length >= 2)
+        .map(([trackId, points], index) => {{
+          const orderedPoints = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+          const positions = orderedPoints.map((point) => Cesium.Cartesian3.fromDegrees(point.vesselLon, point.vesselLat, 0.0));
+          return viewer.entities.add({{
+            id: `vessel_track_${{index}}_${{trackId}}`,
+            name: `Vessel Track ${{trackId}}`,
+            polyline: {{
+              positions,
+              width: 4,
+              material: Cesium.Color.fromCssColorString("#ff7b72"),
+              clampToGround: false
+            }},
+            description: `<h3>Vessel Track ${{trackId}}</h3><p><b>Visible History Samples:</b> ${{orderedPoints.length}}</p><p><b>Latest Heading:</b> ${{orderedPoints[orderedPoints.length - 1].vesselHeadingDeg == null ? "n/a" : Number(orderedPoints[orderedPoints.length - 1].vesselHeadingDeg).toFixed(2) + " deg"}}</p><p><b>Latest Speed:</b> ${{orderedPoints[orderedPoints.length - 1].vesselSpeedMps == null ? "n/a" : Number(orderedPoints[orderedPoints.length - 1].vesselSpeedMps).toFixed(2) + " m/s (" + Number(orderedPoints[orderedPoints.length - 1].vesselSpeedKnots).toFixed(2) + " kn)"}}</p>`
+          }});
+        }});
+
+      trackLabelEntities = [];
+      Array.from(groupedByTrack.entries()).forEach(([trackId, points], index) => {{
+        const orderedPoints = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+        const latest = orderedPoints[orderedPoints.length - 1];
+        if (!latest) {{
+          return;
+        }}
+        trackLabelEntities.push(
+          viewer.entities.add({{
+            id: `aircraft_label_${{index}}_${{trackId}}`,
+            position: Cesium.Cartesian3.fromDegrees(latest.lon, latest.lat, latest.alt + 150.0),
+            label: {{
+              text: `Aircraft: ${{trackId}}`,
+              font: "14px Segoe UI",
+              fillColor: Cesium.Color.fromCssColorString("#ffd166"),
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              pixelOffset: new Cesium.Cartesian2(0, -18),
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.78)")
+            }}
+          }})
+        );
+      }});
+      Array.from(groupedVesselTrack.entries()).forEach(([trackId, points], index) => {{
+        const orderedPoints = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+        const latest = orderedPoints[orderedPoints.length - 1];
+        if (!latest || latest.vesselLat == null || latest.vesselLon == null) {{
+          return;
+        }}
+        trackLabelEntities.push(
+          viewer.entities.add({{
+            id: `vessel_label_${{index}}_${{trackId}}`,
+            position: Cesium.Cartesian3.fromDegrees(latest.vesselLon, latest.vesselLat, 50.0),
+            label: {{
+              text: `Vessel: ${{trackId.replace("_vessel", "")}}`,
+              font: "14px Segoe UI",
+              fillColor: Cesium.Color.fromCssColorString("#ff7b72"),
+              outlineColor: Cesium.Color.BLACK,
+              outlineWidth: 2,
+              style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+              pixelOffset: new Cesium.Cartesian2(0, -18),
+              showBackground: true,
+              backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.78)")
+            }}
+          }})
+        );
+      }});
     }}
 
     function refreshScene() {{
@@ -547,10 +664,16 @@ class CesiumGlobeViewerBuilder:
         <div><b>Altitude:</b> ${{point.alt.toFixed(1)}} m</div>
         <div><b>Current Component:</b> ${{currentComponent}} = ${{Number(currentValue).toFixed(2)}}</div>
         <div><b>Comparison Component:</b> ${{secondaryComponent}} = ${{Number(secondaryValue).toFixed(2)}}</div>
+        <div><b>Track ID:</b> ${{point.trackId || "Untracked"}}</div>
         <div><b>Baseline:</b> ${{point.baseline.toFixed(2)}} nT</div>
         <div><b>Residual:</b> ${{point.residual.toFixed(2)}} nT</div>
         <div><b>Anomaly Score:</b> ${{Number(point.anomalyScore).toFixed(4)}}</div>
         <div><b>Anomaly:</b> ${{point.isAnomaly}}</div>
+        <div><b>Aircraft Heading:</b> ${{point.aircraftHeadingDeg == null ? "n/a" : Number(point.aircraftHeadingDeg).toFixed(2) + " deg"}}</div>
+        <div><b>Aircraft Speed:</b> ${{point.aircraftSpeedMps == null ? "n/a" : Number(point.aircraftSpeedMps).toFixed(2) + " m/s (" + Number(point.aircraftSpeedKnots).toFixed(2) + " kn)"}}</div>
+        <div><b>Vessel Position:</b> ${{point.vesselLat == null ? "n/a" : Number(point.vesselLat).toFixed(3) + ", " + Number(point.vesselLon).toFixed(3)}}</div>
+        <div><b>Vessel Heading:</b> ${{point.vesselHeadingDeg == null ? "n/a" : Number(point.vesselHeadingDeg).toFixed(2) + " deg"}}</div>
+        <div><b>Vessel Speed:</b> ${{point.vesselSpeedMps == null ? "n/a" : Number(point.vesselSpeedMps).toFixed(2) + " m/s (" + Number(point.vesselSpeedKnots).toFixed(2) + " kn)"}}</div>
         <div><b>Threshold Filter:</b> ${{Number(document.getElementById("scoreThresholdSlider").value || 0.0).toFixed(3)}}</div>
         <div><b>Decision:</b> ${{Number(point.anomalyScore || 0.0) >= Number(document.getElementById("scoreThresholdSlider").value || 0.0) ? "above filter" : "below filter"}}</div>
         <div><b>Timestamp:</b> ${{point.timestamp}}</div>
@@ -593,7 +716,9 @@ class CesiumGlobeViewerBuilder:
       const nearestPoint = findNearestActivePoint(clickedLat, clickedLon);
       const selectionInfo = document.getElementById("selectionInfo");
       if (!nearestPoint) {{
-        selectionInfo.textContent = "No magnetic sample is available for the current time and altitude.";
+        selectionInfo.textContent = currentViewMode === "noaa_only"
+          ? "NOAA-only mode is active. Switch to NOAA + Anomaly to inspect the scored flight samples."
+          : "No magnetic sample is available for the current time and altitude.";
         return;
       }}
       selectionInfo.innerHTML = describePointForPanel(nearestPoint, clickedLat, clickedLon);
@@ -724,6 +849,11 @@ class CesiumGlobeViewerBuilder:
       refreshScene();
     }});
     document.getElementById("showTracksCheckbox").addEventListener("change", () => {{
+      refreshScene();
+    }});
+    document.getElementById("viewModeSelect").addEventListener("change", (event) => {{
+      currentViewMode = event.target.value;
+      hotspotIndex = -1;
       refreshScene();
     }});
 

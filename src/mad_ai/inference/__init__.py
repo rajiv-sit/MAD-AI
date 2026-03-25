@@ -1,5 +1,6 @@
 """Inference and score fusion."""
 
+from .bahamas_realtime import score_bahamas_realtime
 from .calibration import CalibrationSummary, ThresholdCalibrator, summarize_scores
 from .engine import AnomalyFusionEngine, SpatialScorer, TemporalScorer
 from .evaluation import ClassificationMetrics, combine_weighted_scores, evaluate_threshold
@@ -21,6 +22,7 @@ __all__ = [
     "SpatialScorer",
     "TemporalScorer",
     "ThresholdCalibrator",
+    "score_bahamas_realtime",
     "build_spatial_training_samples",
     "build_temporal_training_samples",
     "combine_weighted_scores",
