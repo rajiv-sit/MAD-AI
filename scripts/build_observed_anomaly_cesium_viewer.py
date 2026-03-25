@@ -19,12 +19,12 @@ def main() -> None:
     output_html = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("outputs/viewer/cesium_observed_anomaly_globe.html")
     scored_csv = Path("data/processed/observed_scored/observed_anomaly_scored.csv")
     summary_json = Path("outputs/evaluation/observed_anomaly_summary.json")
-    observed_thresholds = Path("outputs/calibration/observed_thresholds.json")
-    if not observed_thresholds.exists():
+    fusion_thresholds = Path("outputs/calibration/fusion_threshold.json")
+    if not fusion_thresholds.exists():
         subprocess.run(
             [
                 sys.executable,
-                str(Path(__file__).resolve().parents[0] / "evaluate_observed_residual_models.py"),
+                str(Path(__file__).resolve().parents[0] / "evaluate_fusion_models.py"),
             ],
             check=True,
         )

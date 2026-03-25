@@ -1,0 +1,16 @@
+{
+  "threshold": 0.9311541318893433,
+  "spatial_weight": 0.5,
+  "temporal_weight": 0.5,
+  "spatial_scale": 0.14519324898719788,
+  "temporal_scale": 0.3953065872192383,
+  "calibration": {
+    "threshold": 0.9311541318893433,
+    "percentile": 97.5,
+    "mean_score": 0.6798960696905851,
+    "std_score": 0.10086729103733429,
+    "min_score": 0.5422890186309814,
+    "max_score": 0.9485936760902405,
+    "sample_count": 384
+  }
+}

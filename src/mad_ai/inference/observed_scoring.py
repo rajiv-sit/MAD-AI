@@ -117,6 +117,8 @@ def score_observed_features(
     stride: int = 6,
     spatial_weight: float = 0.5,
     temporal_weight: float = 0.5,
+    spatial_scale: float = 1.0,
+    temporal_scale: float = 1.0,
 ) -> tuple[pd.DataFrame, dict[str, object]]:
     scored = features.copy().reset_index(drop=True)
     spatial_scores = _score_rows_with_spatial_windows(
@@ -134,11 +136,6 @@ def score_observed_features(
     scored["spatial_anomaly_score"] = spatial_scores
     scored["temporal_anomaly_score"] = temporal_scores
 
-    total_weight = spatial_weight + temporal_weight
-    scored["final_anomaly_score"] = (
-        (spatial_weight * scored["spatial_anomaly_score"]) + (temporal_weight * scored["temporal_anomaly_score"])
-    ) / total_weight
-
     calibration_summary = None
     effective_threshold = threshold
     if effective_threshold is None:
@@ -152,6 +149,8 @@ def score_observed_features(
             stride=stride,
             spatial_weight=spatial_weight,
             temporal_weight=temporal_weight,
+            spatial_scale=spatial_scale,
+            temporal_scale=temporal_scale,
         )
         calibration = ThresholdCalibrator(percentile=calibration_percentile).calibrate(calibration_scores)
         effective_threshold = calibration.threshold
@@ -161,12 +160,24 @@ def score_observed_features(
         spatial_weight=spatial_weight,
         temporal_weight=temporal_weight,
         threshold=float(effective_threshold),
+        spatial_scale=spatial_scale,
+        temporal_scale=temporal_scale,
     )
-    scored["is_anomaly"] = scored["final_anomaly_score"] >= engine.threshold
+    fused_results = [
+        engine.fuse(float(spatial_score), float(temporal_score))
+        for spatial_score, temporal_score in zip(
+            scored["spatial_anomaly_score"].to_numpy(dtype=float),
+            scored["temporal_anomaly_score"].to_numpy(dtype=float),
+        )
+    ]
+    scored["final_anomaly_score"] = [result.final_score for result in fused_results]
+    scored["is_anomaly"] = [result.is_anomaly for result in fused_results]
 
     summary: dict[str, object] = {
         "rows": int(len(scored)),
         "threshold": float(engine.threshold),
+        "spatial_scale": float(engine.spatial_scale),
+        "temporal_scale": float(engine.temporal_scale),
         "spatial_mean": float(scored["spatial_anomaly_score"].mean()),
         "temporal_mean": float(scored["temporal_anomaly_score"].mean()),
         "final_mean": float(scored["final_anomaly_score"].mean()),
@@ -203,6 +214,8 @@ def _compute_final_scores_for_calibration(
     stride: int,
     spatial_weight: float,
     temporal_weight: float,
+    spatial_scale: float,
+    temporal_scale: float,
 ) -> np.ndarray:
     spatial_scores = _score_rows_with_spatial_windows(
         features,
@@ -216,8 +229,17 @@ def _compute_final_scores_for_calibration(
         sequence_length=temporal_sequence_length,
         stride=stride,
     )
-    total_weight = spatial_weight + temporal_weight
-    return ((spatial_weight * spatial_scores) + (temporal_weight * temporal_scores)) / total_weight
+    engine = AnomalyFusionEngine(
+        spatial_weight=spatial_weight,
+        temporal_weight=temporal_weight,
+        threshold=0.0,
+        spatial_scale=spatial_scale,
+        temporal_scale=temporal_scale,
+    )
+    return np.asarray(
+        [engine.fuse(float(spatial_score), float(temporal_score)).final_score for spatial_score, temporal_score in zip(spatial_scores, temporal_scores)],
+        dtype=np.float32,
+    )
 
 
 def _build_spatial_samples(

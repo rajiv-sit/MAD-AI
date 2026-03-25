@@ -29,14 +29,18 @@ class CalibrationTestCase(unittest.TestCase):
                         "threshold": 12.5,
                         "spatial_weight": 0.25,
                         "temporal_weight": 0.75,
+                        "spatial_scale": 2.0,
+                        "temporal_scale": 4.0,
                     }
                 ),
                 encoding="utf-8",
             )
             engine = AnomalyFusionEngine.from_json(path)
-            result = engine.fuse(10.0, 20.0)
+            result = engine.fuse(20.0, 40.0)
             self.assertEqual(engine.threshold, 12.5)
-            self.assertTrue(result.is_anomaly)
+            self.assertEqual(engine.spatial_scale, 2.0)
+            self.assertEqual(engine.temporal_scale, 4.0)
+            self.assertFalse(result.is_anomaly)
 
 
 if __name__ == "__main__":

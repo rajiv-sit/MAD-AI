@@ -25,6 +25,20 @@ class InferenceAndVizTestCase(unittest.TestCase):
         self.assertTrue(result.is_anomaly)
         self.assertAlmostEqual(result.final_score, 0.65)
 
+    def test_anomaly_fusion_engine_applies_component_scales(self) -> None:
+        engine = AnomalyFusionEngine(
+            spatial_weight=0.5,
+            temporal_weight=0.5,
+            threshold=1.2,
+            spatial_scale=2.0,
+            temporal_scale=4.0,
+        )
+        result = engine.fuse(2.0, 4.0)
+        self.assertAlmostEqual(result.final_score, 1.0)
+        self.assertFalse(result.is_anomaly)
+        self.assertAlmostEqual(result.metadata["normalized_spatial_score"], 1.0)
+        self.assertAlmostEqual(result.metadata["normalized_temporal_score"], 1.0)
+
     def test_heatmap_visualizer_writes_output(self) -> None:
         raw = make_sample_sensor_data(16)
         enriched = ResidualFeatureBuilder(AnalyticMagneticModel()).transform(raw)

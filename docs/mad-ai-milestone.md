@@ -42,6 +42,7 @@ Completed so far:
 - denser global NOAA overlays generated at the current `2 deg x 2 deg` default resolution
 - observed residual model checkpoints, evaluation metrics, and calibrated thresholds saved for reuse by the observed globe workflow
 - standalone spatial and temporal training scripts now save per-model checkpoints, calibrated thresholds, score comparisons, and validation histograms
+- fused anomaly calibration now reuses the standalone spatial and temporal thresholds and saves a dedicated fusion threshold artifact with fused metrics and plots
 
 Current limitations:
 
@@ -66,7 +67,7 @@ Current unit-test coverage for `src/mad_ai` is 85%.
 
 Coverage summary:
 
-- 35 unit tests are passing
+- 37 unit tests are passing
 - strong coverage exists for dataset, feature, ingest, visualization, and model save/load flows
 - the largest remaining gaps are in config parsing branches, inference helper branches, abstract base classes, and WMM fallback branches
 
@@ -438,7 +439,7 @@ Acceptance criteria:
 
 **Goal:** Combine model outputs into a usable detection workflow.
 
-Status: In progress
+Status: Functionally complete
 
 Tasks:
 
@@ -463,6 +464,9 @@ Progress update:
 - `scripts/score_observed_csv_anomalies.py` persists anomaly-scored observed CSV outputs
 - the global Cesium globe can now render full-earth anomaly overlays from saved scored artifacts
 - `scripts/evaluate_observed_residual_models.py` now trains reusable observed-residual models, calibrates thresholds from nominal observed distributions, and saves comparison metrics and plots
+- `scripts/evaluate_fusion_models.py` now calibrates a fused threshold using the standalone spatial and temporal thresholds as component scales
+- `scripts/run_inference.py` and `scripts/evaluate_models.py` now consume the fused calibration artifact
+- the observed anomaly globe now uses the fused calibration path rather than a separate ad hoc threshold
 
 Acceptance criteria:
 
@@ -571,6 +575,7 @@ Latest local verification completed on March 25, 2026:
 - `python scripts\calibrate_thresholds.py` ran successfully
 - `python scripts\evaluate_models.py` ran successfully
 - `python scripts\run_inference.py` ran successfully
+- `python scripts\evaluate_fusion_models.py` saved fused calibration, metrics, comparison CSV, and histogram artifacts
 - `python scripts\launch_visualizer.py` generated baseline-map, residual-map, timeline, and anomaly-event outputs
 - `python scripts\build_global_noaa_grid.py` built the multi-altitude global NOAA dataset
 - `python scripts\generate_global_noaa_visualizations.py` generated the current global globe and overlay assets

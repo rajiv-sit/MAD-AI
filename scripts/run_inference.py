@@ -1,13 +1,12 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from mad_ai.datasets import SpatialGridBuilder, TemporalSequenceBuilder
-from mad_ai.features import ResidualFeatureBuilder, TemporalFeatureBuilder
-from mad_ai.inference import AnomalyFusionEngine, SpatialScorer, TemporalScorer
+from mad_ai.inference import prepare_observed_features, score_observed_features
 from mad_ai.models.spatial import CNNAnomalyModel
 from mad_ai.models.temporal import LSTMAnomalyModel
 from mad_ai.utils.sample_data import make_sample_sensor_data
@@ -15,24 +14,37 @@ from mad_ai.wmm import WMMMagneticModel
 
 
 def main() -> None:
-    raw = make_sample_sensor_data()
-    enriched = ResidualFeatureBuilder(WMMMagneticModel()).transform(raw)
-    temporal = TemporalFeatureBuilder().transform(enriched)
+    calibration_path = Path("outputs/calibration/fusion_threshold.json")
+    if not calibration_path.exists():
+        raise SystemExit("Missing fusion calibration artifact. Run python scripts\\evaluate_fusion_models.py first.")
 
-    grid = SpatialGridBuilder().build(temporal)
-    sequences = TemporalSequenceBuilder().build(temporal)
-
+    calibration_payload = json.loads(calibration_path.read_text(encoding="utf-8"))
     spatial_model = CNNAnomalyModel()
-    spatial_model.train(grid)
+    spatial_model.load(Path("outputs/models/spatial_autoencoder.pt"))
     temporal_model = LSTMAnomalyModel()
-    temporal_model.train(sequences)
+    temporal_model.load(Path("outputs/models/temporal_autoencoder.pt"))
 
-    spatial_score = SpatialScorer(spatial_model).score(grid)
-    temporal_score = TemporalScorer(temporal_model).score(sequences[0])
+    raw = make_sample_sensor_data()
+    features = prepare_observed_features(raw, WMMMagneticModel(cache_path="data/cache/wmm_cache.json"))
+    scored, summary = score_observed_features(
+        features,
+        spatial_model=spatial_model,
+        temporal_model=temporal_model,
+        threshold=float(calibration_payload["threshold"]),
+        spatial_weight=float(calibration_payload.get("spatial_weight", 0.5)),
+        temporal_weight=float(calibration_payload.get("temporal_weight", 0.5)),
+        spatial_scale=float(calibration_payload.get("spatial_scale", 1.0)),
+        temporal_scale=float(calibration_payload.get("temporal_scale", 1.0)),
+    )
 
-    calibration_path = Path("outputs/calibration/thresholds.json")
-    engine = AnomalyFusionEngine.from_json(calibration_path) if calibration_path.exists() else AnomalyFusionEngine()
-    result = engine.fuse_to_dict(spatial_score, temporal_score)
+    result = {
+        "rows": int(len(scored)),
+        "threshold": summary["threshold"],
+        "spatial_mean": summary["spatial_mean"],
+        "temporal_mean": summary["temporal_mean"],
+        "final_mean": summary["final_mean"],
+        "anomaly_count": summary["anomaly_count"],
+    }
     print(result)
 
 

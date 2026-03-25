@@ -26,9 +26,9 @@ def main() -> None:
     raw = CsvSensorIngestor().load(input_csv)
     features = prepare_observed_features(raw, WMMMagneticModel(cache_path="data/cache/wmm_cache.json"))
 
-    spatial_model = _load_spatial_model(Path("outputs/models/observed_residual_spatial.pt"))
-    temporal_model = _load_temporal_model(Path("outputs/models/observed_residual_temporal.pt"))
-    calibration_payload = _load_calibration_payload(Path("outputs/calibration/observed_thresholds.json"))
+    spatial_model = _load_spatial_model(Path("outputs/models/spatial_autoencoder.pt"))
+    temporal_model = _load_temporal_model(Path("outputs/models/temporal_autoencoder.pt"))
+    calibration_payload = _load_calibration_payload(Path("outputs/calibration/fusion_threshold.json"))
 
     scored, summary = score_observed_features(
         features,
@@ -37,10 +37,12 @@ def main() -> None:
         threshold=float(calibration_payload["threshold"]),
         spatial_weight=float(calibration_payload.get("spatial_weight", 0.5)),
         temporal_weight=float(calibration_payload.get("temporal_weight", 0.5)),
+        spatial_scale=float(calibration_payload.get("spatial_scale", 1.0)),
+        temporal_scale=float(calibration_payload.get("temporal_scale", 1.0)),
     )
     summary["input_csv"] = str(input_csv)
     summary["output_csv"] = str(output_csv)
-    summary["model_source"] = "pretrained-observed-residual-models"
+    summary["model_source"] = "standalone-spatial-temporal-models"
 
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     scored.to_csv(output_csv, index=False)
@@ -67,7 +69,7 @@ def _load_temporal_model(path: Path) -> LSTMAnomalyModel:
 def _load_calibration_payload(path: Path) -> dict[str, float]:
     if not path.exists():
         raise FileNotFoundError(
-            f"Observed calibration file not found: {path}. Run scripts\\evaluate_observed_residual_models.py first."
+            f"Fusion calibration file not found: {path}. Run scripts\\evaluate_fusion_models.py first."
         )
     return json.loads(path.read_text(encoding="utf-8"))
 

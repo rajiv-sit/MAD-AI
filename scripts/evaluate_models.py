@@ -1,102 +1,101 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import sys
 
-import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from mad_ai.datasets import SpatialGridBuilder, TemporalSequenceBuilder
-from mad_ai.features import ResidualFeatureBuilder, TemporalFeatureBuilder
-from mad_ai.inference import (
-    AnomalyFusionEngine,
-    SpatialScorer,
-    TemporalScorer,
-    combine_weighted_scores,
-    evaluate_threshold,
-)
+from mad_ai.inference import prepare_observed_features, score_observed_features
 from mad_ai.models.spatial import CNNAnomalyModel
 from mad_ai.models.temporal import LSTMAnomalyModel
-from mad_ai.utils import ArtifactStore
-from mad_ai.utils.sample_data import make_sample_sensor_data
+from mad_ai.utils.sample_data import make_observed_residual_datasets
 from mad_ai.wmm import WMMMagneticModel
 
 
 def main() -> None:
-    calibration_path = Path("outputs/calibration/thresholds.json")
-    engine = AnomalyFusionEngine.from_json(calibration_path) if calibration_path.exists() else AnomalyFusionEngine()
-    store = ArtifactStore("outputs/evaluation")
-    wmm_model = WMMMagneticModel(cache_path="data/cache/wmm_cache.json")
+    calibration_path = Path("outputs/calibration/fusion_threshold.json")
+    if not calibration_path.exists():
+        raise SystemExit("Missing fusion calibration artifact. Run python scripts\\evaluate_fusion_models.py first.")
 
-    nominal_raw = make_sample_sensor_data(anomaly_magnitude=0.0)
-    anomalous_raw = make_sample_sensor_data(anomaly_magnitude=900.0)
-
-    nominal_temporal = _prepare_temporal_features(nominal_raw, wmm_model)
-    anomalous_temporal = _prepare_temporal_features(anomalous_raw, wmm_model)
-
-    nominal_grid = SpatialGridBuilder().build(nominal_temporal)
-    anomalous_grid = SpatialGridBuilder().build(anomalous_temporal)
-    nominal_sequences = TemporalSequenceBuilder().build(nominal_temporal)
-    anomalous_sequences = TemporalSequenceBuilder().build(anomalous_temporal)
-
+    calibration_payload = json.loads(calibration_path.read_text(encoding="utf-8"))
     spatial_model = CNNAnomalyModel()
-    spatial_model.train(np.stack([nominal_grid, nominal_grid, nominal_grid], axis=0))
+    spatial_model.load(Path("outputs/models/spatial_autoencoder.pt"))
     temporal_model = LSTMAnomalyModel()
-    temporal_model.train(nominal_sequences)
+    temporal_model.load(Path("outputs/models/temporal_autoencoder.pt"))
 
-    spatial_nominal_scores = np.asarray(spatial_model.score(np.stack([nominal_grid, nominal_grid], axis=0)), dtype=float)
-    spatial_anomalous_scores = np.asarray(spatial_model.score(np.stack([anomalous_grid, anomalous_grid], axis=0)), dtype=float)
-    temporal_nominal_scores = np.asarray(temporal_model.score(nominal_sequences), dtype=float)
-    temporal_anomalous_scores = np.asarray(temporal_model.score(anomalous_sequences), dtype=float)
+    datasets = make_observed_residual_datasets()
+    magnetic_model = WMMMagneticModel(cache_path="data/cache/wmm_cache.json")
+    prepared = {name: prepare_observed_features(frame, magnetic_model) for name, frame in datasets.items()}
 
-    nominal_scores = combine_weighted_scores(
-        spatial_nominal_scores.mean(),
-        temporal_nominal_scores,
-        spatial_weight=engine.spatial_weight,
-        temporal_weight=engine.temporal_weight,
+    nominal_scored, nominal_summary = score_observed_features(
+        prepared["nominal_eval"],
+        spatial_model=spatial_model,
+        temporal_model=temporal_model,
+        threshold=float(calibration_payload["threshold"]),
+        spatial_weight=float(calibration_payload.get("spatial_weight", 0.5)),
+        temporal_weight=float(calibration_payload.get("temporal_weight", 0.5)),
+        spatial_scale=float(calibration_payload.get("spatial_scale", 1.0)),
+        temporal_scale=float(calibration_payload.get("temporal_scale", 1.0)),
     )
-    anomalous_scores = combine_weighted_scores(
-        spatial_anomalous_scores.mean(),
-        temporal_anomalous_scores,
-        spatial_weight=engine.spatial_weight,
-        temporal_weight=engine.temporal_weight,
+    anomalous_scored, anomalous_summary = score_observed_features(
+        prepared["anomalous_eval"],
+        spatial_model=spatial_model,
+        temporal_model=temporal_model,
+        threshold=float(calibration_payload["threshold"]),
+        spatial_weight=float(calibration_payload.get("spatial_weight", 0.5)),
+        temporal_weight=float(calibration_payload.get("temporal_weight", 0.5)),
+        spatial_scale=float(calibration_payload.get("spatial_scale", 1.0)),
+        temporal_scale=float(calibration_payload.get("temporal_scale", 1.0)),
     )
 
-    scores = np.concatenate([nominal_scores, anomalous_scores])
-    labels = np.concatenate([np.zeros_like(nominal_scores, dtype=int), np.ones_like(anomalous_scores, dtype=int)])
-    metrics = evaluate_threshold(scores, labels, engine.threshold)
+    output_dir = Path("outputs/evaluation")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    score_path = output_dir / "score_comparison.csv"
+    metrics_path = output_dir / "metrics.json"
 
-    rows = []
-    for score in nominal_scores:
-        rows.append({"label": 0, "score": float(score)})
-    for score in anomalous_scores:
-        rows.append({"label": 1, "score": float(score)})
+    comparison = pd.concat(
+        [
+            _frame_with_scores(nominal_scored, "nominal_eval"),
+            _frame_with_scores(anomalous_scored, "anomalous_eval"),
+        ],
+        ignore_index=True,
+    )
+    comparison.to_csv(score_path, index=False)
 
-    score_path = store.save_dataframe("score_comparison", pd.DataFrame(rows))
-    metrics_path = store.save_json(
-        "metrics",
-        {
-            "threshold": metrics.threshold,
-            "true_positives": metrics.true_positives,
-            "true_negatives": metrics.true_negatives,
-            "false_positives": metrics.false_positives,
-            "false_negatives": metrics.false_negatives,
-            "precision": metrics.precision,
-            "recall": metrics.recall,
-            "accuracy": metrics.accuracy,
-            "f1_score": metrics.f1_score,
-        },
+    metrics_path.write_text(
+        json.dumps(
+            {
+                "threshold": calibration_payload["threshold"],
+                "spatial_scale": calibration_payload.get("spatial_scale", 1.0),
+                "temporal_scale": calibration_payload.get("temporal_scale", 1.0),
+                "nominal_eval": nominal_summary.get("metrics", {}),
+                "anomalous_eval": anomalous_summary.get("metrics", {}),
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
     )
 
     print(f"Saved evaluation scores to {score_path}")
     print(f"Saved evaluation metrics to {metrics_path}")
 
 
-def _prepare_temporal_features(raw: pd.DataFrame, wmm_model: WMMMagneticModel) -> pd.DataFrame:
-    enriched = ResidualFeatureBuilder(wmm_model).transform(raw)
-    return TemporalFeatureBuilder().transform(enriched)
+def _frame_with_scores(frame: pd.DataFrame, split_name: str) -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "split": split_name,
+            "run_id": frame.get("run_id", ""),
+            "timestamp": frame.get("timestamp", ""),
+            "spatial_anomaly_score": frame["spatial_anomaly_score"],
+            "temporal_anomaly_score": frame["temporal_anomaly_score"],
+            "final_anomaly_score": frame["final_anomaly_score"],
+            "is_injected_anomaly": frame.get("is_injected_anomaly", False),
+            "is_anomaly": frame["is_anomaly"],
+        }
+    )
 
 
 if __name__ == "__main__":

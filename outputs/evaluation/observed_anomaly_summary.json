@@ -1,11 +1,13 @@
 {
   "rows": 3,
-  "threshold": 0.21467125415802002,
-  "spatial_mean": 0.20220978558063507,
-  "temporal_mean": 3.6659231185913086,
-  "final_mean": 1.9340664148330688,
+  "threshold": 0.9311541318893433,
+  "spatial_scale": 0.14519324898719788,
+  "temporal_scale": 0.3953065872192383,
+  "spatial_mean": 0.21508781611919403,
+  "temporal_mean": 3.9925873279571533,
+  "final_mean": 5.790683321848491,
   "anomaly_count": 3,
   "input_csv": "data\\raw\\sample_sensor.csv",
   "output_csv": "data\\processed\\observed_scored\\observed_anomaly_scored.csv",
-  "model_source": "pretrained-observed-residual-models"
+  "model_source": "standalone-spatial-temporal-models"
 }

@@ -46,6 +46,8 @@ class ObservedScoringTestCase(unittest.TestCase):
             spatial_model=spatial_model,
             temporal_model=temporal_model,
             threshold=float(nominal_summary["threshold"]),
+            spatial_scale=2.0,
+            temporal_scale=3.0,
             spatial_window_size=12,
             temporal_sequence_length=6,
             stride=3,
@@ -55,6 +57,8 @@ class ObservedScoringTestCase(unittest.TestCase):
         self.assertGreater(training_summary["temporal_sample_count"], 0)
         self.assertIn("calibration", nominal_summary)
         self.assertIn("metrics", anomalous_summary)
+        self.assertEqual(anomalous_summary["spatial_scale"], 2.0)
+        self.assertEqual(anomalous_summary["temporal_scale"], 3.0)
         self.assertIn("final_anomaly_score", nominal_scored.columns)
         self.assertIn("final_anomaly_score", anomalous_scored.columns)
         self.assertEqual(len(anomalous_scored), len(prepared["anomalous_eval"]))
