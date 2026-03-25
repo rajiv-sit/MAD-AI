@@ -1,0 +1,16 @@
+{
+  "calibration": {
+    "threshold": 0.08476771935820569,
+    "percentile": 97.5,
+    "mean_score": 0.034413992142389646,
+    "std_score": 0.021993731830227695,
+    "min_score": 0.014207026455551386,
+    "max_score": 0.45587869733572006,
+    "sample_count": 65884
+  },
+  "spatial_mean": 0.033079950389511704,
+  "temporal_mean": 0.035748033895267595,
+  "final_mean": 0.034413992142389646,
+  "anomaly_count": 1648,
+  "patch_radius": 1
+}
