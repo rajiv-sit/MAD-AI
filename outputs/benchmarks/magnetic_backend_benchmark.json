@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-03-25T21:47:09.295806",
+  "summary": {
+    "wmm_reference_guidance": "Use WMM for physically meaningful baseline analysis, reported evidence, and reviewer-facing interpretation.",
+    "analytic_guidance": "Use analytic for fast local checks, tuning loops, tests, and scaling experiments where exact magnetic fidelity is not the point."
+  },
+  "workflows": [
+    {
+      "workflow": "observed_feature_preparation",
+      "payload_rows": 128,
+      "analytic": {
+        "backend": "analytic",
+        "elapsed_seconds": 0.004183600191026926,
+        "result_rows": 128,
+        "source_counts": {},
+        "workflow": "observed_feature_preparation"
+      },
+      "wmm": {
+        "backend": "wmm",
+        "elapsed_seconds": 0.012832900043576956,
+        "result_rows": 128,
+        "source_counts": {},
+        "workflow": "observed_feature_preparation"
+      },
+      "speed_ratio_wmm_over_analytic": 3.0674298349783116,
+      "recommended_backend": "analytic-acceptable-for-local-checks wmm-required-for-reported-results"
+    },
+    {
+      "workflow": "real_batch_large_nominal_eval_preparation",
+      "payload_rows": 864,
+      "analytic": {
+        "backend": "analytic",
+        "elapsed_seconds": 0.014909500256180763,
+        "result_rows": 864,
+        "source_counts": {},
+        "workflow": "real_batch_large_nominal_eval_preparation"
+      },
+      "wmm": {
+        "backend": "wmm",
+        "elapsed_seconds": 0.02699790010228753,
+        "result_rows": 864,
+        "source_counts": {},
+        "workflow": "real_batch_large_nominal_eval_preparation"
+      },
+      "speed_ratio_wmm_over_analytic": 1.8107850456688175,
+      "recommended_backend": "wmm-for-evidence analytic-for-fast-iteration"
+    },
+    {
+      "workflow": "global_grid_generation",
+      "payload_rows": 0,
+      "analytic": {
+        "backend": "analytic",
+        "elapsed_seconds": 0.0036189001984894276,
+        "result_rows": 380,
+        "source_counts": {
+          "analytic-fallback": 380
+        },
+        "workflow": "global_grid_generation"
+      },
+      "wmm": {
+        "backend": "wmm",
+        "elapsed_seconds": 0.013066299725323915,
+        "result_rows": 380,
+        "source_counts": {
+          "geomag": 380
+        },
+        "workflow": "global_grid_generation"
+      },
+      "speed_ratio_wmm_over_analytic": 3.61057199940964,
+      "recommended_backend": "wmm-required"
+    }
+  ]
+}

@@ -50,6 +50,11 @@ Completed so far:
 - bundled dataset manifests now carry documented provenance, split paths, schema mappings, coordinate conventions, units, and data-quality notes for the real-batch workflows
 - real-batch evaluation now saves explicit nominal false-positive analysis artifacts and keeps non-default dataset runs in dataset-specific output files
 - real-batch evaluation now also saves direct baseline-only versus fused comparison summaries for nominal and anomalous splits
+- targeted unit coverage now includes config-format rejection, evaluation helper error handling, abstract base class enforcement, and WMM fallback/cache branches
+- the repo now includes a reproducible magnetic-backend benchmark script that records current local runtime tradeoffs between `analytic` and `WMM`
+- residual feature preparation now batches WMM baseline queries when available, which materially reduced bundled WMM preprocessing cost in the local benchmark report
+- Bahamas tracking evaluation now records segment-level error summaries and confidence buckets instead of only whole-flight aggregate error
+- the repo now includes a bounded Bahamas subset comparison artifact for `analytic` versus `WMM` tracking inputs; on the current 2,000-row subset, `WMM` changed mean tracking error by less than a meter-equivalent fraction and did not materially change the tracking story
 - the repo now includes a Bahamas real-data workflow with aircraft state, vessel state, and aircraft-borne magnetic total field ingestion from `.asc` data
 - the Bahamas review path now includes a combined NOAA-only / NOAA-plus-anomaly globe plus a linked four-view realtime dashboard
 - the Bahamas dashboard now links strip-chart, vessel-range, synchronized globe, and along-track residual views with a shared time cursor

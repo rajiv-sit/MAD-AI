@@ -134,6 +134,7 @@ In practice:
 Current practical note:
 
 - the linked Bahamas realtime review flow exists today, but the full-flight operational path has mainly been exercised with the `analytic` backend because full-file `WMM` runtime still needs optimization
+- use [benchmark_magnetic_backends.py](c:/Users/MrSit/source/repos/MAD-AI/scripts/benchmark_magnetic_backends.py) to save a reproducible local benchmark report before changing backend guidance
 
 ## Visualizer
 
@@ -374,6 +375,13 @@ Important current limitation:
 - the anomaly signal comes from magnetometer residuals against the baseline
 - the reference vessel path is still used as truth for evaluation and visual comparison
 - the estimated vessel track is first-pass only and is not yet accurate enough for operational claims
+- the tracking evaluation now reports segment-level error summaries and weak/moderate/strong confidence buckets, but those confidence labels are still heuristic rather than calibrated
+
+To compare bounded Bahamas tracking quality between `analytic` and `WMM` backends on a subset:
+
+```powershell
+python scripts\compare_bahamas_tracking_backends.py inspection\external_mad_repo\data\raw\mad_data.asc outputs\evaluation\bahamas_tracking_backend_comparison_subset.json 2000
+```
 
 That means the current Bahamas path is:
 
@@ -413,6 +421,24 @@ Notes:
 - the generated large dataset is still synthetic and intended for pipeline scaling checks, not production claims
 - the bundled dataset manifests now record source formats, timestamp encoding, schema mapping, split paths, and documented data-quality limits
 - non-default real-batch configs now save dataset-specific evaluation artifact names such as `real_batch_large_synthetic_metrics.json` so runs do not overwrite the default sample outputs
+
+### Backend Benchmarking
+
+To measure the current local runtime tradeoff between `analytic` and `WMM` on bundled representative workflows:
+
+```powershell
+python scripts\benchmark_magnetic_backends.py
+```
+
+Output:
+
+- [outputs/benchmarks/magnetic_backend_benchmark.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/benchmarks/magnetic_backend_benchmark.json)
+
+Interpretation:
+
+- use `WMM` for global baseline products, reviewer-facing evidence, and any reported magnetic baseline result
+- use `analytic` for tests, local iteration, tuning loops, and scaling checks where speed matters more than physical fidelity
+- the current local benchmark also showed that batching WMM queries inside residual-feature preparation materially reduced the bundled preparation overhead
 
 ### Current Global Viewer Data
 

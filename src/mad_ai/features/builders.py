@@ -10,14 +10,9 @@ class ResidualFeatureBuilder(BaseFeatureBuilder):
         self.magnetic_model = magnetic_model
 
     def transform(self, data: pd.DataFrame) -> pd.DataFrame:
+        baselines = self._compute_baselines(data)
         rows = []
-        for row in data.itertuples(index=False):
-            baseline = self.magnetic_model.get_field(
-                lat=float(row.latitude_deg),
-                lon=float(row.longitude_deg),
-                alt=float(row.altitude_m),
-                timestamp=getattr(row, "timestamp", None),
-            )
+        for row, baseline in zip(data.itertuples(index=False), baselines):
             result = dict(row._asdict())
             result["baseline_total_nt"] = baseline["total_intensity_nt"]
             result["baseline_declination_deg"] = baseline["declination_deg"]
@@ -32,6 +27,28 @@ class ResidualFeatureBuilder(BaseFeatureBuilder):
             result["residual_inclination_deg"] = float(observed_inclination) - float(baseline["inclination_deg"])
             rows.append(result)
         return pd.DataFrame(rows)
+
+    def _compute_baselines(self, data: pd.DataFrame) -> list[dict[str, float | str]]:
+        if hasattr(self.magnetic_model, "get_fields"):
+            queries = [
+                (
+                    float(row.latitude_deg),
+                    float(row.longitude_deg),
+                    float(row.altitude_m),
+                    getattr(row, "timestamp", None),
+                )
+                for row in data.itertuples(index=False)
+            ]
+            return list(self.magnetic_model.get_fields(queries))
+        return [
+            self.magnetic_model.get_field(
+                lat=float(row.latitude_deg),
+                lon=float(row.longitude_deg),
+                alt=float(row.altitude_m),
+                timestamp=getattr(row, "timestamp", None),
+            )
+            for row in data.itertuples(index=False)
+        ]
 
 
 class TemporalFeatureBuilder(BaseFeatureBuilder):

@@ -159,6 +159,7 @@ Responsibilities:
 - compute WMM baseline joins
 - compute total/declination/inclination residuals
 - add temporal delta and rolling features
+- prefer batched magnetic baseline queries when the backend supports them, to avoid row-by-row WMM lookup overhead
 
 Primary implementations:
 
@@ -331,6 +332,7 @@ Note:
 - the bundled large scaling flow uses `config/real_batch_large.yaml`
 - that config selects the analytic backend for runtime practicality
 - the NOAA/WMM-backed path remains the reference for real magnetic baseline interpretation
+- `scripts/benchmark_magnetic_backends.py` now saves a local benchmark report to make that backend tradeoff explicit and reproducible
 
 ## Data Flow
 

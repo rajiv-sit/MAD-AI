@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import MagicMock
 
 from mad_ai.datasets import SpatialGridBuilder, TemporalSequenceBuilder
 from mad_ai.features import ResidualFeatureBuilder, TemporalFeatureBuilder
@@ -40,6 +41,24 @@ class FeaturesAndDatasetsTestCase(unittest.TestCase):
 
         windows = TemporalSequenceBuilder(sequence_length=3).build(temporal)
         self.assertEqual(windows.shape, (3, 3, 2))
+
+    def test_residual_feature_builder_uses_batched_queries_when_available(self) -> None:
+        raw = make_sample_sensor_data(6)
+        model = MagicMock()
+        model.get_fields.return_value = [
+            {
+                "total_intensity_nt": 50000.0 + idx,
+                "declination_deg": -8.0,
+                "inclination_deg": 58.0,
+            }
+            for idx in range(len(raw))
+        ]
+
+        enriched = ResidualFeatureBuilder(model).transform(raw)
+
+        model.get_fields.assert_called_once()
+        model.get_field.assert_not_called()
+        self.assertEqual(len(enriched), len(raw))
 
 
 if __name__ == "__main__":

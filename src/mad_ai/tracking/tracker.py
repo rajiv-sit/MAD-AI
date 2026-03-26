@@ -36,11 +36,17 @@ class ConstantVelocityMagneticTracker(BaseTracker):
         candidate_count: int = 5,
         initialization_strategy: str = "magnetic_bearing_grid",
         moment_blend_alpha: float = 0.15,
+        motion_blend_alpha: float = 0.2,
+        max_speed_mps: float = 20.0,
+        max_turn_rate_deg_per_s: float = 3.0,
     ) -> None:
         self.forward_model = forward_model or GeometryAwareDipoleMagneticForwardModel()
         self.candidate_count = candidate_count
         self.initialization_strategy = initialization_strategy
         self.moment_blend_alpha = moment_blend_alpha
+        self.motion_blend_alpha = motion_blend_alpha
+        self.max_speed_mps = max_speed_mps
+        self.max_turn_rate_deg_per_s = max_turn_rate_deg_per_s
         self._state: VesselState | None = None
 
     def initialize(self, observations: list[MagneticTrackingObservation]) -> VesselTrackEstimate:
@@ -68,6 +74,9 @@ class ConstantVelocityMagneticTracker(BaseTracker):
             observation,
             self.forward_model,
             moment_blend_alpha=self.moment_blend_alpha,
+            motion_blend_alpha=self.motion_blend_alpha,
+            max_speed_mps=self.max_speed_mps,
+            max_turn_rate_deg_per_s=self.max_turn_rate_deg_per_s,
         )
         self._state = replace(corrected_state, timestamp=observation.sensor_state.timestamp)
         confidence = max(0.0, min(1.0, float(observation.anomaly_score)))
@@ -115,6 +124,9 @@ def _correct_state_from_geometry(
     observation: MagneticTrackingObservation,
     forward_model: DipoleMagneticForwardModel,
     moment_blend_alpha: float = 0.15,
+    motion_blend_alpha: float = 0.2,
+    max_speed_mps: float = 20.0,
+    max_turn_rate_deg_per_s: float = 3.0,
 ) -> VesselState:
     slant_range_m = _infer_slant_range(forward_model, observation, predicted_state)
     vertical_separation_m = max(observation.sensor_state.altitude_m + predicted_state.depth_m, 1.0)
@@ -147,12 +159,22 @@ def _correct_state_from_geometry(
     dt_seconds = _delta_seconds(predicted_state.timestamp, observation.sensor_state.timestamp)
     if dt_seconds > 0.0:
         traveled_m = surface_range_m(predicted_state.latitude_deg, predicted_state.longitude_deg, latitude_deg, longitude_deg)
-        updated_speed_mps = traveled_m / dt_seconds
-        updated_heading_deg = bearing_deg(
+        raw_speed_mps = traveled_m / dt_seconds
+        raw_heading_deg = bearing_deg(
             predicted_state.latitude_deg,
             predicted_state.longitude_deg,
             latitude_deg,
             longitude_deg,
+        )
+        updated_speed_mps, updated_heading_deg = _stabilize_motion(
+            previous_state=predicted_state,
+            observation=observation,
+            candidate_speed_mps=raw_speed_mps,
+            candidate_heading_deg=raw_heading_deg,
+            dt_seconds=dt_seconds,
+            motion_blend_alpha=motion_blend_alpha,
+            max_speed_mps=max_speed_mps,
+            max_turn_rate_deg_per_s=max_turn_rate_deg_per_s,
         )
     inferred_moment_am2 = _infer_magnetic_moment(forward_model, observation, predicted_state, slant_range_m)
     updated_moment_am2 = _blend_moment(predicted_state.magnetic_moment_am2, inferred_moment_am2, moment_blend_alpha)
@@ -190,6 +212,9 @@ class MultiHypothesisMagneticTracker(BaseTracker):
         motion_weight: float = 0.2,
         moment_blend_alpha: float = 0.15,
         innovation_window: int = 12,
+        motion_blend_alpha: float = 0.2,
+        max_speed_mps: float = 20.0,
+        max_turn_rate_deg_per_s: float = 3.0,
     ) -> None:
         self.forward_model = forward_model or GeometryAwareDipoleMagneticForwardModel()
         self.candidate_count = candidate_count
@@ -199,6 +224,9 @@ class MultiHypothesisMagneticTracker(BaseTracker):
         self.motion_weight = motion_weight
         self.moment_blend_alpha = moment_blend_alpha
         self.innovation_window = max(1, innovation_window)
+        self.motion_blend_alpha = motion_blend_alpha
+        self.max_speed_mps = max_speed_mps
+        self.max_turn_rate_deg_per_s = max_turn_rate_deg_per_s
         self._hypotheses: list[_TrackingHypothesis] = []
 
     def initialize(self, observations: list[MagneticTrackingObservation]) -> VesselTrackEstimate:
@@ -244,6 +272,9 @@ class MultiHypothesisMagneticTracker(BaseTracker):
                 observation,
                 self.forward_model,
                 moment_blend_alpha=self.moment_blend_alpha,
+                motion_blend_alpha=self.motion_blend_alpha,
+                max_speed_mps=self.max_speed_mps,
+                max_turn_rate_deg_per_s=self.max_turn_rate_deg_per_s,
             )
             for proposed_state in proposed_states:
                 estimate = _estimate_for_observation(observation, proposed_state, hypothesis.confidence, self.forward_model)
@@ -321,6 +352,9 @@ def _propose_measurement_branches(
     observation: MagneticTrackingObservation,
     forward_model: DipoleMagneticForwardModel,
     moment_blend_alpha: float = 0.15,
+    motion_blend_alpha: float = 0.2,
+    max_speed_mps: float = 20.0,
+    max_turn_rate_deg_per_s: float = 3.0,
 ) -> list[VesselState]:
     slant_range_m = _infer_slant_range(forward_model, observation, predicted_state)
     vertical_separation_m = max(observation.sensor_state.altitude_m + predicted_state.depth_m, 1.0)
@@ -367,12 +401,22 @@ def _propose_measurement_branches(
         dt_seconds = _delta_seconds(predicted_state.timestamp, observation.sensor_state.timestamp)
         if dt_seconds > 0.0:
             traveled_m = surface_range_m(predicted_state.latitude_deg, predicted_state.longitude_deg, latitude_deg, longitude_deg)
-            updated_speed_mps = traveled_m / dt_seconds
-            updated_heading_deg = bearing_deg(
+            raw_speed_mps = traveled_m / dt_seconds
+            raw_heading_deg = bearing_deg(
                 predicted_state.latitude_deg,
                 predicted_state.longitude_deg,
                 latitude_deg,
                 longitude_deg,
+            )
+            updated_speed_mps, updated_heading_deg = _stabilize_motion(
+                previous_state=predicted_state,
+                observation=observation,
+                candidate_speed_mps=raw_speed_mps,
+                candidate_heading_deg=raw_heading_deg,
+                dt_seconds=dt_seconds,
+                motion_blend_alpha=motion_blend_alpha,
+                max_speed_mps=max_speed_mps,
+                max_turn_rate_deg_per_s=max_turn_rate_deg_per_s,
             )
         proposed.append(
             replace(
@@ -463,3 +507,39 @@ def _rolling_innovation_cost(history: tuple[float, ...]) -> float:
     mean_cost = sum(history) / len(history)
     worst_cost = max(history)
     return 0.7 * mean_cost + 0.3 * worst_cost
+
+
+def _stabilize_motion(
+    previous_state: VesselState,
+    observation: MagneticTrackingObservation,
+    candidate_speed_mps: float,
+    candidate_heading_deg: float,
+    dt_seconds: float,
+    motion_blend_alpha: float,
+    max_speed_mps: float,
+    max_turn_rate_deg_per_s: float,
+) -> tuple[float, float]:
+    alpha = max(0.0, min(1.0, motion_blend_alpha))
+    blended_heading_deg = _blend_angle_deg(previous_state.heading_deg, candidate_heading_deg, alpha)
+    max_turn_delta_deg = max(1.0, max_turn_rate_deg_per_s * max(dt_seconds, 0.0))
+    heading_delta_deg = _signed_angle_delta_deg(previous_state.heading_deg, blended_heading_deg)
+    stabilized_heading_deg = (previous_state.heading_deg + _clamp(heading_delta_deg, -max_turn_delta_deg, max_turn_delta_deg)) % 360.0
+
+    sensor_speed_mps = float(observation.sensor_state.speed_mps or candidate_speed_mps)
+    preferred_speed_mps = min(candidate_speed_mps, sensor_speed_mps * 0.25 if sensor_speed_mps > 0.0 else candidate_speed_mps)
+    blended_speed_mps = (1.0 - alpha) * previous_state.speed_mps + alpha * preferred_speed_mps
+    stabilized_speed_mps = _clamp(blended_speed_mps, 0.0, max_speed_mps)
+    return float(stabilized_speed_mps), float(stabilized_heading_deg)
+
+
+def _blend_angle_deg(source_deg: float, target_deg: float, alpha: float) -> float:
+    delta_deg = _signed_angle_delta_deg(source_deg, target_deg)
+    return (source_deg + alpha * delta_deg) % 360.0
+
+
+def _signed_angle_delta_deg(source_deg: float, target_deg: float) -> float:
+    return ((target_deg - source_deg + 540.0) % 360.0) - 180.0
+
+
+def _clamp(value: float, minimum: float, maximum: float) -> float:
+    return max(minimum, min(value, maximum))

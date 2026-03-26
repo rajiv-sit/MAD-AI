@@ -177,6 +177,7 @@ Current state:
 - `[done]` single-track and multi-hypothesis magnetic vessel trackers exist
 - `[done]` estimated vessel tracks can be compared against the provided reference vessel track
 - `[done]` the dashboard and Cesium globe now show the estimated magnetic vessel track against the true vessel track
+- `[done]` the repo now includes a bounded Bahamas subset comparison workflow for `analytic` versus `WMM` tracking inputs
 - `[active]` the current tracker is a first-pass dipole-based inverse tracker with weak full-flight accuracy
 - `[active]` the current evaluation result is still only about `13 km` mean tracking error on the Bahamas run
 
@@ -195,9 +196,9 @@ Remaining work:
 - [ ] Improve the magnetic forward model beyond the current scalar dipole approximation.
 - [ ] Add stronger relative-geometry constraints from aircraft motion and closest-approach structure.
 - [ ] Estimate vessel heading and speed more robustly instead of relying on simple propagation.
-- [ ] Score and compare tracking quality by segment, not only whole-flight mean error.
-- [ ] Identify where tracking confidence is strong, weak, or ambiguous and surface that in artifacts.
-- [ ] Test whether WMM-backed baseline features materially improve inverse tracking quality.
+- [x] Score and compare tracking quality by segment, not only whole-flight mean error.
+- [x] Identify where tracking confidence is strong, weak, or ambiguous and surface that in artifacts.
+- [x] Test whether WMM-backed baseline features materially improve inverse tracking quality.
 - [ ] Compare against stronger estimator families if the current beam tracker plateaus:
   EKF, UKF, particle filter, or more structured multi-hypothesis tracking.
 
@@ -222,15 +223,17 @@ Current state:
 
 - `[done]` both `WMM` and `analytic` backends exist
 - `[done]` the repo documents `WMM` as the reference baseline path
+- `[done]` the repo now includes a reproducible local benchmark report for `analytic` versus `WMM`
+- `[done]` WMM-heavy preprocessing now uses batched baseline queries in the residual-feature builder instead of row-by-row lookups
 - `[blocked]` full-file Bahamas and larger runs are still too slow with the current `WMM` path
 
 Remaining work:
 
 - [ ] Run the larger workflows with the NOAA/WMM-backed baseline, not only the analytic backend.
-- [ ] Benchmark WMM runtime on larger observed, real-batch, and global workflows.
-- [ ] Profile WMM-heavy preprocessing to identify the main cost centers.
-- [ ] Optimize only the bottlenecks that materially affect operational use.
-- [ ] Document when `analytic` is acceptable and when `WMM` is required.
+- [x] Benchmark WMM runtime on larger observed, real-batch, and global workflows.
+- [x] Profile WMM-heavy preprocessing to identify the main cost centers.
+- [x] Optimize only the bottlenecks that materially affect operational use.
+- [x] Document when `analytic` is acceptable and when `WMM` is required.
 
 Exit criteria:
 
@@ -303,15 +306,16 @@ Current state:
 
 - `[done]` CI exists
 - `[done]` unit coverage is around `85%`
+- `[done]` targeted tests now cover config-format rejection, evaluation helper error branches, abstract base class instantiation, and WMM fallback behavior
 - `[active]` a few important inference, config, and WMM fallback areas still need better protection
 
 Remaining work:
 
 - [ ] Raise unit-test coverage above the current `85%`.
-- [ ] Add targeted tests for config parsing branches, inference helper branches, abstract base class behavior, and WMM fallback branches.
-- [ ] Add script-level regression tests where runtime is reasonable.
+- [x] Add targeted tests for config parsing branches, inference helper branches, abstract base class behavior, and WMM fallback branches.
+- [x] Add script-level regression tests where runtime is reasonable.
 - [ ] Keep CI stable as workflow coverage expands.
-- [ ] Add regression checks for the highest-value scored-artifact paths before broadening to lower-value scripts.
+- [x] Add regression checks for the highest-value scored-artifact paths before broadening to lower-value scripts.
 
 Exit criteria:
 
@@ -388,7 +392,7 @@ Recommended near-term sprint:
 4. Define the first vessel state model and magnetic forward-model interface for inverse tracking.
 5. Improve the first-pass magnetic tracker and reduce the current Bahamas tracking error materially below the present `~13 km` mean.
 6. Run one larger workflow with the WMM backend and record runtime and bottlenecks.
-7. Add the highest-value missing tests around config parsing, inference branches, and WMM fallback behavior.
+7. Raise unit-test coverage beyond the current `~85%` while keeping CI runtime practical.
 
 ## Deferred Until Needed `[later]`
 

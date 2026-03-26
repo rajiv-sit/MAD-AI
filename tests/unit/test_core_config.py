@@ -29,6 +29,13 @@ class ConfigTestCase(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             load_config("does-not-exist.yaml")
 
+    def test_unsupported_config_format_raises(self) -> None:
+        with workspace_temp_dir() as tmp_dir:
+            path = tmp_dir / "config.txt"
+            path.write_text("name=mad-ai", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                load_config(path)
+
     def test_load_dataset_manifest_validates_required_keys(self) -> None:
         manifest = load_dataset_manifest("data/manifests/real_batch.sample.json")
         self.assertEqual(manifest["dataset_name"], "real_batch_sample")

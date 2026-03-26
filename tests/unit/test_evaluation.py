@@ -21,6 +21,14 @@ class EvaluationTestCase(unittest.TestCase):
         self.assertEqual(metrics.false_negatives, 0)
         self.assertEqual(metrics.accuracy, 1.0)
 
+    def test_combine_weighted_scores_rejects_unaligned_arrays(self) -> None:
+        with self.assertRaises(ValueError):
+            combine_weighted_scores([1.0, 2.0], [3.0, 4.0, 5.0])
+
+    def test_evaluate_threshold_rejects_mismatched_inputs(self) -> None:
+        with self.assertRaises(ValueError):
+            evaluate_threshold(scores=[0.1, 0.2], labels=[1], threshold=0.5)
+
 
 if __name__ == "__main__":
     unittest.main()

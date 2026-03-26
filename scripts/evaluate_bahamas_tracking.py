@@ -73,6 +73,8 @@ def main() -> None:
         "max_tracking_error_m": float(estimated_frame["tracking_error_m"].max()) if not estimated_frame.empty else None,
         "mean_innovation_nt": float(estimated_frame["innovation_nt"].mean()) if not estimated_frame.empty else None,
         "mean_estimated_magnetic_moment_am2": float(estimated_frame["estimated_magnetic_moment_am2"].mean()) if not estimated_frame.empty else None,
+        "confidence_summary": _build_confidence_summary(estimated_frame),
+        "segment_metrics": _build_segment_metrics(estimated_frame),
         "estimated_csv": str(estimated_csv),
         "initialization_strategy": "magnetic_bearing_grid",
         "tracker_mode": tracker_mode,
@@ -82,6 +84,67 @@ def main() -> None:
     output_json.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     print(f"Saved Bahamas tracking metrics to {output_json}")
     print(f"Saved Bahamas tracking estimates to {estimated_csv}")
+
+
+def _build_confidence_summary(estimated_frame: pd.DataFrame) -> dict[str, object]:
+    if estimated_frame.empty:
+        return {"buckets": []}
+    frame = estimated_frame.copy()
+    frame["confidence_bucket"] = frame["confidence"].apply(_confidence_bucket)
+    buckets = []
+    for bucket_name, bucket_frame in frame.groupby("confidence_bucket", sort=False):
+        buckets.append(
+            {
+                "bucket": bucket_name,
+                "rows": int(len(bucket_frame)),
+                "mean_tracking_error_m": float(bucket_frame["tracking_error_m"].mean()),
+                "median_tracking_error_m": float(bucket_frame["tracking_error_m"].median()),
+                "mean_innovation_nt": float(bucket_frame["innovation_nt"].mean()),
+            }
+        )
+    return {
+        "mean_confidence": float(frame["confidence"].mean()),
+        "median_confidence": float(frame["confidence"].median()),
+        "buckets": buckets,
+    }
+
+
+def _build_segment_metrics(estimated_frame: pd.DataFrame, segment_count: int = 5) -> list[dict[str, object]]:
+    if estimated_frame.empty:
+        return []
+    segment_size = max(1, int(len(estimated_frame) / segment_count))
+    segments: list[dict[str, object]] = []
+    for idx in range(0, len(estimated_frame), segment_size):
+        segment = estimated_frame.iloc[idx : idx + segment_size].copy()
+        if segment.empty:
+            continue
+        start_row = int(idx)
+        end_row = int(idx + len(segment) - 1)
+        segments.append(
+            {
+                "segment_index": int(len(segments)),
+                "start_row": start_row,
+                "end_row": end_row,
+                "rows": int(len(segment)),
+                "start_timestamp": segment["timestamp"].iloc[0],
+                "end_timestamp": segment["timestamp"].iloc[-1],
+                "mean_tracking_error_m": float(segment["tracking_error_m"].mean()),
+                "median_tracking_error_m": float(segment["tracking_error_m"].median()),
+                "max_tracking_error_m": float(segment["tracking_error_m"].max()),
+                "mean_confidence": float(segment["confidence"].mean()),
+                "mean_innovation_nt": float(segment["innovation_nt"].mean()),
+                "confidence_bucket": _confidence_bucket(float(segment["confidence"].mean())),
+            }
+        )
+    return segments
+
+
+def _confidence_bucket(confidence: float) -> str:
+    if confidence >= 0.75:
+        return "strong"
+    if confidence >= 0.4:
+        return "moderate"
+    return "weak"
 
 
 if __name__ == "__main__":

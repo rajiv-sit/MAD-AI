@@ -1,0 +1,3802 @@
+{
+  "-90.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 148.2820653182019,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795616,
+    "north_nt": -14419.9686082471,
+    "east_nt": 8912.190802910794,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 128.2820653182019,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795616,
+    "north_nt": -10502.18931737699,
+    "east_nt": 13306.639662675629,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 108.28206531820189,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": -5317.690999024406,
+    "east_nt": 16096.111394035961,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 88.28206531820187,
+    "inclination_deg": -71.8159433748885,
+    "total_intensity_nt": 54320.32349024694,
+    "horizontal_intensity_nt": 16951.77393579561,
+    "north_nt": 508.1993345712299,
+    "east_nt": 16944.154537971513,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 68.2820653182019,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": 6272.79332819419,
+    "east_nt": 15748.48257553984,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": 48.28206531820188,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": 11280.795869867094,
+    "east_nt": 12653.311191648965,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": 28.28206531820188,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795616,
+    "north_nt": 14928.16794281833,
+    "east_nt": 8031.963735060728,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": 8.282065318201887,
+    "inclination_deg": -71.8159433748885,
+    "total_intensity_nt": 54320.32349024694,
+    "horizontal_intensity_nt": 16951.77393579561,
+    "north_nt": 16774.982645571177,
+    "east_nt": 2441.842912864212,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -11.717934681798114,
+    "inclination_deg": -71.8159433748885,
+    "total_intensity_nt": 54320.32349024694,
+    "horizontal_intensity_nt": 16951.77393579561,
+    "north_nt": 16598.486868891498,
+    "east_nt": -3442.800202386992,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -31.71793468179812,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795616,
+    "north_nt": 14419.9686082471,
+    "east_nt": -8912.190802910793,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": -51.71793468179811,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.77393579562,
+    "north_nt": 10502.189317376993,
+    "east_nt": -13306.639662675632,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": -71.71793468179811,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": 5317.690999024409,
+    "east_nt": -16096.11139403596,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": -91.71793468179811,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": -508.1993345712252,
+    "east_nt": -16944.154537971517,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": -111.71793468179811,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": -6272.79332819419,
+    "east_nt": -15748.48257553984,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -131.71793468179814,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": -11280.795869867092,
+    "east_nt": -12653.311191648965,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -151.7179346817981,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": -14928.167942818325,
+    "east_nt": -8031.963735060732,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": -171.7179346817981,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795612,
+    "north_nt": -16774.98264557118,
+    "east_nt": -2441.842912864217,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 168.28206531820192,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795616,
+    "north_nt": -16598.4868688915,
+    "east_nt": 3442.800202386988,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-90.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 148.2820653182019,
+    "inclination_deg": -71.81594337488849,
+    "total_intensity_nt": 54320.32349024695,
+    "horizontal_intensity_nt": 16951.773935795616,
+    "north_nt": -14419.968608247103,
+    "east_nt": 8912.19080291079,
+    "down_nt": -51607.508218424526,
+    "source": "geomag"
+  },
+  "-70.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 85.84714001388375,
+    "inclination_deg": -80.62765122967512,
+    "total_intensity_nt": 62894.197909217706,
+    "horizontal_intensity_nt": 10242.308719380864,
+    "north_nt": 741.7237589334638,
+    "east_nt": 10215.416475530446,
+    "down_nt": -62054.61499953682,
+    "source": "geomag"
+  },
+  "-70.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 71.46111836970948,
+    "inclination_deg": -76.96511347337584,
+    "total_intensity_nt": 59964.36489240509,
+    "horizontal_intensity_nt": 13524.620206018275,
+    "north_nt": 4300.127670317912,
+    "east_nt": 12822.802101569067,
+    "down_nt": -58419.25799967393,
+    "source": "geomag"
+  },
+  "-70.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 60.94472748629509,
+    "inclination_deg": -73.21352130369574,
+    "total_intensity_nt": 56446.44583727079,
+    "horizontal_intensity_nt": 16302.064890283125,
+    "north_nt": 7917.148824689721,
+    "east_nt": 14250.476278872786,
+    "down_nt": -54041.13181617261,
+    "source": "geomag"
+  },
+  "-70.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 51.310185669918354,
+    "inclination_deg": -69.21056884654737,
+    "total_intensity_nt": 52413.092496904435,
+    "horizontal_intensity_nt": 18603.215687125536,
+    "north_nt": 11628.94280189862,
+    "east_nt": 14520.582743536292,
+    "down_nt": -49000.53704998901,
+    "source": "geomag"
+  },
+  "-70.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 40.69949865083541,
+    "inclination_deg": -65.1964287780775,
+    "total_intensity_nt": 48039.06095887712,
+    "horizontal_intensity_nt": 20152.802235648487,
+    "north_nt": 15278.646336494547,
+    "east_nt": 13141.476479965273,
+    "down_nt": -43607.52159732943,
+    "source": "geomag"
+  },
+  "-70.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": 28.64224082839242,
+    "inclination_deg": -61.9918771037882,
+    "total_intensity_nt": 43857.06951368953,
+    "horizontal_intensity_nt": 20595.136636313615,
+    "north_nt": 18074.906168925987,
+    "east_nt": 9872.052474179243,
+    "down_nt": -38720.574547134085,
+    "source": "geomag"
+  },
+  "-70.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": 16.120686258108066,
+    "inclination_deg": -60.32281223186805,
+    "total_intensity_nt": 40470.2868266395,
+    "horizontal_intensity_nt": 20037.356411902954,
+    "north_nt": 19249.466898039645,
+    "east_nt": 5563.602800245928,
+    "down_nt": -35161.74716723904,
+    "source": "geomag"
+  },
+  "-70.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": 4.232856205717633,
+    "inclination_deg": -59.93779783339712,
+    "total_intensity_nt": 38127.51484583728,
+    "horizontal_intensity_nt": 19099.593115131003,
+    "north_nt": 19047.49543915065,
+    "east_nt": 1409.742763448252,
+    "down_nt": -32998.68074872058,
+    "source": "geomag"
+  },
+  "-70.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -7.555117128377607,
+    "inclination_deg": -59.941073706693516,
+    "total_intensity_nt": 36887.52005258398,
+    "horizontal_intensity_nt": 18476.604896311608,
+    "north_nt": 18316.206526890168,
+    "east_nt": -2429.301743034823,
+    "down_nt": -31926.54392719919,
+    "source": "geomag"
+  },
+  "-70.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -20.975957418767173,
+    "inclination_deg": -60.06764637298577,
+    "total_intensity_nt": 37076.54663418412,
+    "horizontal_intensity_nt": 18500.350579239468,
+    "north_nt": 17274.345730387613,
+    "east_nt": -6622.684587220309,
+    "down_nt": -32131.096133839936,
+    "source": "geomag"
+  },
+  "-70.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": -36.57923151888776,
+    "inclination_deg": -61.00766183985375,
+    "total_intensity_nt": 39218.6189866225,
+    "horizontal_intensity_nt": 19008.976678761584,
+    "north_nt": 15264.845854453357,
+    "east_nt": -11328.092311306435,
+    "down_nt": -34303.919321910806,
+    "source": "geomag"
+  },
+  "-70.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": -53.19616852859618,
+    "inclination_deg": -63.496861727403704,
+    "total_intensity_nt": 43464.779935770064,
+    "horizontal_intensity_nt": 19396.020299928296,
+    "north_nt": 11619.712436883012,
+    "east_nt": -15530.224929452144,
+    "down_nt": -38897.06276044104,
+    "source": "geomag"
+  },
+  "-70.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": -69.62105969789185,
+    "inclination_deg": -67.55015264403323,
+    "total_intensity_nt": 49247.683246733795,
+    "horizontal_intensity_nt": 18806.43872666675,
+    "north_nt": 6548.919431583138,
+    "east_nt": -17629.344623624092,
+    "down_nt": -45515.40582693682,
+    "source": "geomag"
+  },
+  "-70.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": -85.86580614179695,
+    "inclination_deg": -72.60405804730446,
+    "total_intensity_nt": 55454.71066298416,
+    "horizontal_intensity_nt": 16579.47264619612,
+    "north_nt": 1195.258941763331,
+    "east_nt": -16536.331796625884,
+    "down_nt": -52918.29571603117,
+    "source": "geomag"
+  },
+  "-70.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -103.73659543919442,
+    "inclination_deg": -77.98269722131766,
+    "total_intensity_nt": 60818.777809455365,
+    "horizontal_intensity_nt": 12662.899685257953,
+    "north_nt": -3006.9148963355915,
+    "east_nt": -12300.71100567366,
+    "down_nt": -59485.920231572396,
+    "source": "geomag"
+  },
+  "-70.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -129.63073000932133,
+    "inclination_deg": -82.9692665863686,
+    "total_intensity_nt": 64333.054738228086,
+    "horizontal_intensity_nt": 7874.476994572544,
+    "north_nt": -5022.634003321697,
+    "east_nt": -6064.695837940177,
+    "down_nt": -63849.31122583703,
+    "source": "geomag"
+  },
+  "-70.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": 173.67333078116266,
+    "inclination_deg": -85.90717646203083,
+    "total_intensity_nt": 65619.71905427518,
+    "horizontal_intensity_nt": 4683.444148262916,
+    "north_nt": -4654.920897269151,
+    "east_nt": 516.1012788834269,
+    "down_nt": -65452.37107754085,
+    "source": "geomag"
+  },
+  "-70.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 111.89442274115491,
+    "inclination_deg": -84.16289547564297,
+    "total_intensity_nt": 64951.23538035626,
+    "horizontal_intensity_nt": 6605.576805089837,
+    "north_nt": -2463.2028376084813,
+    "east_nt": 6129.1334386468025,
+    "down_nt": -64614.466897951745,
+    "source": "geomag"
+  },
+  "-70.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 85.84714001388375,
+    "inclination_deg": -80.62765122967512,
+    "total_intensity_nt": 62894.197909217706,
+    "horizontal_intensity_nt": 10242.308719380862,
+    "north_nt": 741.7237589334624,
+    "east_nt": 10215.416475530445,
+    "down_nt": -62054.61499953682,
+    "source": "geomag"
+  },
+  "-50.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 31.54983088021827,
+    "inclination_deg": -71.48291697893835,
+    "total_intensity_nt": 58314.5829660293,
+    "horizontal_intensity_nt": 18519.976185758955,
+    "north_nt": 15782.453650647212,
+    "east_nt": 9690.390842801507,
+    "down_nt": -55295.57910521271,
+    "source": "geomag"
+  },
+  "-50.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 31.424893445710797,
+    "inclination_deg": -67.61500289220788,
+    "total_intensity_nt": 53613.09247804487,
+    "horizontal_intensity_nt": 20417.381313177975,
+    "north_nt": 17422.64868508732,
+    "east_nt": 10645.222988915462,
+    "down_nt": -49573.119988272694,
+    "source": "geomag"
+  },
+  "-50.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 30.438059683582125,
+    "inclination_deg": -63.917395532579334,
+    "total_intensity_nt": 48905.17444767689,
+    "horizontal_intensity_nt": 21501.96688341265,
+    "north_nt": 18538.508558881378,
+    "east_nt": 10893.038155980916,
+    "down_nt": -43924.72547327227,
+    "source": "geomag"
+  },
+  "-50.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 29.956313974842715,
+    "inclination_deg": -59.69268245130147,
+    "total_intensity_nt": 43723.82300891227,
+    "horizontal_intensity_nt": 22064.69772199471,
+    "north_nt": 19116.99497845179,
+    "east_nt": 11017.776025897774,
+    "down_nt": -37748.1365493939,
+    "source": "geomag"
+  },
+  "-50.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 27.31984844328239,
+    "inclination_deg": -53.971154389112115,
+    "total_intensity_nt": 37402.95145694082,
+    "horizontal_intensity_nt": 22000.13470593692,
+    "north_nt": 19546.202140780286,
+    "east_nt": 10097.123795969146,
+    "down_nt": -30248.551215073116,
+    "source": "geomag"
+  },
+  "-50.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": 17.58725428650303,
+    "inclination_deg": -48.723312630082646,
+    "total_intensity_nt": 31038.599722298055,
+    "horizontal_intensity_nt": 20476.038138427986,
+    "north_nt": 19518.94527588367,
+    "east_nt": 6186.995487586528,
+    "down_nt": -23326.519990660494,
+    "source": "geomag"
+  },
+  "-50.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": 2.362363124641824,
+    "inclination_deg": -49.3220055644868,
+    "total_intensity_nt": 27051.716171538767,
+    "horizontal_intensity_nt": 17632.50281639812,
+    "north_nt": 17617.517342368505,
+    "east_nt": 726.8000148821124,
+    "down_nt": -20515.608503166666,
+    "source": "geomag"
+  },
+  "-50.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -9.397754547324931,
+    "inclination_deg": -55.38873977606671,
+    "total_intensity_nt": 25667.992708448746,
+    "horizontal_intensity_nt": 14579.561120030785,
+    "north_nt": 14383.88243976025,
+    "east_nt": -2380.6571386636297,
+    "down_nt": -21125.39342185761,
+    "source": "geomag"
+  },
+  "-50.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -14.911773237074703,
+    "inclination_deg": -60.431055356374884,
+    "total_intensity_nt": 24949.956957191676,
+    "horizontal_intensity_nt": 12312.068032996332,
+    "north_nt": 11897.437261269752,
+    "east_nt": -3168.281215940321,
+    "down_nt": -21700.537618146405,
+    "source": "geomag"
+  },
+  "-50.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -21.581615906301757,
+    "inclination_deg": -61.06742481471735,
+    "total_intensity_nt": 24744.295881474118,
+    "horizontal_intensity_nt": 11970.796585711247,
+    "north_nt": 11131.578570769612,
+    "east_nt": -4403.172653809842,
+    "down_nt": -21655.950862833546,
+    "source": "geomag"
+  },
+  "-50.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": -34.86196545322731,
+    "inclination_deg": -59.21184460310691,
+    "total_intensity_nt": 27353.748954440733,
+    "horizontal_intensity_nt": 14001.434462000407,
+    "north_nt": 11488.618044078967,
+    "east_nt": -8003.238246544696,
+    "down_nt": -23498.66836373659,
+    "source": "geomag"
+  },
+  "-50.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": -48.64906718043257,
+    "inclination_deg": -60.58114319220938,
+    "total_intensity_nt": 34445.06619370262,
+    "horizontal_intensity_nt": 16919.08774128197,
+    "north_nt": 11177.920837718908,
+    "east_nt": -12700.772249862886,
+    "down_nt": -30003.45071973151,
+    "source": "geomag"
+  },
+  "-50.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": -56.76625222490341,
+    "inclination_deg": -66.19451626544061,
+    "total_intensity_nt": 44366.69246922663,
+    "horizontal_intensity_nt": 17907.855173435357,
+    "north_nt": 9814.507311136427,
+    "east_nt": -14978.875897489273,
+    "down_nt": -40592.02044424736,
+    "source": "geomag"
+  },
+  "-50.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": -56.09709569577088,
+    "inclination_deg": -72.9122465141955,
+    "total_intensity_nt": 54156.13126186722,
+    "horizontal_intensity_nt": 15913.022361663434,
+    "north_nt": 8876.079889283192,
+    "east_nt": -13207.554144574344,
+    "down_nt": -51765.45443217698,
+    "source": "geomag"
+  },
+  "-50.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -42.27892839524178,
+    "inclination_deg": -78.30469908124194,
+    "total_intensity_nt": 61659.73188694524,
+    "horizontal_intensity_nt": 12498.85830136907,
+    "north_nt": 9247.637256831853,
+    "east_nt": -8408.487616911732,
+    "down_nt": -60379.641250443594,
+    "source": "geomag"
+  },
+  "-50.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -12.705206894995994,
+    "inclination_deg": -80.48755106326446,
+    "total_intensity_nt": 65410.08705433409,
+    "horizontal_intensity_nt": 10809.79507624261,
+    "north_nt": 10545.112496707248,
+    "east_nt": -2377.450740214734,
+    "down_nt": -64510.67988221179,
+    "source": "geomag"
+  },
+  "-50.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": 14.447072643998878,
+    "inclination_deg": -78.94923079997588,
+    "total_intensity_nt": 65299.004841660775,
+    "horizontal_intensity_nt": 12516.430324252238,
+    "north_nt": 12120.642241293655,
+    "east_nt": 3122.668685664382,
+    "down_nt": -64088.2126857145,
+    "source": "geomag"
+  },
+  "-50.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 27.574885757618283,
+    "inclination_deg": -75.49952124517392,
+    "total_intensity_nt": 62537.23090802476,
+    "horizontal_intensity_nt": 15658.578034854112,
+    "north_nt": 13879.866429584463,
+    "east_nt": 7248.473906313652,
+    "down_nt": -60545.14170080033,
+    "source": "geomag"
+  },
+  "-50.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 31.549830880218266,
+    "inclination_deg": -71.48291697893835,
+    "total_intensity_nt": 58314.58296602932,
+    "horizontal_intensity_nt": 18519.976185758955,
+    "north_nt": 15782.453650647212,
+    "east_nt": 9690.390842801506,
+    "down_nt": -55295.579105212724,
+    "source": "geomag"
+  },
+  "-30.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 17.16506983343101,
+    "inclination_deg": -54.853374464978955,
+    "total_intensity_nt": 48606.7873581649,
+    "horizontal_intensity_nt": 27981.51042607985,
+    "north_nt": 26735.17091446565,
+    "east_nt": 8258.060419924614,
+    "down_nt": -39744.87201585939,
+    "source": "geomag"
+  },
+  "-30.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 17.702957257789155,
+    "inclination_deg": -50.51833487342855,
+    "total_intensity_nt": 43780.5600444375,
+    "horizontal_intensity_nt": 27837.04886805588,
+    "north_nt": 26518.847344959177,
+    "east_nt": 8464.751926505747,
+    "down_nt": -33791.06609922312,
+    "source": "geomag"
+  },
+  "-30.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 17.286335926100396,
+    "inclination_deg": -46.094416437783025,
+    "total_intensity_nt": 39154.55930182667,
+    "horizontal_intensity_nt": 27152.59226320446,
+    "north_nt": 25926.15559187349,
+    "east_nt": 8068.315985247342,
+    "down_nt": -28210.215304184243,
+    "source": "geomag"
+  },
+  "-30.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 16.4389711653298,
+    "inclination_deg": -42.009288972328285,
+    "total_intensity_nt": 34772.39221124968,
+    "horizontal_intensity_nt": 25837.150838237754,
+    "north_nt": 24780.972319462828,
+    "east_nt": 7311.755899909884,
+    "down_nt": -23271.4609909891,
+    "source": "geomag"
+  },
+  "-30.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 15.590976186501821,
+    "inclination_deg": -36.82083368012933,
+    "total_intensity_nt": 29898.06140433358,
+    "horizontal_intensity_nt": 23933.801875639812,
+    "north_nt": 23053.155444441505,
+    "east_nt": 6432.6430242006145,
+    "down_nt": -17918.348236233203,
+    "source": "geomag"
+  },
+  "-30.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": 6.700091768358032,
+    "inclination_deg": -30.75659488076309,
+    "total_intensity_nt": 24495.585075304203,
+    "horizontal_intensity_nt": 21050.221136779463,
+    "north_nt": 20906.457865728647,
+    "east_nt": 2455.9783011724116,
+    "down_nt": -12526.846302008707,
+    "source": "geomag"
+  },
+  "-30.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -11.636968686188666,
+    "inclination_deg": -36.03060157466474,
+    "total_intensity_nt": 22060.471906361126,
+    "horizontal_intensity_nt": 17840.36857524916,
+    "north_nt": 17473.66524301765,
+    "east_nt": -3598.5794246750356,
+    "down_nt": -12976.350404894702,
+    "source": "geomag"
+  },
+  "-30.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -23.131378735622437,
+    "inclination_deg": -50.35030685858909,
+    "total_intensity_nt": 23123.996589910766,
+    "horizontal_intensity_nt": 14755.237762526087,
+    "north_nt": 13569.01242504178,
+    "east_nt": -5796.459543353823,
+    "down_nt": -17804.554947022094,
+    "source": "geomag"
+  },
+  "-30.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -25.842742354497748,
+    "inclination_deg": -62.05324334881822,
+    "total_intensity_nt": 24591.748147028375,
+    "horizontal_intensity_nt": 11524.94396599761,
+    "north_nt": 10372.378584628628,
+    "east_nt": -5023.753170342083,
+    "down_nt": -21723.944013633638,
+    "source": "geomag"
+  },
+  "-30.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -21.46449114886761,
+    "inclination_deg": -68.56178092660117,
+    "total_intensity_nt": 25297.55276130075,
+    "horizontal_intensity_nt": 9246.198934941995,
+    "north_nt": 8604.924435197112,
+    "east_nt": -3383.4110316469278,
+    "down_nt": -23547.271199998373,
+    "source": "geomag"
+  },
+  "-30.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": -22.11691265034002,
+    "inclination_deg": -65.77473613672592,
+    "total_intensity_nt": 26022.44779351837,
+    "horizontal_intensity_nt": 10677.665627739081,
+    "north_nt": 9891.976682052446,
+    "east_nt": -4020.1169858016947,
+    "down_nt": -23730.89222740242,
+    "source": "geomag"
+  },
+  "-30.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": -30.54780127478099,
+    "inclination_deg": -60.738844091259935,
+    "total_intensity_nt": 31915.955075113012,
+    "horizontal_intensity_nt": 15600.23522306828,
+    "north_nt": 13435.007230857462,
+    "east_nt": -7928.929292273198,
+    "down_nt": -27843.506412475635,
+    "source": "geomag"
+  },
+  "-30.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": -31.05659222414615,
+    "inclination_deg": -62.2985823330837,
+    "total_intensity_nt": 42250.11542849792,
+    "horizontal_intensity_nt": 19640.55566592404,
+    "north_nt": 16825.24245341752,
+    "east_nt": -10132.257559397991,
+    "down_nt": -37407.496933838505,
+    "source": "geomag"
+  },
+  "-30.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": -21.382389648412268,
+    "inclination_deg": -65.30707003478919,
+    "total_intensity_nt": 51133.65284065459,
+    "horizontal_intensity_nt": 21361.33734783211,
+    "north_nt": 19890.992064606147,
+    "east_nt": -7788.142780770148,
+    "down_nt": -46457.97799668746,
+    "source": "geomag"
+  },
+  "-30.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -8.13173229070145,
+    "inclination_deg": -65.12360459318967,
+    "total_intensity_nt": 55966.35816932849,
+    "horizontal_intensity_nt": 23542.9255098806,
+    "north_nt": 23306.2124623472,
+    "east_nt": -3330.1354662713948,
+    "down_nt": -50773.65365200514,
+    "source": "geomag"
+  },
+  "-30.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": 0.19407027102575578,
+    "inclination_deg": -63.20365553463904,
+    "total_intensity_nt": 57277.009764007846,
+    "horizontal_intensity_nt": 25821.655438402813,
+    "north_nt": 25821.50731406199,
+    "east_nt": 87.46204571559505,
+    "down_nt": -51126.29419317083,
+    "source": "geomag"
+  },
+  "-30.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": 7.266393097011351,
+    "inclination_deg": -61.86087817429373,
+    "total_intensity_nt": 56316.543929412815,
+    "horizontal_intensity_nt": 26559.67571387482,
+    "north_nt": 26346.369695311216,
+    "east_nt": 3359.3418855750215,
+    "down_nt": -49660.21290859808,
+    "source": "geomag"
+  },
+  "-30.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 13.89482776262171,
+    "inclination_deg": -59.091409138363126,
+    "total_intensity_nt": 53208.928482133706,
+    "horizontal_intensity_nt": 27331.82516011244,
+    "north_nt": 26532.045764478782,
+    "east_nt": 6563.475766281076,
+    "down_nt": -45652.61661322234,
+    "source": "geomag"
+  },
+  "-30.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 17.165069833431005,
+    "inclination_deg": -54.853374464978955,
+    "total_intensity_nt": 48606.787358164904,
+    "horizontal_intensity_nt": 27981.51042607985,
+    "north_nt": 26735.17091446565,
+    "east_nt": 8258.060419924612,
+    "down_nt": -39744.8720158594,
+    "source": "geomag"
+  },
+  "-10.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 11.233361528955086,
+    "inclination_deg": -25.13126380645413,
+    "total_intensity_nt": 37780.954937183276,
+    "horizontal_intensity_nt": 34204.503846498956,
+    "north_nt": 33549.210285397196,
+    "east_nt": 6663.225391007038,
+    "down_nt": -16045.32556791265,
+    "source": "geomag"
+  },
+  "-10.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 10.919067354037828,
+    "inclination_deg": -19.35042458499001,
+    "total_intensity_nt": 34605.134037394,
+    "horizontal_intensity_nt": 32650.27993355426,
+    "north_nt": 32059.170437263743,
+    "east_nt": 6184.688400714331,
+    "down_nt": -11466.233994060503,
+    "source": "geomag"
+  },
+  "-10.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 10.686285081746771,
+    "inclination_deg": -14.301227992222277,
+    "total_intensity_nt": 31780.098735741743,
+    "horizontal_intensity_nt": 30795.24737577756,
+    "north_nt": 30261.17191370594,
+    "east_nt": 5710.405882638227,
+    "down_nt": -7850.313033131828,
+    "source": "geomag"
+  },
+  "-10.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 9.529815444906916,
+    "inclination_deg": -9.481064544408712,
+    "total_intensity_nt": 29559.80151651816,
+    "horizontal_intensity_nt": 29156.017394754996,
+    "north_nt": 28753.652135742344,
+    "east_nt": 4827.094279167917,
+    "down_nt": -4869.139079210362,
+    "source": "geomag"
+  },
+  "-10.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 7.867817232150384,
+    "inclination_deg": -3.3276764143395257,
+    "total_intensity_nt": 27626.052222293372,
+    "horizontal_intensity_nt": 27579.47177410455,
+    "north_nt": 27319.85266286635,
+    "east_nt": 3775.3031425176764,
+    "down_nt": -1603.5891151572744,
+    "source": "geomag"
+  },
+  "-10.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": -1.5736920711905507,
+    "inclination_deg": 2.3327890337622077,
+    "total_intensity_nt": 25169.884360115484,
+    "horizontal_intensity_nt": 25149.025196294282,
+    "north_nt": 25139.53974263724,
+    "east_nt": -690.658998498883,
+    "down_nt": 1024.5049427607964,
+    "source": "geomag"
+  },
+  "-10.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -16.76542475011003,
+    "inclination_deg": -8.292524660884249,
+    "total_intensity_nt": 23816.88075963234,
+    "horizontal_intensity_nt": 23567.86609456511,
+    "north_nt": 22566.084251106433,
+    "east_nt": -6798.246378538952,
+    "down_nt": -3435.0395728715152,
+    "source": "geomag"
+  },
+  "-10.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -22.858541916703842,
+    "inclination_deg": -30.623741522523392,
+    "total_intensity_nt": 25130.572807296747,
+    "horizontal_intensity_nt": 21625.637520791894,
+    "north_nt": 19927.30541949126,
+    "east_nt": -8400.636696048494,
+    "down_nt": -12801.464425688198,
+    "source": "geomag"
+  },
+  "-10.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -18.386873392563693,
+    "inclination_deg": -46.00389794668606,
+    "total_intensity_nt": 28224.922996486253,
+    "horizontal_intensity_nt": 19605.29769480356,
+    "north_nt": 18604.413972023423,
+    "east_nt": -6184.131180646921,
+    "down_nt": -20304.644307539806,
+    "source": "geomag"
+  },
+  "-10.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -8.392888408268819,
+    "inclination_deg": -51.2466671362192,
+    "total_intensity_nt": 31181.11921295894,
+    "horizontal_intensity_nt": 19518.408916804296,
+    "north_nt": 19309.375682469003,
+    "east_nt": -2848.911616189612,
+    "down_nt": -24316.535705753227,
+    "source": "geomag"
+  },
+  "-10.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": -0.9451812340810574,
+    "inclination_deg": -48.073452524632515,
+    "total_intensity_nt": 31661.810482748548,
+    "horizontal_intensity_nt": 21155.704742312093,
+    "north_nt": 21152.826200324424,
+    "east_nt": -348.97977413463656,
+    "down_nt": -23556.451343561905,
+    "source": "geomag"
+  },
+  "-10.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": -4.319918252941416,
+    "inclination_deg": -39.88258926764084,
+    "total_intensity_nt": 33135.40040206435,
+    "horizontal_intensity_nt": 25426.782066797907,
+    "north_nt": 25354.544775559236,
+    "east_nt": -1915.2820932169627,
+    "down_nt": -21246.964807536406,
+    "source": "geomag"
+  },
+  "-10.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": -8.168630236004448,
+    "inclination_deg": -37.63421038610324,
+    "total_intensity_nt": 38991.35601404677,
+    "horizontal_intensity_nt": 30878.23718776709,
+    "north_nt": 30564.95192607171,
+    "east_nt": -4387.396218821321,
+    "down_nt": -23808.828446400697,
+    "source": "geomag"
+  },
+  "-10.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": -5.6208138349037124,
+    "inclination_deg": -38.40872061470653,
+    "total_intensity_nt": 44635.645353992506,
+    "horizontal_intensity_nt": 34976.44293138303,
+    "north_nt": 34808.272184767986,
+    "east_nt": -3425.7477495287467,
+    "down_nt": -27730.65588901746,
+    "source": "geomag"
+  },
+  "-10.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -0.33814393538967114,
+    "inclination_deg": -36.99594215602176,
+    "total_intensity_nt": 46360.78670652678,
+    "horizontal_intensity_nt": 37027.3464428541,
+    "north_nt": 37026.70160685603,
+    "east_nt": -218.52394830965778,
+    "down_nt": -27897.9956170498,
+    "source": "geomag"
+  },
+  "-10.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": 0.5394428439433683,
+    "inclination_deg": -34.71427857167938,
+    "total_intensity_nt": 45267.262537022514,
+    "horizontal_intensity_nt": 37209.786968939785,
+    "north_nt": 37208.137783136524,
+    "east_nt": 350.326968715601,
+    "down_nt": -25778.99942437334,
+    "source": "geomag"
+  },
+  "-10.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": 3.746262051894685,
+    "inclination_deg": -35.08506894573746,
+    "total_intensity_nt": 43906.25127551835,
+    "horizontal_intensity_nt": 35928.46494723668,
+    "north_nt": 35851.69257157147,
+    "east_nt": 2347.4950944234392,
+    "down_nt": -25236.963121662273,
+    "source": "geomag"
+  },
+  "-10.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 8.810091428871548,
+    "inclination_deg": -31.745019244349002,
+    "total_intensity_nt": 41152.43596574101,
+    "horizontal_intensity_nt": 34995.94783573325,
+    "north_nt": 34583.0453780034,
+    "east_nt": 5359.975494749954,
+    "down_nt": -21651.94266094965,
+    "source": "geomag"
+  },
+  "-10.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 11.233361528955083,
+    "inclination_deg": -25.131263806454125,
+    "total_intensity_nt": 37780.954937183276,
+    "horizontal_intensity_nt": 34204.503846498956,
+    "north_nt": 33549.210285397196,
+    "east_nt": 6663.225391007035,
+    "down_nt": -16045.325567912649,
+    "source": "geomag"
+  },
+  "10.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 9.133652905752278,
+    "inclination_deg": 14.858785459109455,
+    "total_intensity_nt": 32835.94692455266,
+    "horizontal_intensity_nt": 31737.938881053313,
+    "north_nt": 31335.52535480692,
+    "east_nt": 5038.016986446988,
+    "down_nt": 8420.370895308833,
+    "source": "geomag"
+  },
+  "10.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 8.79122620746807,
+    "inclination_deg": 20.994498674428016,
+    "total_intensity_nt": 32256.500273097525,
+    "horizontal_intensity_nt": 30115.14706203509,
+    "north_nt": 29761.348195577815,
+    "east_nt": 4602.633610182099,
+    "down_nt": 11556.804372331484,
+    "source": "geomag"
+  },
+  "10.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 8.976353309244335,
+    "inclination_deg": 24.884466394251643,
+    "total_intensity_nt": 32390.376530143792,
+    "horizontal_intensity_nt": 29383.193372459507,
+    "north_nt": 29023.332083472967,
+    "east_nt": 4584.566232022062,
+    "down_nt": 13629.5428757219,
+    "source": "geomag"
+  },
+  "10.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 8.06682245352817,
+    "inclination_deg": 28.93797668895031,
+    "total_intensity_nt": 33370.11847457565,
+    "horizontal_intensity_nt": 29203.659173429653,
+    "north_nt": 28914.69134995457,
+    "east_nt": 4098.088975937953,
+    "down_nt": 16146.550649887215,
+    "source": "geomag"
+  },
+  "10.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 4.615628199187906,
+    "inclination_deg": 33.75135130924716,
+    "total_intensity_nt": 34256.655755648666,
+    "horizontal_intensity_nt": 28482.91940669343,
+    "north_nt": 28390.548331621227,
+    "east_nt": 2292.0434895682884,
+    "down_nt": 19032.649989762955,
+    "source": "geomag"
+  },
+  "10.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": -5.485316072923446,
+    "inclination_deg": 35.53408530249737,
+    "total_intensity_nt": 33287.99791765221,
+    "horizontal_intensity_nt": 27088.771192337303,
+    "north_nt": 26964.724376188202,
+    "east_nt": -2589.4331478153895,
+    "down_nt": 19346.557333407272,
+    "source": "geomag"
+  },
+  "10.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -15.952018554298835,
+    "inclination_deg": 26.12096398645894,
+    "total_intensity_nt": 30915.423287693153,
+    "horizontal_intensity_nt": 27757.924327010467,
+    "north_nt": 26689.027367686405,
+    "east_nt": -7628.7732376133445,
+    "down_nt": 13611.062931057242,
+    "source": "geomag"
+  },
+  "10.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -16.495244467771254,
+    "inclination_deg": 7.535907256560047,
+    "total_intensity_nt": 29979.385939813415,
+    "horizontal_intensity_nt": 29720.449964338506,
+    "north_nt": 28497.254462538935,
+    "east_nt": -8438.69860701598,
+    "down_nt": 3931.721664300976,
+    "source": "geomag"
+  },
+  "10.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -8.701941632006255,
+    "inclination_deg": -4.850974067739938,
+    "total_intensity_nt": 31393.49535505253,
+    "horizontal_intensity_nt": 31281.04447063927,
+    "north_nt": 30920.960870731098,
+    "east_nt": -4732.644293080555,
+    "down_nt": -2654.770693222529,
+    "source": "geomag"
+  },
+  "10.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -1.5637967879120538,
+    "inclination_deg": -5.783698723867244,
+    "total_intensity_nt": 33425.7084713214,
+    "horizontal_intensity_nt": 33255.5522344599,
+    "north_nt": 33243.166476839564,
+    "east_nt": -907.5444958903082,
+    "down_nt": -3368.4168968339372,
+    "source": "geomag"
+  },
+  "10.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": 2.759613873592866,
+    "inclination_deg": -1.8647980419673424,
+    "total_intensity_nt": 34802.03014238509,
+    "horizontal_intensity_nt": 34783.59890088011,
+    "north_nt": 34743.261126258956,
+    "east_nt": 1674.6817040534763,
+    "down_nt": -1132.497034950831,
+    "source": "geomag"
+  },
+  "10.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": 2.584741895358822,
+    "inclination_deg": 5.924740811686496,
+    "total_intensity_nt": 36246.697439099065,
+    "horizontal_intensity_nt": 36053.079821136766,
+    "north_nt": 36016.399948454506,
+    "east_nt": 1625.884172450541,
+    "down_nt": 3741.45835902683,
+    "source": "geomag"
+  },
+  "10.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": -0.5774737716267084,
+    "inclination_deg": 8.194406934917406,
+    "total_intensity_nt": 38722.175816719995,
+    "horizontal_intensity_nt": 38326.82818121464,
+    "north_nt": 38324.88152854214,
+    "east_nt": -386.28261099671863,
+    "down_nt": 5519.161308444084,
+    "source": "geomag"
+  },
+  "10.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": -1.0627803200406962,
+    "inclination_deg": 7.912145526556738,
+    "total_intensity_nt": 41236.38356401747,
+    "horizontal_intensity_nt": 40843.82579300293,
+    "north_nt": 40836.79950883732,
+    "east_nt": -757.5693263294792,
+    "down_nt": 5676.3741974608265,
+    "source": "geomag"
+  },
+  "10.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -0.3049816746074874,
+    "inclination_deg": 8.346392535256667,
+    "total_intensity_nt": 42059.79749706094,
+    "horizontal_intensity_nt": 41614.3244801067,
+    "north_nt": 41613.734939053786,
+    "east_nt": -221.5092724513036,
+    "down_nt": 6105.2898013252625,
+    "source": "geomag"
+  },
+  "10.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -2.0701540126883766,
+    "inclination_deg": 8.162840761956852,
+    "total_intensity_nt": 40442.94081141828,
+    "horizontal_intensity_nt": 40033.19416309669,
+    "north_nt": 40007.06635066686,
+    "east_nt": -1446.1247918276902,
+    "down_nt": 5742.371163176681,
+    "source": "geomag"
+  },
+  "10.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": -0.1108094616158766,
+    "inclination_deg": 4.902497818380717,
+    "total_intensity_nt": 37391.23048826541,
+    "horizontal_intensity_nt": 37254.43734425373,
+    "north_nt": 37254.3676725706,
+    "east_nt": -72.04966241098148,
+    "down_nt": 3195.4679766290546,
+    "source": "geomag"
+  },
+  "10.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 5.488614287171588,
+    "inclination_deg": 7.0812509589193695,
+    "total_intensity_nt": 34394.96541154107,
+    "horizontal_intensity_nt": 34132.61200612801,
+    "north_nt": 33976.12166014515,
+    "east_nt": 3264.7142747703315,
+    "down_nt": 4240.0994446159075,
+    "source": "geomag"
+  },
+  "10.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 9.133652905752284,
+    "inclination_deg": 14.858785459109452,
+    "total_intensity_nt": 32835.94692455266,
+    "horizontal_intensity_nt": 31737.938881053313,
+    "north_nt": 31335.525354806916,
+    "east_nt": 5038.01698644699,
+    "down_nt": 8420.370895308832,
+    "source": "geomag"
+  },
+  "30.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 6.12540953903143,
+    "inclination_deg": 43.545082038938226,
+    "total_intensity_nt": 37412.77239549636,
+    "horizontal_intensity_nt": 27117.994413184333,
+    "north_nt": 26963.170199570057,
+    "east_nt": 2893.626406866271,
+    "down_nt": 25774.598296068896,
+    "source": "geomag"
+  },
+  "30.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 9.505662831660647,
+    "inclination_deg": 47.45245022780936,
+    "total_intensity_nt": 37841.80845674114,
+    "horizontal_intensity_nt": 25588.700561022317,
+    "north_nt": 25237.349386706737,
+    "east_nt": 4225.848120195159,
+    "down_nt": 27878.681297274834,
+    "source": "geomag"
+  },
+  "30.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 11.718899017736604,
+    "inclination_deg": 50.77955096503279,
+    "total_intensity_nt": 40079.73113828812,
+    "horizontal_intensity_nt": 25342.648160940244,
+    "north_nt": 24814.402656079117,
+    "east_nt": 5147.352390421851,
+    "down_nt": 31050.5238652789,
+    "source": "geomag"
+  },
+  "30.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 10.846076253475161,
+    "inclination_deg": 54.77022254005078,
+    "total_intensity_nt": 43422.72054031534,
+    "horizontal_intensity_nt": 25048.69685208314,
+    "north_nt": 24601.233052809137,
+    "east_nt": 4713.443143704083,
+    "down_nt": 35469.641175726094,
+    "source": "geomag"
+  },
+  "30.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 4.152234467933099,
+    "inclination_deg": 58.300209448820475,
+    "total_intensity_nt": 46020.66873814748,
+    "horizontal_intensity_nt": 24182.41365159871,
+    "north_nt": 24118.939333805803,
+    "east_nt": 1750.9698538875025,
+    "down_nt": 39154.984626344536,
+    "source": "geomag"
+  },
+  "30.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": -8.11157495523786,
+    "inclination_deg": 57.76898799259618,
+    "total_intensity_nt": 45473.984571046116,
+    "horizontal_intensity_nt": 24252.83163173676,
+    "north_nt": 24010.186234755114,
+    "east_nt": -3422.1044884320977,
+    "down_nt": 38466.65348857851,
+    "source": "geomag"
+  },
+  "30.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -14.943559513610484,
+    "inclination_deg": 51.58430105078235,
+    "total_intensity_nt": 42081.04109239262,
+    "horizontal_intensity_nt": 26147.580377156,
+    "north_nt": 25263.27739491017,
+    "east_nt": -6742.608905138603,
+    "down_nt": 32971.47342536883,
+    "source": "geomag"
+  },
+  "30.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -12.176886557805233,
+    "inclination_deg": 43.87704787661202,
+    "total_intensity_nt": 39592.68050211227,
+    "horizontal_intensity_nt": 28539.545316737378,
+    "north_nt": 27897.435923860037,
+    "east_nt": -6019.860111350595,
+    "down_nt": 27442.206588688066,
+    "source": "geomag"
+  },
+  "30.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -5.285854750907367,
+    "inclination_deg": 39.32902116375451,
+    "total_intensity_nt": 39304.075142084504,
+    "horizontal_intensity_nt": 30402.460441426392,
+    "north_nt": 30273.17313923672,
+    "east_nt": -2800.819339817022,
+    "down_nt": 24909.851904058523,
+    "source": "geomag"
+  },
+  "30.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": 0.8762646702793174,
+    "inclination_deg": 39.889829576942816,
+    "total_intensity_nt": 40709.93585481266,
+    "horizontal_intensity_nt": 31235.878944584936,
+    "north_nt": 31232.226020814905,
+    "east_nt": 477.6936523514602,
+    "down_nt": 26107.829167937285,
+    "source": "geomag"
+  },
+  "30.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": 4.10291146183551,
+    "inclination_deg": 42.56635852135136,
+    "total_intensity_nt": 42625.489931329976,
+    "horizontal_intensity_nt": 31393.434249301496,
+    "north_nt": 31312.977540171796,
+    "east_nt": 2246.141476824813,
+    "down_nt": 28833.742003435786,
+    "source": "geomag"
+  },
+  "30.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": 4.911916031159187,
+    "inclination_deg": 46.19189429071849,
+    "total_intensity_nt": 44894.23956313382,
+    "horizontal_intensity_nt": 31077.82522632472,
+    "north_nt": 30963.692228503965,
+    "east_nt": 2661.0119083664904,
+    "down_nt": 32398.480290810945,
+    "source": "geomag"
+  },
+  "30.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": 3.0511449517003393,
+    "inclination_deg": 47.55120819550321,
+    "total_intensity_nt": 47230.53977683936,
+    "horizontal_intensity_nt": 31877.355209016714,
+    "north_nt": 31832.166486155867,
+    "east_nt": 1696.7474530643008,
+    "down_nt": 34850.51093584971,
+    "source": "geomag"
+  },
+  "30.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": 1.7396793683630833,
+    "inclination_deg": 47.80685889924815,
+    "total_intensity_nt": 49583.28020916293,
+    "horizontal_intensity_nt": 33301.71281977232,
+    "north_nt": 33286.36324420718,
+    "east_nt": 1010.9889738672668,
+    "down_nt": 36735.508701660576,
+    "source": "geomag"
+  },
+  "30.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -1.161980144929214,
+    "inclination_deg": 48.10460791199935,
+    "total_intensity_nt": 50881.710073711394,
+    "horizontal_intensity_nt": 33977.41657910275,
+    "north_nt": 33970.42946841073,
+    "east_nt": -689.0276638989999,
+    "down_nt": 37874.57699612416,
+    "source": "geomag"
+  },
+  "30.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -6.037936699659572,
+    "inclination_deg": 46.34998920405606,
+    "total_intensity_nt": 48891.85063469391,
+    "horizontal_intensity_nt": 33747.66720379372,
+    "north_nt": 33560.4509047323,
+    "east_nt": -3549.813624553673,
+    "down_nt": 35376.6592089644,
+    "source": "geomag"
+  },
+  "30.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": -6.12517902456166,
+    "inclination_deg": 41.97520540111443,
+    "total_intensity_nt": 43768.27467811239,
+    "horizontal_intensity_nt": 32538.837540644636,
+    "north_nt": 32353.07818633152,
+    "east_nt": -3471.927471244784,
+    "down_nt": 29272.613819101123,
+    "source": "geomag"
+  },
+  "30.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": -0.24482251830951746,
+    "inclination_deg": 40.41762599164249,
+    "total_intensity_nt": 39242.39074252803,
+    "horizontal_intensity_nt": 29876.758183375438,
+    "north_nt": 29876.485436193227,
+    "east_nt": -127.66177511342633,
+    "down_nt": 25442.966643875443,
+    "source": "geomag"
+  },
+  "30.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 6.125409539031426,
+    "inclination_deg": 43.54508203893823,
+    "total_intensity_nt": 37412.772395496366,
+    "horizontal_intensity_nt": 27117.994413184333,
+    "north_nt": 26963.170199570057,
+    "east_nt": 2893.6264068662695,
+    "down_nt": 25774.598296068903,
+    "source": "geomag"
+  },
+  "50.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": 2.2973950669497167,
+    "inclination_deg": 62.18184326063324,
+    "total_intensity_nt": 48680.640188671096,
+    "horizontal_intensity_nt": 22717.645204348184,
+    "north_nt": 22699.385185044273,
+    "east_nt": 910.6678053146635,
+    "down_nt": 43054.771228613165,
+    "source": "geomag"
+  },
+  "50.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 9.879743394924228,
+    "inclination_deg": 63.90076832901261,
+    "total_intensity_nt": 48976.92258767641,
+    "horizontal_intensity_nt": 21546.27686202698,
+    "north_nt": 21226.74663553208,
+    "east_nt": 3696.927627915752,
+    "down_nt": 43982.91599637442,
+    "source": "geomag"
+  },
+  "50.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 15.026017005144888,
+    "inclination_deg": 67.18387189575769,
+    "total_intensity_nt": 51203.58641279385,
+    "horizontal_intensity_nt": 19855.474049011485,
+    "north_nt": 19176.579681942094,
+    "east_nt": 5147.6831111767415,
+    "down_nt": 47197.11232502978,
+    "source": "geomag"
+  },
+  "50.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 14.51273114377969,
+    "inclination_deg": 71.16318516754416,
+    "total_intensity_nt": 54031.815295373875,
+    "horizontal_intensity_nt": 17445.462318862057,
+    "north_nt": 16888.812192252648,
+    "east_nt": 4371.747734448335,
+    "down_nt": 51137.979121144024,
+    "source": "geomag"
+  },
+  "50.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": 4.6104653267375575,
+    "inclination_deg": 74.15565690006694,
+    "total_intensity_nt": 55883.418241246865,
+    "horizontal_intensity_nt": 15257.56231708764,
+    "north_nt": 15208.192097451241,
+    "east_nt": 1226.4179494912826,
+    "down_nt": 53760.238340862204,
+    "source": "geomag"
+  },
+  "50.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": -11.53035525427069,
+    "inclination_deg": 73.60704818236731,
+    "total_intensity_nt": 55391.79455991864,
+    "horizontal_intensity_nt": 15632.863122467326,
+    "north_nt": 15317.37540729081,
+    "east_nt": -3124.8072001199594,
+    "down_nt": 53140.046059092136,
+    "source": "geomag"
+  },
+  "50.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -17.98775522387937,
+    "inclination_deg": 69.80885988925776,
+    "total_intensity_nt": 52620.36532701327,
+    "horizontal_intensity_nt": 18162.080727461704,
+    "north_nt": 17274.36426438816,
+    "east_nt": -5608.699993052326,
+    "down_nt": 49386.65478444055,
+    "source": "geomag"
+  },
+  "50.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -14.022753100960404,
+    "inclination_deg": 66.33004569417265,
+    "total_intensity_nt": 49788.524549206406,
+    "horizontal_intensity_nt": 19988.47703588073,
+    "north_nt": 19392.81199680786,
+    "east_nt": -4843.351842515299,
+    "down_nt": 45599.97765978617,
+    "source": "geomag"
+  },
+  "50.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -6.475796377425268,
+    "inclination_deg": 64.77104826346932,
+    "total_intensity_nt": 48385.42698850737,
+    "horizontal_intensity_nt": 20623.632589070665,
+    "north_nt": 20492.045311809856,
+    "east_nt": -2326.0051822189266,
+    "down_nt": 43770.027686662484,
+    "source": "geomag"
+  },
+  "50.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": 0.9083766595874125,
+    "inclination_deg": 65.13104112230354,
+    "total_intensity_nt": 48524.2616311696,
+    "horizontal_intensity_nt": 20406.6037058123,
+    "north_nt": 20404.03911367418,
+    "east_nt": 323.5160795486643,
+    "down_nt": 44024.703202226425,
+    "source": "geomag"
+  },
+  "50.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": 6.250645096812346,
+    "inclination_deg": 66.37744296020969,
+    "total_intensity_nt": 49686.51510214791,
+    "horizontal_intensity_nt": 19909.871968744137,
+    "north_nt": 19791.510018163142,
+    "east_nt": 2167.7483739427735,
+    "down_nt": 45523.0357202174,
+    "source": "geomag"
+  },
+  "50.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": 10.012686342663292,
+    "inclination_deg": 67.7896303272946,
+    "total_intensity_nt": 51783.58420679293,
+    "horizontal_intensity_nt": 19574.627184430465,
+    "north_nt": 19276.49151792848,
+    "east_nt": 3403.366593341882,
+    "down_nt": 47941.35546574137,
+    "source": "geomag"
+  },
+  "50.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": 10.99913539988734,
+    "inclination_deg": 69.19489426980992,
+    "total_intensity_nt": 55018.358202329735,
+    "horizontal_intensity_nt": 19541.985229704755,
+    "north_nt": 19183.000185658697,
+    "east_nt": 3728.497096018342,
+    "down_nt": 51430.83270336836,
+    "source": "geomag"
+  },
+  "50.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": 7.489503728359815,
+    "inclination_deg": 70.57240086798072,
+    "total_intensity_nt": 58455.44302172238,
+    "horizontal_intensity_nt": 19443.182880713844,
+    "north_nt": 19277.308351540363,
+    "east_nt": 2534.313171752077,
+    "down_nt": 55127.13903634894,
+    "source": "geomag"
+  },
+  "50.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": -1.6517845614889808,
+    "inclination_deg": 71.10250608410097,
+    "total_intensity_nt": 60075.52257884721,
+    "horizontal_intensity_nt": 19457.02215338538,
+    "north_nt": 19448.937194069003,
+    "east_nt": -560.8503351953243,
+    "down_nt": 56837.42342897197,
+    "source": "geomag"
+  },
+  "50.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -11.026848810323733,
+    "inclination_deg": 69.08539486200648,
+    "total_intensity_nt": 58371.6297547378,
+    "horizontal_intensity_nt": 20837.278122938267,
+    "north_nt": 20452.57326275722,
+    "east_nt": -3985.5246209539478,
+    "down_nt": 54525.72787823661,
+    "source": "geomag"
+  },
+  "50.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": -11.950560455536605,
+    "inclination_deg": 65.26120221991607,
+    "total_intensity_nt": 54300.65820282757,
+    "horizontal_intensity_nt": 22723.857459597344,
+    "north_nt": 22231.355116103878,
+    "east_nt": -4705.374325787472,
+    "down_nt": 49317.215892791515,
+    "source": "geomag"
+  },
+  "50.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": -5.796833845270572,
+    "inclination_deg": 62.52672779418157,
+    "total_intensity_nt": 50568.745533702175,
+    "horizontal_intensity_nt": 23329.121251953584,
+    "north_nt": 23209.82293011352,
+    "east_nt": -2356.272043107259,
+    "down_nt": 44865.912745245376,
+    "source": "geomag"
+  },
+  "50.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": 2.297395066949715,
+    "inclination_deg": 62.18184326063324,
+    "total_intensity_nt": 48680.640188671096,
+    "horizontal_intensity_nt": 22717.645204348184,
+    "north_nt": 22699.385185044273,
+    "east_nt": 910.6678053146626,
+    "down_nt": 43054.771228613165,
+    "source": "geomag"
+  },
+  "70.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": -0.14830943374124786,
+    "inclination_deg": 79.23991235695239,
+    "total_intensity_nt": 57474.04049462818,
+    "horizontal_intensity_nt": 10730.231275799802,
+    "north_nt": 10730.19532809777,
+    "east_nt": -27.77504313271381,
+    "down_nt": 56463.505625722595,
+    "source": "geomag"
+  },
+  "70.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": 8.929985249351585,
+    "inclination_deg": 79.96884980996234,
+    "total_intensity_nt": 57193.701739706536,
+    "horizontal_intensity_nt": 9962.202906637849,
+    "north_nt": 9841.448695519055,
+    "east_nt": 1546.406908446118,
+    "down_nt": 56319.3930359471,
+    "source": "geomag"
+  },
+  "70.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": 15.695951399606624,
+    "inclination_deg": 81.64615239596371,
+    "total_intensity_nt": 57301.54027608488,
+    "horizontal_intensity_nt": 8325.117955069016,
+    "north_nt": 8014.681508012295,
+    "east_nt": 2252.2143083948004,
+    "down_nt": 56693.5527996435,
+    "source": "geomag"
+  },
+  "70.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": 15.200548363355523,
+    "inclination_deg": 83.77017677115968,
+    "total_intensity_nt": 57561.65984089518,
+    "horizontal_intensity_nt": 6246.407709229579,
+    "north_nt": 6027.870795930988,
+    "east_nt": 1637.7981980344955,
+    "down_nt": 57221.73603071653,
+    "source": "geomag"
+  },
+  "70.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": -2.285044400632257,
+    "inclination_deg": 85.1918539442446,
+    "total_intensity_nt": 57594.34039864791,
+    "horizontal_intensity_nt": 4827.529929530993,
+    "north_nt": 4823.69125371374,
+    "east_nt": -192.4783347888447,
+    "down_nt": 57391.663164041594,
+    "source": "geomag"
+  },
+  "70.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": -25.653509241403544,
+    "inclination_deg": 84.33532509830036,
+    "total_intensity_nt": 57040.118335621046,
+    "horizontal_intensity_nt": 5630.215613893626,
+    "north_nt": 5075.237394975602,
+    "east_nt": -2437.476819084204,
+    "down_nt": 56761.5694980567,
+    "source": "geomag"
+  },
+  "70.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -30.175326800217746,
+    "inclination_deg": 82.05657193265952,
+    "total_intensity_nt": 55861.8328896314,
+    "horizontal_intensity_nt": 7719.841401379076,
+    "north_nt": 6673.736011209338,
+    "east_nt": -3880.36066817688,
+    "down_nt": 55325.83865181492,
+    "source": "geomag"
+  },
+  "70.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -23.350691185894465,
+    "inclination_deg": 79.96619887694969,
+    "total_intensity_nt": 54468.33538428364,
+    "horizontal_intensity_nt": 9489.970456490862,
+    "north_nt": 8712.704596799957,
+    "east_nt": -3761.4249791761476,
+    "down_nt": 53635.24979218178,
+    "source": "geomag"
+  },
+  "70.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -12.45322116539958,
+    "inclination_deg": 78.68435489539557,
+    "total_intensity_nt": 53424.321226533015,
+    "horizontal_intensity_nt": 10482.594539573221,
+    "north_nt": 10235.96417157125,
+    "east_nt": -2260.4923710112434,
+    "down_nt": 52385.81210819104,
+    "source": "geomag"
+  },
+  "70.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": -0.40236655439791097,
+    "inclination_deg": 78.26751500459832,
+    "total_intensity_nt": 53137.55897779619,
+    "horizontal_intensity_nt": 10805.121579136687,
+    "north_nt": 10804.855141016656,
+    "east_nt": -75.87965189187354,
+    "down_nt": 52027.392033224605,
+    "source": "geomag"
+  },
+  "70.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": 11.430223897605188,
+    "inclination_deg": 78.58900633539639,
+    "total_intensity_nt": 53792.857929794816,
+    "horizontal_intensity_nt": 10642.670941430311,
+    "north_nt": 10431.592429601049,
+    "east_nt": 2109.1050590843574,
+    "down_nt": 52729.54693042151,
+    "source": "geomag"
+  },
+  "70.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": 21.889697688679288,
+    "inclination_deg": 79.61126454958585,
+    "total_intensity_nt": 55382.69878262733,
+    "horizontal_intensity_nt": 9986.927702411274,
+    "north_nt": 9266.903227396795,
+    "east_nt": 3723.3358037185685,
+    "down_nt": 54474.807016767314,
+    "source": "geomag"
+  },
+  "70.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": 28.524374177061894,
+    "inclination_deg": 81.37011852196348,
+    "total_intensity_nt": 57586.49521079948,
+    "horizontal_intensity_nt": 8640.910580991069,
+    "north_nt": 7592.025399857035,
+    "east_nt": 4126.31627442796,
+    "down_nt": 56934.51584930488,
+    "source": "geomag"
+  },
+  "70.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": 25.318944110640405,
+    "inclination_deg": 83.51379920393698,
+    "total_intensity_nt": 59642.46651505649,
+    "horizontal_intensity_nt": 6737.446643547711,
+    "north_nt": 6090.25560309091,
+    "east_nt": 2881.3146242075136,
+    "down_nt": 59260.7005082203,
+    "source": "geomag"
+  },
+  "70.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": 4.415530558775493,
+    "inclination_deg": 84.6059113339203,
+    "total_intensity_nt": 60688.85038254971,
+    "horizontal_intensity_nt": 5705.091700048101,
+    "north_nt": 5688.158532537575,
+    "east_nt": 439.23093547439584,
+    "down_nt": 60420.10004501438,
+    "source": "geomag"
+  },
+  "70.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": -14.893416459442083,
+    "inclination_deg": 83.32455327888859,
+    "total_intensity_nt": 60426.75700692002,
+    "horizontal_intensity_nt": 7024.315466011021,
+    "north_nt": 6788.3379334967985,
+    "east_nt": -1805.4018573963133,
+    "down_nt": 60017.097185779625,
+    "source": "geomag"
+  },
+  "70.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": -16.377652530095396,
+    "inclination_deg": 81.17971629481805,
+    "total_intensity_nt": 59349.577036910814,
+    "horizontal_intensity_nt": 9100.407561066737,
+    "north_nt": 8731.149652857623,
+    "east_nt": -2566.017053124325,
+    "down_nt": 58647.71842691488,
+    "source": "geomag"
+  },
+  "70.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": -9.4060939138433,
+    "inclination_deg": 79.65654827304485,
+    "total_intensity_nt": 58220.77314361613,
+    "horizontal_intensity_nt": 10453.44189831763,
+    "north_nt": 10312.893123078355,
+    "east_nt": -1708.4153340056614,
+    "down_nt": 57274.63642764492,
+    "source": "geomag"
+  },
+  "70.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": -0.14830943374125186,
+    "inclination_deg": 79.23991235695239,
+    "total_intensity_nt": 57474.04049462817,
+    "horizontal_intensity_nt": 10730.231275799799,
+    "north_nt": 10730.195328097767,
+    "east_nt": -27.77504313271455,
+    "down_nt": 56463.505625722595,
+    "source": "geomag"
+  },
+  "90.000000|-180.000000|0.000|2026-03-24": {
+    "declination_deg": -168.42176940975924,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.71827777294,
+    "north_nt": -1878.6957370194534,
+    "east_nt": -384.89702598142134,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-160.000000|0.000|2026-03-24": {
+    "declination_deg": -148.4217694097593,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729404,
+    "north_nt": -1633.7539847873359,
+    "east_nt": -1004.2366803178992,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-140.000000|0.000|2026-03-24": {
+    "declination_deg": -128.4217694097593,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729404,
+    "north_nt": -1191.757390349011,
+    "east_nt": -1502.4505700531142,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-120.000000|0.000|2026-03-24": {
+    "declination_deg": -108.42176940975926,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729397,
+    "north_nt": -606.0172661687376,
+    "east_nt": -1819.4467472310862,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-100.000000|0.000|2026-03-24": {
+    "declination_deg": -88.42176940975926,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729397,
+    "north_nt": 52.81748417378537,
+    "east_nt": -1916.990794518837,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-80.000000|0.000|2026-03-24": {
+    "declination_deg": -68.4217694097593,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.71827777294,
+    "north_nt": 705.2816664219014,
+    "east_nt": -1783.3174602166482,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-60.000000|0.000|2026-03-24": {
+    "declination_deg": -48.42176940975928,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729402,
+    "north_nt": 1272.678470850716,
+    "east_nt": -1434.5497212496664,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-40.000000|0.000|2026-03-24": {
+    "declination_deg": -28.421769409759257,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729388,
+    "north_nt": 1686.5714689611195,
+    "east_nt": -912.7541142009374,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|-20.000000|0.000|2026-03-24": {
+    "declination_deg": -8.421769409759264,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.718277772938,
+    "north_nt": 1897.0390567709114,
+    "east_nt": -280.8668901635335,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|0.000000|0.000|2026-03-24": {
+    "declination_deg": 11.578230590240748,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729402,
+    "north_nt": 1878.695737019454,
+    "east_nt": 384.8970259814207,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|20.000000|0.000|2026-03-24": {
+    "declination_deg": 31.57823059024072,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729397,
+    "north_nt": 1633.7539847873354,
+    "east_nt": 1004.2366803178985,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|40.000000|0.000|2026-03-24": {
+    "declination_deg": 51.57823059024072,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.71827777294,
+    "north_nt": 1191.757390349011,
+    "east_nt": 1502.4505700531136,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|60.000000|0.000|2026-03-24": {
+    "declination_deg": 71.57823059024075,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729395,
+    "north_nt": 606.0172661687375,
+    "east_nt": 1819.4467472310857,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|80.000000|0.000|2026-03-24": {
+    "declination_deg": 91.57823059024075,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.71827777294,
+    "north_nt": -52.81748417378558,
+    "east_nt": 1916.9907945188372,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|100.000000|0.000|2026-03-24": {
+    "declination_deg": 111.57823059024071,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729402,
+    "north_nt": -705.2816664219018,
+    "east_nt": 1783.3174602166482,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|120.000000|0.000|2026-03-24": {
+    "declination_deg": 131.5782305902407,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.71827777294,
+    "north_nt": -1272.678470850715,
+    "east_nt": 1434.5497212496666,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|140.000000|0.000|2026-03-24": {
+    "declination_deg": 151.57823059024074,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729402,
+    "north_nt": -1686.5714689611207,
+    "east_nt": 912.7541142009381,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|160.000000|0.000|2026-03-24": {
+    "declination_deg": 171.57823059024074,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729395,
+    "north_nt": -1897.0390567709128,
+    "east_nt": 280.8668901635342,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "90.000000|180.000000|0.000|2026-03-24": {
+    "declination_deg": -168.4217694097593,
+    "inclination_deg": 88.0580950921141,
+    "total_intensity_nt": 56592.9887519433,
+    "horizontal_intensity_nt": 1917.7182777729406,
+    "north_nt": -1878.6957370194546,
+    "east_nt": -384.89702598142,
+    "down_nt": 56560.487378422375,
+    "source": "geomag"
+  },
+  "-90.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 148.2759283851896,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": -14409.529248851246,
+    "east_nt": 8907.871897058021,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 128.27592838518962,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": -10493.856681185749,
+    "east_nt": 13299.01074751911,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 108.27592838518959,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": -5312.470124939051,
+    "east_nt": 16086.092629334373,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 88.2759283851896,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": 509.6787320841067,
+    "east_nt": 16932.95433460909,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 68.2759283851896,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": 6270.352811960955,
+    "east_nt": 15737.451843339475,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": 48.27592838518961,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": 11274.729802163652,
+    "east_nt": 12643.780399710298,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": 28.275928385189598,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": 14919.207980935353,
+    "east_nt": 8025.082437551069,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": 8.275928385189598,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": 16764.209493146704,
+    "east_nt": 2438.4410958203603,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -11.724071614810402,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861247,
+    "north_nt": 16587.199927102716,
+    "east_nt": -3442.312229624076,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -31.724071614810395,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": 14409.529248851248,
+    "east_nt": -8907.87189705802,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": -51.7240716148104,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": 10493.856681185749,
+    "east_nt": -13299.010747519113,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": -71.7240716148104,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": 5312.470124939055,
+    "east_nt": -16086.092629334373,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": -91.7240716148104,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861247,
+    "north_nt": -509.67873208410157,
+    "east_nt": -16932.954334609094,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": -111.7240716148104,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": -6270.352811960953,
+    "east_nt": -15737.451843339475,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -131.72407161481038,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": -11274.729802163652,
+    "east_nt": -12643.780399710298,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -151.72407161481038,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.62321486124,
+    "north_nt": -14919.207980935345,
+    "east_nt": -8025.082437551075,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": -171.7240716148104,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861247,
+    "north_nt": -16764.209493146707,
+    "east_nt": -2438.441095820365,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 168.27592838518962,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861247,
+    "north_nt": -16587.199927102716,
+    "east_nt": 3442.312229624071,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-90.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 148.27592838518962,
+    "inclination_deg": -71.81915066602517,
+    "total_intensity_nt": 54293.84477265419,
+    "horizontal_intensity_nt": 16940.623214861243,
+    "north_nt": -14409.52924885125,
+    "east_nt": 8907.871897058018,
+    "down_nt": -51583.30025588876,
+    "source": "geomag"
+  },
+  "-70.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 85.84347925383128,
+    "inclination_deg": -80.6280740676929,
+    "total_intensity_nt": 62861.81639781216,
+    "horizontal_intensity_nt": 10236.57767380495,
+    "north_nt": 741.9610500714803,
+    "east_nt": 10209.653092638298,
+    "down_nt": -62022.74129994903,
+    "source": "geomag"
+  },
+  "-70.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 71.4583067699111,
+    "inclination_deg": -76.96563481222223,
+    "total_intensity_nt": 59933.65887278051,
+    "horizontal_intensity_nt": 13517.16334874294,
+    "north_nt": 4298.385660763877,
+    "east_nt": 12815.521281162892,
+    "down_nt": -58389.46618082942,
+    "source": "geomag"
+  },
+  "-70.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 60.941354795621514,
+    "inclination_deg": -73.21434342437615,
+    "total_intensity_nt": 56417.6793151937,
+    "horizontal_intensity_nt": 16292.981922672829,
+    "north_nt": 7913.576019932552,
+    "east_nt": 14242.070583636778,
+    "down_nt": -54013.824891221055,
+    "source": "geomag"
+  },
+  "-70.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 51.30594180608247,
+    "inclination_deg": -69.21215260522489,
+    "total_intensity_nt": 52386.70489404952,
+    "horizontal_intensity_nt": 18592.49602763438,
+    "north_nt": 11623.316780048644,
+    "east_nt": 14511.354711681464,
+    "down_nt": -48976.381462074474,
+    "source": "geomag"
+  },
+  "-70.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 40.69500262898455,
+    "inclination_deg": -65.19921053859511,
+    "total_intensity_nt": 48015.55657290963,
+    "horizontal_intensity_nt": 20140.825770715208,
+    "north_nt": 15270.597055730519,
+    "east_nt": 13132.468476559165,
+    "down_nt": -43587.163365834895,
+    "source": "geomag"
+  },
+  "-70.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": 28.63815099923591,
+    "inclination_deg": -61.99578374470248,
+    "total_intensity_nt": 43836.52469809923,
+    "horizontal_intensity_nt": 20582.84993306326,
+    "north_nt": 18064.827202105083,
+    "east_nt": 9864.873517946718,
+    "down_nt": -38703.839425050086,
+    "source": "geomag"
+  },
+  "-70.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": 16.116813273497836,
+    "inclination_deg": -60.327303176324186,
+    "total_intensity_nt": 40452.25112698422,
+    "horizontal_intensity_nt": 20025.671833252854,
+    "north_nt": 19238.61758495969,
+    "east_nt": 5559.05799509382,
+    "down_nt": -35147.6469890583,
+    "source": "geomag"
+  },
+  "-70.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.228343907592503,
+    "inclination_deg": -59.942608068425834,
+    "total_intensity_nt": 38111.45456489434,
+    "horizontal_intensity_nt": 19088.77859369957,
+    "north_nt": 19036.821317958336,
+    "east_nt": 1407.4453124047445,
+    "down_nt": -32986.38356735583,
+    "source": "geomag"
+  },
+  "-70.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -7.560341877203338,
+    "inclination_deg": -59.9465854187476,
+    "total_intensity_nt": 36872.96682836475,
+    "horizontal_intensity_nt": 18466.245197736043,
+    "north_nt": 18305.71528485035,
+    "east_nt": -2429.6089423826625,
+    "down_nt": -31915.72451038481,
+    "source": "geomag"
+  },
+  "-70.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -20.980484256393137,
+    "inclination_deg": -60.07417606138235,
+    "total_intensity_nt": 37062.64599360634,
+    "horizontal_intensity_nt": 18489.75392334383,
+    "north_nt": 17263.92830650421,
+    "east_nt": -6620.255249889635,
+    "down_nt": -32121.157013743694,
+    "source": "geomag"
+  },
+  "-70.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": -36.581610898277795,
+    "inclination_deg": -61.014781248331545,
+    "total_intensity_nt": 39203.828522173455,
+    "horizontal_intensity_nt": 18997.546803890695,
+    "north_nt": 15255.197118204462,
+    "east_nt": -11321.914389834601,
+    "down_nt": -34293.34317662778,
+    "source": "geomag"
+  },
+  "-70.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": -53.19618895715409,
+    "inclination_deg": -63.5036747653511,
+    "total_intensity_nt": 43447.2662213538,
+    "horizontal_intensity_nt": 19383.581339448843,
+    "north_nt": 11612.25500628771,
+    "east_nt": -15520.26930217306,
+    "down_nt": -38883.69473913406,
+    "source": "geomag"
+  },
+  "-70.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": -69.6193628664111,
+    "inclination_deg": -67.55595742372317,
+    "total_intensity_nt": 49226.024760974295,
+    "horizontal_intensity_nt": 18793.55855249556,
+    "north_nt": 6544.955938350824,
+    "east_nt": -17617.07679585706,
+    "down_nt": -45497.293004111525,
+    "source": "geomag"
+  },
+  "-70.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": -85.86308154320642,
+    "inclination_deg": -72.6085867635766,
+    "total_intensity_nt": 55428.37279555444,
+    "horizontal_intensity_nt": 16567.417548787253,
+    "north_nt": 1195.1756398899804,
+    "east_nt": -16524.25125159011,
+    "down_nt": -52894.47217363168,
+    "source": "geomag"
+  },
+  "-70.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -103.73339128662188,
+    "inclination_deg": -77.98597658408292,
+    "total_intensity_nt": 60788.29406874122,
+    "horizontal_intensity_nt": 12653.149723681085,
+    "north_nt": -3003.912315894575,
+    "east_nt": -12291.407922947948,
+    "down_nt": -59456.82885807036,
+    "source": "geomag"
+  },
+  "-70.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -129.62874774433337,
+    "inclination_deg": -82.971493165285,
+    "total_intensity_nt": 64299.87320698034,
+    "horizontal_intensity_nt": 7867.935535096498,
+    "north_nt": -5018.251968128719,
+    "east_nt": -6059.8314142232075,
+    "down_nt": -63816.68500360477,
+    "source": "geomag"
+  },
+  "-70.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": 173.66460465983135,
+    "inclination_deg": -85.90843940112129,
+    "total_intensity_nt": 65585.59633723744,
+    "horizontal_intensity_nt": 4679.566743029483,
+    "north_nt": -4650.988515466418,
+    "east_nt": 516.3823500731294,
+    "down_nt": -65418.43854761886,
+    "source": "geomag"
+  },
+  "-70.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 111.88676801679041,
+    "inclination_deg": -84.16337124443972,
+    "total_intensity_nt": 64917.5710560815,
+    "horizontal_intensity_nt": 6601.616861213016,
+    "north_nt": -2460.907800395973,
+    "east_nt": 6125.787947701278,
+    "down_nt": -64581.031941578156,
+    "source": "geomag"
+  },
+  "-70.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 85.8434792538313,
+    "inclination_deg": -80.62807406769292,
+    "total_intensity_nt": 62861.81639781217,
+    "horizontal_intensity_nt": 10236.577673804943,
+    "north_nt": 741.9610500714763,
+    "east_nt": 10209.653092638293,
+    "down_nt": -62022.74129994904,
+    "source": "geomag"
+  },
+  "-50.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 31.54816098055664,
+    "inclination_deg": -71.48342692028012,
+    "total_intensity_nt": 58286.03169722117,
+    "horizontal_intensity_nt": 18510.416763800225,
+    "north_nt": 15774.58952700447,
+    "east_nt": 9684.929221429411,
+    "down_nt": -55268.67071171419,
+    "source": "geomag"
+  },
+  "-50.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 31.424011773326445,
+    "inclination_deg": -67.61549577861572,
+    "total_intensity_nt": 53587.20656196054,
+    "horizontal_intensity_nt": 20407.096977358124,
+    "north_nt": 17414.03653591854,
+    "east_nt": 10639.592970080821,
+    "down_nt": -49549.36023876522,
+    "source": "geomag"
+  },
+  "-50.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 30.43706142607041,
+    "inclination_deg": -63.91765211021773,
+    "total_intensity_nt": 48881.52576789658,
+    "horizontal_intensity_nt": 21491.372745651643,
+    "north_nt": 18529.564225171885,
+    "east_nt": 10887.348259230459,
+    "down_nt": -43903.581390417334,
+    "source": "geomag"
+  },
+  "-50.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 29.953077569004996,
+    "inclination_deg": -59.693024165592625,
+    "total_intensity_nt": 43702.79896299209,
+    "horizontal_intensity_nt": 22053.863168335636,
+    "north_nt": 19108.22986532057,
+    "east_nt": 11011.2865761337,
+    "down_nt": -37730.11736732384,
+    "source": "geomag"
+  },
+  "-50.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 27.31389302642528,
+    "inclination_deg": -53.97321594464097,
+    "total_intensity_nt": 37386.22666070852,
+    "horizontal_intensity_nt": 21989.209407972863,
+    "north_nt": 19537.544353998735,
+    "east_nt": 10090.078840287344,
+    "down_nt": -30235.816733440326,
+    "source": "geomag"
+  },
+  "-50.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": 17.58226297254155,
+    "inclination_deg": -48.72819338972225,
+    "total_intensity_nt": 31026.875939982143,
+    "horizontal_intensity_nt": 20466.317605949647,
+    "north_nt": 19510.21775079437,
+    "east_nt": 6182.358745995962,
+    "down_nt": -23319.452700426704,
+    "source": "geomag"
+  },
+  "-50.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": 2.3618210967466995,
+    "inclination_deg": -49.326674245239495,
+    "total_intensity_nt": 27042.93588171509,
+    "horizontal_intensity_nt": 17625.108553742102,
+    "north_nt": 17610.1362359141,
+    "east_nt": 726.3286334285507,
+    "down_nt": -20510.3858952327,
+    "source": "geomag"
+  },
+  "-50.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -9.396721280670585,
+    "inclination_deg": -55.39012278547677,
+    "total_intensity_nt": 25659.97799927498,
+    "horizontal_intensity_nt": 14574.498949909312,
+    "north_nt": 14378.931126543115,
+    "east_nt": -2379.571242689983,
+    "down_nt": -21119.148924195983,
+    "source": "geomag"
+  },
+  "-50.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -14.91339754479845,
+    "inclination_deg": -60.4309182109789,
+    "total_intensity_nt": 24943.018173462704,
+    "horizontal_intensity_nt": 12308.695876603088,
+    "north_nt": 11894.088868812085,
+    "east_nt": -3167.7506473057997,
+    "down_nt": -21694.473061565353,
+    "source": "geomag"
+  },
+  "-50.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -21.58327620102743,
+    "inclination_deg": -61.06924777725634,
+    "total_intensity_nt": 24738.782615428525,
+    "horizontal_intensity_nt": 11967.440504217951,
+    "north_nt": 11128.330206542456,
+    "east_nt": -4402.260673353084,
+    "down_nt": -21651.506485033144,
+    "source": "geomag"
+  },
+  "-50.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": -34.85805596553105,
+    "inclination_deg": -59.21732170449476,
+    "total_intensity_nt": 27347.21612453754,
+    "horizontal_intensity_nt": 13995.844686856226,
+    "north_nt": 11484.57730115344,
+    "east_nt": -7999.259510256734,
+    "down_nt": -23494.39425189686,
+    "source": "geomag"
+  },
+  "-50.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": -48.64065860777019,
+    "inclination_deg": -60.58708016946537,
+    "total_intensity_nt": 34433.454068065665,
+    "horizontal_intensity_nt": 16910.27598171597,
+    "north_nt": 11173.962018907285,
+    "east_nt": -12692.517739905566,
+    "down_nt": -29995.088352591796,
+    "source": "geomag"
+  },
+  "-50.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": -56.755900654007135,
+    "inclination_deg": -66.19831258279389,
+    "total_intensity_nt": 44347.87357133015,
+    "horizontal_intensity_nt": 17897.5707935784,
+    "north_nt": 9811.575399328915,
+    "east_nt": -14968.501210690207,
+    "down_nt": -40575.988589158645,
+    "source": "geomag"
+  },
+  "-50.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": -56.08629151586196,
+    "inclination_deg": -72.91395384733767,
+    "total_intensity_nt": 54130.307366615794,
+    "horizontal_intensity_nt": 15903.89256212509,
+    "north_nt": 8873.476346343241,
+    "east_nt": -13198.303533352486,
+    "down_nt": -51741.24444750708,
+    "source": "geomag"
+  },
+  "-50.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -42.26950509824781,
+    "inclination_deg": -78.30484600637533,
+    "total_intensity_nt": 61628.36763357336,
+    "horizontal_intensity_nt": 12492.345793707407,
+    "north_nt": 9244.20086990363,
+    "east_nt": -8402.586132044833,
+    "down_nt": -60348.96017123504,
+    "source": "geomag"
+  },
+  "-50.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -12.702797062396533,
+    "inclination_deg": -80.48699760858864,
+    "total_intensity_nt": 65376.12744523107,
+    "horizontal_intensity_nt": 10804.805670560736,
+    "north_nt": 10540.345197758912,
+    "east_nt": -2375.9100762996222,
+    "down_nt": -64477.08286016446,
+    "source": "geomag"
+  },
+  "-50.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": 14.444727927528,
+    "inclination_deg": -78.94907999177079,
+    "total_intensity_nt": 65265.57387868709,
+    "horizontal_intensity_nt": 12510.190919884892,
+    "north_nt": 12114.727851336647,
+    "east_nt": 3120.616275676736,
+    "down_nt": -64055.368681027765,
+    "source": "geomag"
+  },
+  "-50.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 27.57241610131848,
+    "inclination_deg": -75.49978145120137,
+    "total_intensity_nt": 62505.934360885396,
+    "horizontal_intensity_nt": 15650.466926668498,
+    "north_nt": 13872.988950844592,
+    "east_nt": 7244.121243635308,
+    "down_nt": -60514.91316448012,
+    "source": "geomag"
+  },
+  "-50.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 31.54816098055663,
+    "inclination_deg": -71.48342692028012,
+    "total_intensity_nt": 58286.03169722118,
+    "horizontal_intensity_nt": 18510.416763800225,
+    "north_nt": 15774.589527004471,
+    "east_nt": 9684.929221429407,
+    "down_nt": -55268.67071171421,
+    "source": "geomag"
+  },
+  "-30.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 17.164157311697448,
+    "inclination_deg": -54.853285022146544,
+    "total_intensity_nt": 48582.76843895912,
+    "horizontal_intensity_nt": 27967.745448438007,
+    "north_nt": 26722.150504081954,
+    "east_nt": 8253.572432941834,
+    "down_nt": -39725.18852975903,
+    "source": "geomag"
+  },
+  "-30.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 17.702459970022417,
+    "inclination_deg": -50.518089581216984,
+    "total_intensity_nt": 43759.24336986515,
+    "horizontal_intensity_nt": 27823.63965405828,
+    "north_nt": 26506.146545536685,
+    "east_nt": 8460.44436808244,
+    "down_nt": -33774.49417392069,
+    "source": "geomag"
+  },
+  "-30.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 17.28593755591013,
+    "inclination_deg": -46.0941315134808,
+    "total_intensity_nt": 39135.75611150742,
+    "horizontal_intensity_nt": 27139.692994333025,
+    "north_nt": 25913.895031848748,
+    "east_nt": 8064.302828203679,
+    "down_nt": -28196.5329534101,
+    "source": "geomag"
+  },
+  "-30.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 16.438408846190487,
+    "inclination_deg": -42.008259424218295,
+    "total_intensity_nt": 34755.8130556671,
+    "horizontal_intensity_nt": 25825.249884687182,
+    "north_nt": 24769.62958219957,
+    "east_nt": 7308.1449060044815,
+    "down_nt": -23259.901322962327,
+    "source": "geomag"
+  },
+  "-30.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 15.58766113489415,
+    "inclination_deg": -36.81938053433554,
+    "total_intensity_nt": 29884.334965905204,
+    "horizontal_intensity_nt": 23923.267908339607,
+    "north_nt": 23043.38105655119,
+    "east_nt": 6428.4785833639935,
+    "down_nt": -17909.515039225178,
+    "source": "geomag"
+  },
+  "-30.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": 6.697033785615054,
+    "inclination_deg": -30.758076477315843,
+    "total_intensity_nt": 24486.191916262294,
+    "horizontal_intensity_nt": 21041.825337268023,
+    "north_nt": 20898.25040374584,
+    "east_nt": 2453.883368546972,
+    "down_nt": -12522.586834833066,
+    "source": "geomag"
+  },
+  "-30.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -11.632725020283193,
+    "inclination_deg": -36.03060727590834,
+    "total_intensity_nt": 22052.797642291775,
+    "horizontal_intensity_nt": 17834.161084534964,
+    "north_nt": 17467.851736906676,
+    "east_nt": -3596.033549146578,
+    "down_nt": -12971.838044885093,
+    "source": "geomag"
+  },
+  "-30.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -23.12446890419973,
+    "inclination_deg": -50.345972811874354,
+    "total_intensity_nt": 23115.02416079503,
+    "horizontal_intensity_nt": 14750.858759112689,
+    "north_nt": 13565.684207985374,
+    "east_nt": -5793.103322098419,
+    "down_nt": -17796.530780543897,
+    "source": "geomag"
+  },
+  "-30.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -25.834297858707703,
+    "inclination_deg": -62.046555382788256,
+    "total_intensity_nt": 24582.091619203442,
+    "horizontal_intensity_nt": 11522.953123098958,
+    "north_nt": 10371.327019860952,
+    "east_nt": -5021.356840958248,
+    "down_nt": -21714.068704362526,
+    "source": "geomag"
+  },
+  "-30.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -21.45803380352151,
+    "inclination_deg": -68.5519987132076,
+    "total_intensity_nt": 25288.322425343584,
+    "horizontal_intensity_nt": 9246.843934939105,
+    "north_nt": 8605.905989838842,
+    "east_nt": -3382.677172178278,
+    "down_nt": -23537.10110296115,
+    "source": "geomag"
+  },
+  "-30.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": -22.110171547700745,
+    "inclination_deg": -65.76744942593997,
+    "total_intensity_nt": 26014.62309396286,
+    "horizontal_intensity_nt": 10677.471988577578,
+    "north_nt": 9892.270198892676,
+    "east_nt": -4018.880239439669,
+    "down_nt": -23722.39883852573,
+    "source": "geomag"
+  },
+  "-30.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": -30.53668188346344,
+    "inclination_deg": -60.73688941679995,
+    "total_intensity_nt": 31904.07836210145,
+    "horizontal_intensity_nt": 15595.379524020687,
+    "north_nt": 13432.363511823525,
+    "east_nt": -7923.85467966669,
+    "down_nt": -27832.613129867383,
+    "source": "geomag"
+  },
+  "-30.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": -31.04698350586588,
+    "inclination_deg": -62.29664989001408,
+    "total_intensity_nt": 42229.98054560423,
+    "horizontal_intensity_nt": 19632.456733378844,
+    "north_nt": 16820.002717296415,
+    "east_nt": -10125.258810427193,
+    "down_nt": -37389.007736153144,
+    "source": "geomag"
+  },
+  "-30.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": -21.37768920298162,
+    "inclination_deg": -65.30441356119651,
+    "total_intensity_nt": 51107.43183866954,
+    "horizontal_intensity_nt": 21352.53625404867,
+    "north_nt": 19883.43536385914,
+    "east_nt": -7783.302808685959,
+    "down_nt": -46433.1647065305,
+    "source": "geomag"
+  },
+  "-30.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -8.131924145413812,
+    "inclination_deg": -65.12192464972523,
+    "total_intensity_nt": 55937.432725551706,
+    "horizontal_intensity_nt": 23532.245603732474,
+    "north_nt": 23295.628791615538,
+    "east_nt": -3328.702804042373,
+    "down_nt": -50746.722029814264,
+    "source": "geomag"
+  },
+  "-30.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": 0.19353477665137944,
+    "inclination_deg": -63.20330316585311,
+    "total_intensity_nt": 57247.68565259996,
+    "horizontal_intensity_nt": 25808.74979015787,
+    "north_nt": 25808.602555746278,
+    "east_nt": 87.17712142862332,
+    "down_nt": -51099.96034096235,
+    "source": "geomag"
+  },
+  "-30.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": 7.26585741597773,
+    "inclination_deg": -61.860478644901825,
+    "total_intensity_nt": 56287.867766402414,
+    "horizontal_intensity_nt": 26546.497740126848,
+    "north_nt": 26333.32894757087,
+    "east_nt": 3357.4288980685506,
+    "down_nt": -49634.74101293814,
+    "source": "geomag"
+  },
+  "-30.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 13.893768524197187,
+    "inclination_deg": -59.09108457004409,
+    "total_intensity_nt": 53182.096065062506,
+    "horizontal_intensity_nt": 27318.300636466734,
+    "north_nt": 26519.038268933346,
+    "east_nt": 6559.737720002809,
+    "down_nt": -45629.439972556735,
+    "source": "geomag"
+  },
+  "-30.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 17.164157311697444,
+    "inclination_deg": -54.853285022146544,
+    "total_intensity_nt": 48582.76843895912,
+    "horizontal_intensity_nt": 27967.745448438007,
+    "north_nt": 26722.150504081954,
+    "east_nt": 8253.572432941832,
+    "down_nt": -39725.18852975903,
+    "source": "geomag"
+  },
+  "-10.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 11.233144826118641,
+    "inclination_deg": -25.132934747876043,
+    "total_intensity_nt": 37761.95583683646,
+    "horizontal_intensity_nt": 34186.8355382994,
+    "north_nt": 33531.90565679197,
+    "east_nt": 6659.656683848923,
+    "down_nt": -16038.25378588506,
+    "source": "geomag"
+  },
+  "-10.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 10.919814624150728,
+    "inclination_deg": -19.3514992477156,
+    "total_intensity_nt": 34587.91856191818,
+    "horizontal_intensity_nt": 32633.822001250108,
+    "north_nt": 32042.929839041077,
+    "east_nt": 6181.988817489604,
+    "down_nt": -11461.141829530265,
+    "source": "geomag"
+  },
+  "-10.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 10.686846685414322,
+    "inclination_deg": -14.301230898660705,
+    "total_intensity_nt": 31764.69665911107,
+    "horizontal_intensity_nt": 30780.32220473592,
+    "north_nt": 30246.449639978207,
+    "east_nt": 5707.934758178409,
+    "down_nt": -7846.509976924943,
+    "source": "geomag"
+  },
+  "-10.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 9.53044779579752,
+    "inclination_deg": -9.479564887719954,
+    "total_intensity_nt": 29545.7383107351,
+    "horizontal_intensity_nt": 29142.273665019475,
+    "north_nt": 28740.04482386641,
+    "east_nt": 4825.136048759371,
+    "down_nt": -4866.059798189128,
+    "source": "geomag"
+  },
+  "-10.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 7.866531956805454,
+    "inclination_deg": -3.3256324008868994,
+    "total_intensity_nt": 27612.905100108896,
+    "horizontal_intensity_nt": 27566.403982257438,
+    "north_nt": 27306.99252624506,
+    "east_nt": 3772.90175920539,
+    "down_nt": -1601.8425498784381,
+    "source": "geomag"
+  },
+  "-10.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": -1.573933243933131,
+    "inclination_deg": 2.3320137588294916,
+    "total_intensity_nt": 25158.447791045903,
+    "horizontal_intensity_nt": 25137.61195918857,
+    "north_nt": 25128.127904194793,
+    "east_nt": -690.4513314978337,
+    "down_nt": 1023.6992937587938,
+    "source": "geomag"
+  },
+  "-10.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -16.761001573273802,
+    "inclination_deg": -8.290435513258888,
+    "total_intensity_nt": 23805.980346518078,
+    "horizontal_intensity_nt": 23557.20482663249,
+    "north_nt": 22556.400666994494,
+    "east_nt": -6793.429781334853,
+    "down_nt": -3432.608485523494,
+    "source": "geomag"
+  },
+  "-10.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -22.852876696410874,
+    "inclination_deg": -30.615814067479604,
+    "total_intensity_nt": 25118.101061498823,
+    "horizontal_intensity_nt": 21616.67532378577,
+    "north_nt": 19919.877239176443,
+    "east_nt": -8395.18569360493,
+    "down_nt": -12792.120577984706,
+    "source": "geomag"
+  },
+  "-10.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -18.382419785527905,
+    "inclination_deg": -45.994186627280705,
+    "total_intensity_nt": 28209.8225307723,
+    "horizontal_intensity_nt": 19598.248171698833,
+    "north_nt": 18598.204803184668,
+    "east_nt": -6180.461916256374,
+    "down_nt": -20290.45972417017,
+    "source": "geomag"
+  },
+  "-10.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -8.392255535178142,
+    "inclination_deg": -51.23682033545945,
+    "total_intensity_nt": 31163.24907865087,
+    "horizontal_intensity_nt": 19511.399104293378,
+    "north_nt": 19302.472397643392,
+    "east_nt": -2847.675252769424,
+    "down_nt": -24299.24686345266,
+    "source": "geomag"
+  },
+  "-10.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.9488444577680543,
+    "inclination_deg": -48.06439147467128,
+    "total_intensity_nt": 31644.637789680663,
+    "horizontal_intensity_nt": 21147.953391395313,
+    "north_nt": 21145.05355691773,
+    "east_nt": -350.2038259491545,
+    "down_nt": -23540.330673027023,
+    "source": "geomag"
+  },
+  "-10.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": -4.321298663901307,
+    "inclination_deg": -39.877973831336256,
+    "total_intensity_nt": 33118.92304152262,
+    "horizontal_intensity_nt": 25415.848605146588,
+    "north_nt": 25343.596243926357,
+    "east_nt": -1915.069122662051,
+    "down_nt": -21234.35195880878,
+    "source": "geomag"
+  },
+  "-10.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": -8.1678172324629,
+    "inclination_deg": -37.63152539008781,
+    "total_intensity_nt": 38970.64510007879,
+    "horizontal_intensity_nt": 30862.950796488185,
+    "north_nt": 30549.882849330927,
+    "east_nt": -4384.790731449667,
+    "down_nt": -23794.735712964837,
+    "source": "geomag"
+  },
+  "-10.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": -5.620665877298827,
+    "inclination_deg": -38.406563992669085,
+    "total_intensity_nt": 44610.934595692015,
+    "horizontal_intensity_nt": 34958.122791756345,
+    "north_nt": 34790.04897219348,
+    "east_nt": -3423.8635539246434,
+    "down_nt": -27713.988099470567,
+    "source": "geomag"
+  },
+  "-10.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.34011503307280777,
+    "inclination_deg": -36.99498045501297,
+    "total_intensity_nt": 46335.79724499359,
+    "horizontal_intensity_nt": 37007.85591246848,
+    "north_nt": 37007.2038802661,
+    "east_nt": -219.68204852990002,
+    "down_nt": -27882.33682981266,
+    "source": "geomag"
+  },
+  "-10.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": 0.5393348493714969,
+    "inclination_deg": -34.71514038310617,
+    "total_intensity_nt": 45244.13059718576,
+    "horizontal_intensity_nt": 37190.38490522898,
+    "north_nt": 37188.73723925746,
+    "east_nt": 350.0742043472061,
+    "down_nt": -25766.385545825342,
+    "source": "geomag"
+  },
+  "-10.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": 3.7461823150952154,
+    "inclination_deg": -35.0850473043425,
+    "total_intensity_nt": 43883.84419091323,
+    "horizontal_intensity_nt": 35910.138767828554,
+    "north_nt": 35833.40881700041,
+    "east_nt": 2346.24782971031,
+    "down_nt": -25224.070144361034,
+    "source": "geomag"
+  },
+  "-10.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 8.809503401684879,
+    "inclination_deg": -31.745639192921605,
+    "total_intensity_nt": 41131.61604097407,
+    "horizontal_intensity_nt": 34978.00845340755,
+    "north_nt": 34565.372634364394,
+    "east_nt": 5356.873156439611,
+    "down_nt": -21641.3669340794,
+    "source": "geomag"
+  },
+  "-10.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 11.233144826118638,
+    "inclination_deg": -25.132934747876046,
+    "total_intensity_nt": 37761.95583683647,
+    "horizontal_intensity_nt": 34186.835538299405,
+    "north_nt": 33531.905656791976,
+    "east_nt": 6659.6566838489225,
+    "down_nt": -16038.253785885066,
+    "source": "geomag"
+  },
+  "10.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 9.132745079197875,
+    "inclination_deg": 14.855617460134791,
+    "total_intensity_nt": 32820.515628458736,
+    "horizontal_intensity_nt": 31723.488907235507,
+    "north_nt": 31321.338380839494,
+    "east_nt": 5035.226954214192,
+    "down_nt": 8414.65968833024,
+    "source": "geomag"
+  },
+  "10.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 8.792065012311992,
+    "inclination_deg": 20.991720292157584,
+    "total_intensity_nt": 32241.318519406886,
+    "horizontal_intensity_nt": 30101.53326408682,
+    "north_nt": 29747.826980441812,
+    "east_nt": 4600.9884579971995,
+    "down_nt": 11549.905411773909,
+    "source": "geomag"
+  },
+  "10.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 8.97695749428335,
+    "inclination_deg": 24.883629761720364,
+    "total_intensity_nt": 32375.17569164553,
+    "horizontal_intensity_nt": 29369.60273019685,
+    "north_nt": 29009.859564680046,
+    "east_nt": 4582.751637076571,
+    "down_nt": 13622.717663349318,
+    "source": "geomag"
+  },
+  "10.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 8.067098104494256,
+    "inclination_deg": 28.938684979171246,
+    "total_intensity_nt": 33354.13806499605,
+    "horizontal_intensity_nt": 29189.474503522742,
+    "north_nt": 28900.62732946481,
+    "east_nt": 4096.237512058607,
+    "down_nt": 16139.179169555493,
+    "source": "geomag"
+  },
+  "10.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.614861343060621,
+    "inclination_deg": 33.75203055716571,
+    "total_intensity_nt": 34239.78403811021,
+    "horizontal_intensity_nt": 28468.665782244392,
+    "north_nt": 28376.371591353825,
+    "east_nt": 2290.5166951018723,
+    "down_nt": 19023.6137354419,
+    "source": "geomag"
+  },
+  "10.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": -5.4846150166569645,
+    "inclination_deg": 35.53366582304353,
+    "total_intensity_nt": 33271.74939366926,
+    "horizontal_intensity_nt": 27075.69020441833,
+    "north_nt": 26951.73495596755,
+    "east_nt": -2587.8529534947547,
+    "down_nt": 19336.9156710551,
+    "source": "geomag"
+  },
+  "10.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -15.94911611039295,
+    "inclination_deg": 26.122160680855288,
+    "total_intensity_nt": 30900.427273677273,
+    "horizontal_intensity_nt": 27744.17575538321,
+    "north_nt": 26676.194450157156,
+    "east_nt": -7623.643354918836,
+    "down_nt": 13605.040145116245,
+    "source": "geomag"
+  },
+  "10.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -16.49306111628749,
+    "inclination_deg": 7.54190474418927,
+    "total_intensity_nt": 29963.904790184926,
+    "horizontal_intensity_nt": 29704.691020733186,
+    "north_nt": 28482.465484504777,
+    "east_nt": -8433.138713505236,
+    "down_nt": 3932.800737138927,
+    "source": "geomag"
+  },
+  "10.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -8.702545852822938,
+    "inclination_deg": -4.843841307736154,
+    "total_intensity_nt": 31376.000974752435,
+    "horizontal_intensity_nt": 31263.94282122928,
+    "north_nt": 30904.006199297783,
+    "east_nt": -4730.3828135636195,
+    "down_nt": -2649.399259940217,
+    "source": "geomag"
+  },
+  "10.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -1.565225286893819,
+    "inclination_deg": -5.779145398539569,
+    "total_intensity_nt": 33406.47948893314,
+    "horizontal_intensity_nt": 33236.68856963088,
+    "north_nt": 33224.287213227326,
+    "east_nt": -907.858054770285,
+    "down_nt": -3363.837803741209,
+    "source": "geomag"
+  },
+  "10.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": 2.757737625024312,
+    "inclination_deg": -1.8609743071824585,
+    "total_intensity_nt": 34782.16245452364,
+    "horizontal_intensity_nt": 34763.81719361842,
+    "north_nt": 34723.5571499268,
+    "east_nt": 1672.592217812674,
+    "down_nt": -1129.5304960709502,
+    "source": "geomag"
+  },
+  "10.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": 2.5828509960488097,
+    "inclination_deg": 5.925223486841937,
+    "total_intensity_nt": 36226.69386369778,
+    "horizontal_intensity_nt": 36033.151595138435,
+    "north_nt": 35996.54560598798,
+    "east_nt": 1623.7974979211945,
+    "down_nt": 3739.6971021528752,
+    "source": "geomag"
+  },
+  "10.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.5779856512323297,
+    "inclination_deg": 8.194302021127902,
+    "total_intensity_nt": 38701.08684262745,
+    "horizontal_intensity_nt": 38305.96462291858,
+    "north_nt": 38304.015579231316,
+    "east_nt": -386.4145420327676,
+    "down_nt": 5516.085306474291,
+    "source": "geomag"
+  },
+  "10.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": -1.0630931753431365,
+    "inclination_deg": 7.911599458970066,
+    "total_intensity_nt": 41213.81097337622,
+    "horizontal_intensity_nt": 40821.52215475009,
+    "north_nt": 40814.49557248902,
+    "east_nt": -757.3785011651976,
+    "down_nt": 5672.877922045699,
+    "source": "geomag"
+  },
+  "10.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.3058257903755752,
+    "inclination_deg": 8.345479436159136,
+    "total_intensity_nt": 42036.95720616432,
+    "horizontal_intensity_nt": 41591.82333969919,
+    "north_nt": 41591.230851258515,
+    "east_nt": -222.0022478906656,
+    "down_nt": 6101.311533772377,
+    "source": "geomag"
+  },
+  "10.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -2.0692135160599996,
+    "inclination_deg": 8.161222454751268,
+    "total_intensity_nt": 40421.79033263803,
+    "horizontal_intensity_nt": 40012.42006114597,
+    "north_nt": 39986.32952710099,
+    "east_nt": -1444.7180000566427,
+    "down_nt": 5738.237930423684,
+    "source": "geomag"
+  },
+  "10.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.11009504111543884,
+    "inclination_deg": 4.902501841726709,
+    "total_intensity_nt": 37372.71660933302,
+    "horizontal_intensity_nt": 37235.99097274727,
+    "north_nt": 37235.92223060881,
+    "east_nt": -71.54969300067765,
+    "down_nt": 3193.888388626084,
+    "source": "geomag"
+  },
+  "10.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 5.488012750701542,
+    "inclination_deg": 7.0804319546985885,
+    "total_intensity_nt": 34378.7870333498,
+    "horizontal_intensity_nt": 34116.61760859271,
+    "north_nt": 33960.23485094672,
+    "east_nt": 3262.8279022163642,
+    "down_nt": 4237.6173533582005,
+    "source": "geomag"
+  },
+  "10.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 9.132745079197875,
+    "inclination_deg": 14.855617460134779,
+    "total_intensity_nt": 32820.51562845874,
+    "horizontal_intensity_nt": 31723.48890723551,
+    "north_nt": 31321.338380839497,
+    "east_nt": 5035.226954214191,
+    "down_nt": 8414.659688330235,
+    "source": "geomag"
+  },
+  "30.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 6.125192081386308,
+    "inclination_deg": 43.545129002825256,
+    "total_intensity_nt": 37396.83048235544,
+    "horizontal_intensity_nt": 27106.41807818677,
+    "north_nt": 26951.67093455442,
+    "east_nt": 2892.2888626388776,
+    "down_nt": 25763.63773026974,
+    "source": "geomag"
+  },
+  "30.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 9.50536090498895,
+    "inclination_deg": 47.45225239421672,
+    "total_intensity_nt": 37825.6841865703,
+    "horizontal_intensity_nt": 25577.893519509144,
+    "north_nt": 25226.712992444413,
+    "east_nt": 4223.930455415218,
+    "down_nt": 27866.713966429674,
+    "source": "geomag"
+  },
+  "30.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 11.717658510023089,
+    "inclination_deg": 50.78007020907221,
+    "total_intensity_nt": 40061.905977859155,
+    "horizontal_intensity_nt": 25331.095936032805,
+    "north_nt": 24803.202615696857,
+    "east_nt": 5144.46900322922,
+    "down_nt": 31036.9439419916,
+    "source": "geomag"
+  },
+  "30.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 10.84426670278901,
+    "inclination_deg": 54.770678953186,
+    "total_intensity_nt": 43402.07230980622,
+    "horizontal_intensity_nt": 25036.503362940326,
+    "north_nt": 24589.40616331968,
+    "east_nt": 4710.372084858962,
+    "down_nt": 35452.974207295025,
+    "source": "geomag"
+  },
+  "30.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.151015291653815,
+    "inclination_deg": 58.29998741040152,
+    "total_intensity_nt": 45997.529607762925,
+    "horizontal_intensity_nt": 24170.406427413487,
+    "north_nt": 24107.000860641005,
+    "east_nt": 1749.587486067835,
+    "down_nt": 39135.20388538529,
+    "source": "geomag"
+  },
+  "30.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": -8.109910139515808,
+    "inclination_deg": 57.76892226967869,
+    "total_intensity_nt": 45451.04597371043,
+    "horizontal_intensity_nt": 24240.641795156043,
+    "north_nt": 23998.217729711974,
+    "east_nt": -3419.687184290977,
+    "down_nt": 38447.22181722983,
+    "source": "geomag"
+  },
+  "30.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -14.941446654070576,
+    "inclination_deg": 51.585559389758785,
+    "total_intensity_nt": 42060.78037917902,
+    "horizontal_intensity_nt": 26134.26734761525,
+    "north_nt": 25250.66310693917,
+    "east_nt": -6738.244760803034,
+    "down_nt": 32956.17265868266,
+    "source": "geomag"
+  },
+  "30.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -12.176823678512315,
+    "inclination_deg": 43.87886559632745,
+    "total_intensity_nt": 39573.51944286768,
+    "horizontal_intensity_nt": 28524.863270594364,
+    "north_nt": 27883.090811212223,
+    "east_nt": -6016.732619935493,
+    "down_nt": 27429.83077762097,
+    "source": "geomag"
+  },
+  "30.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -5.287180570772735,
+    "inclination_deg": 39.33036889639245,
+    "total_intensity_nt": 39284.29512434029,
+    "horizontal_intensity_nt": 30386.574563741087,
+    "north_nt": 30257.290031708,
+    "east_nt": -2800.056009243479,
+    "down_nt": 24898.030638957567,
+    "source": "geomag"
+  },
+  "30.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": 0.8742721382302509,
+    "inclination_deg": 39.889504598988836,
+    "total_intensity_nt": 40688.65661718363,
+    "horizontal_intensity_nt": 31219.69983639115,
+    "north_nt": 31216.065389620228,
+    "east_nt": 476.36064627121004,
+    "down_nt": 26094.005431070174,
+    "source": "geomag"
+  },
+  "30.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.101382855284757,
+    "inclination_deg": 42.56527150077081,
+    "total_intensity_nt": 42602.98274473548,
+    "horizontal_intensity_nt": 31377.404574418288,
+    "north_nt": 31297.048830524418,
+    "east_nt": 2244.159603614668,
+    "down_nt": 28817.921870278973,
+    "source": "geomag"
+  },
+  "30.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.910306938432609,
+    "inclination_deg": 46.189736537469855,
+    "total_intensity_nt": 44870.51707838467,
+    "horizontal_intensity_nt": 31062.622905071847,
+    "north_nt": 30948.62042062853,
+    "east_nt": 2658.841063799936,
+    "down_nt": 32380.190875578795,
+    "source": "geomag"
+  },
+  "30.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": 3.050445596270388,
+    "inclination_deg": 47.54932588510529,
+    "total_intensity_nt": 47205.69778248859,
+    "horizontal_intensity_nt": 31861.732884553825,
+    "north_nt": 31816.587005670957,
+    "east_nt": 1695.5275630990145,
+    "down_nt": 34831.13378466152,
+    "source": "geomag"
+  },
+  "30.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": 1.7386546934290934,
+    "inclination_deg": 47.80523948920245,
+    "total_intensity_nt": 49556.85371663052,
+    "horizontal_intensity_nt": 33285.00167142584,
+    "north_nt": 33269.67786452276,
+    "east_nt": 1009.8866558703345,
+    "down_nt": 36714.988955802444,
+    "source": "geomag"
+  },
+  "30.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -1.1623516062841732,
+    "inclination_deg": 48.10261922166149,
+    "total_intensity_nt": 50853.92639185039,
+    "horizontal_intensity_nt": 33960.17725279897,
+    "north_nt": 33953.189221631816,
+    "east_nt": -688.8981939221659,
+    "down_nt": 37852.7170811583,
+    "source": "geomag"
+  },
+  "30.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -6.035518010529666,
+    "inclination_deg": 46.348208220468045,
+    "total_intensity_nt": 48865.51636206276,
+    "horizontal_intensity_nt": 33730.58897631657,
+    "north_nt": 33543.61716571296,
+    "east_nt": -3546.6012080999053,
+    "down_nt": 35356.55606308134,
+    "source": "geomag"
+  },
+  "30.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": -6.121951037134118,
+    "inclination_deg": 41.97534651426523,
+    "total_intensity_nt": 43746.670862844345,
+    "horizontal_intensity_nt": 32522.704463208396,
+    "north_nt": 32337.232666869393,
+    "east_nt": -3468.384213138787,
+    "down_nt": 29258.245094004513,
+    "source": "geomag"
+  },
+  "30.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.24331905699795056,
+    "inclination_deg": 40.4186441850987,
+    "total_intensity_nt": 39224.86902059492,
+    "horizontal_intensity_nt": 29862.966269635563,
+    "north_nt": 29862.696986422976,
+    "east_nt": -126.81923543143337,
+    "down_nt": 25432.137056516418,
+    "source": "geomag"
+  },
+  "30.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 6.1251920813863014,
+    "inclination_deg": 43.54512900282525,
+    "total_intensity_nt": 37396.83048235544,
+    "horizontal_intensity_nt": 27106.418078186773,
+    "north_nt": 26951.670934554426,
+    "east_nt": 2892.2888626388753,
+    "down_nt": 25763.63773026974,
+    "source": "geomag"
+  },
+  "50.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": 2.2989446278640973,
+    "inclination_deg": 62.18362224740752,
+    "total_intensity_nt": 48658.575134179984,
+    "horizontal_intensity_nt": 22706.011952761623,
+    "north_nt": 22687.73665940694,
+    "east_nt": 910.8150593595302,
+    "down_nt": 43035.9611870083,
+    "source": "geomag"
+  },
+  "50.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 9.879171884800277,
+    "inclination_deg": 63.902572045133695,
+    "total_intensity_nt": 48954.686198027135,
+    "horizontal_intensity_nt": 21535.11047224832,
+    "north_nt": 21215.78269846579,
+    "east_nt": 3694.800068125315,
+    "down_nt": 43963.6249380709,
+    "source": "geomag"
+  },
+  "50.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 15.023430845306851,
+    "inclination_deg": 67.18499634121194,
+    "total_intensity_nt": 51179.36689526075,
+    "horizontal_intensity_nt": 19845.1565019983,
+    "north_nt": 19166.84712114928,
+    "east_nt": 5144.143079590317,
+    "down_nt": 47175.17736279225,
+    "source": "geomag"
+  },
+  "50.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 14.509241450615827,
+    "inclination_deg": 71.16326798475245,
+    "total_intensity_nt": 54005.144898787585,
+    "horizontal_intensity_nt": 17436.777264149347,
+    "north_nt": 16880.67036499941,
+    "east_nt": 4368.543165379772,
+    "down_nt": 51112.76234150809,
+    "source": "geomag"
+  },
+  "50.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.6084796306543545,
+    "inclination_deg": 74.15472398731706,
+    "total_intensity_nt": 55855.05187876857,
+    "horizontal_intensity_nt": 15250.692494317895,
+    "north_nt": 15201.386979583527,
+    "east_nt": 1225.3389136041408,
+    "down_nt": 53732.70139145885,
+    "source": "geomag"
+  },
+  "50.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": -11.52719625993932,
+    "inclination_deg": 73.60612337554137,
+    "total_intensity_nt": 55363.67851441543,
+    "horizontal_intensity_nt": 15625.785407268628,
+    "north_nt": 15310.612712382464,
+    "east_nt": -3122.5483127474126,
+    "down_nt": 53112.82075971427,
+    "source": "geomag"
+  },
+  "50.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -17.983932124359583,
+    "inclination_deg": 69.80889470924784,
+    "total_intensity_nt": 52594.679027936996,
+    "horizontal_intensity_nt": 18153.185023652677,
+    "north_nt": 17266.2773825784,
+    "east_nt": -5604.800786007432,
+    "down_nt": 49362.55803287293,
+    "source": "geomag"
+  },
+  "50.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -14.021287899784554,
+    "inclination_deg": 66.33014695324731,
+    "total_intensity_nt": 49765.12187558782,
+    "horizontal_intensity_nt": 19979.0010706228,
+    "north_nt": 19383.74221127813,
+    "east_nt": -4840.560057127817,
+    "down_nt": 45578.57908614707,
+    "source": "geomag"
+  },
+  "50.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -6.476250137944547,
+    "inclination_deg": 64.77052336016013,
+    "total_intensity_nt": 48363.011270307004,
+    "horizontal_intensity_nt": 20614.47899626767,
+    "north_nt": 20482.931709170127,
+    "east_nt": -2325.1350251187314,
+    "down_nt": 43749.56131030666,
+    "source": "geomag"
+  },
+  "50.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": 0.9065422750584112,
+    "inclination_deg": 65.12967602333849,
+    "total_intensity_nt": 48501.73934556514,
+    "horizontal_intensity_nt": 20398.180502698557,
+    "north_nt": 20395.62731212181,
+    "east_nt": 322.72955504940006,
+    "down_nt": 44003.78337966486,
+    "source": "geomag"
+  },
+  "50.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": 6.248313726772439,
+    "inclination_deg": 66.3756860040581,
+    "total_intensity_nt": 49663.44970676508,
+    "horizontal_intensity_nt": 19902.024730968118,
+    "north_nt": 19783.797586052293,
+    "east_nt": 2166.088979284577,
+    "down_nt": 45501.29282102123,
+    "source": "geomag"
+  },
+  "50.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": 10.008920794407883,
+    "inclination_deg": 67.78800252059371,
+    "total_intensity_nt": 51759.36992664004,
+    "horizontal_intensity_nt": 19566.835381594152,
+    "north_nt": 19269.0419325996,
+    "east_nt": 3400.7454844670533,
+    "down_nt": 47918.381946309135,
+    "source": "geomag"
+  },
+  "50.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": 10.99405126689299,
+    "inclination_deg": 69.19340593844129,
+    "total_intensity_nt": 54991.514355676845,
+    "horizontal_intensity_nt": 19533.785880125462,
+    "north_nt": 19175.282090979734,
+    "east_nt": 3725.2312065079764,
+    "down_nt": 51405.231838014544,
+    "source": "geomag"
+  },
+  "50.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": 7.485012730401613,
+    "inclination_deg": 70.57059814898304,
+    "total_intensity_nt": 58425.266445984635,
+    "horizontal_intensity_nt": 19434.87926692498,
+    "north_nt": 19269.27408018575,
+    "east_nt": 2531.7204708719423,
+    "down_nt": 55098.06917818761,
+    "source": "geomag"
+  },
+  "50.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": -1.6519379795333615,
+    "inclination_deg": 71.1001815409348,
+    "total_intensity_nt": 60043.56731545956,
+    "horizontal_intensity_nt": 19448.977313981006,
+    "north_nt": 19440.89419632001,
+    "east_nt": -560.6704979208109,
+    "down_nt": 56806.40155305013,
+    "source": "geomag"
+  },
+  "50.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -11.021650081452105,
+    "inclination_deg": 69.08367779645303,
+    "total_intensity_nt": 58341.14971591991,
+    "horizontal_intensity_nt": 20828.030665629583,
+    "north_nt": 20443.857916804267,
+    "east_nt": -3981.9009136247846,
+    "down_nt": 54496.63190296237,
+    "source": "geomag"
+  },
+  "50.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": -11.944913958730025,
+    "inclination_deg": 65.26110785973061,
+    "total_intensity_nt": 54273.87982159581,
+    "horizontal_intensity_nt": 22712.732364657382,
+    "north_nt": 22220.934518876824,
+    "east_nt": -4700.880829838521,
+    "down_nt": 49292.85769176372,
+    "source": "geomag"
+  },
+  "50.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": -5.793331166909824,
+    "inclination_deg": 62.52789487867797,
+    "total_intensity_nt": 50545.094202261,
+    "horizontal_intensity_nt": 23317.29659795632,
+    "north_nt": 23198.202674202388,
+    "east_nt": -2353.659559854517,
+    "down_nt": 44845.403636029114,
+    "source": "geomag"
+  },
+  "50.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": 2.2989446278640933,
+    "inclination_deg": 62.183622247407534,
+    "total_intensity_nt": 48658.57513418,
+    "horizontal_intensity_nt": 22706.011952761623,
+    "north_nt": 22687.73665940694,
+    "east_nt": 910.8150593595286,
+    "down_nt": 43035.96118700832,
+    "source": "geomag"
+  },
+  "70.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.14506033713172978,
+    "inclination_deg": 79.23932153231307,
+    "total_intensity_nt": 57447.150574010666,
+    "horizontal_intensity_nt": 10725.792977521101,
+    "north_nt": 10725.758601842304,
+    "east_nt": -27.155324464801502,
+    "down_nt": 56436.977896379365,
+    "source": "geomag"
+  },
+  "70.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": 8.930943527615092,
+    "inclination_deg": 79.96815803734039,
+    "total_intensity_nt": 57167.1363380399,
+    "horizontal_intensity_nt": 9958.255317699584,
+    "north_nt": 9837.52310128322,
+    "east_nt": 1545.9586683385312,
+    "down_nt": 56293.11350529076,
+    "source": "geomag"
+  },
+  "70.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": 15.693985807374462,
+    "inclination_deg": 81.64515188122245,
+    "total_intensity_nt": 57275.15444780874,
+    "horizontal_intensity_nt": 8322.274002042086,
+    "north_nt": 8012.020837015165,
+    "east_nt": 2251.1700673872683,
+    "down_nt": 56667.30161614615,
+    "source": "geomag"
+  },
+  "70.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": 15.196053550988866,
+    "inclination_deg": 83.7686765102357,
+    "total_intensity_nt": 57535.28925524583,
+    "horizontal_intensity_nt": 6245.043690964479,
+    "north_nt": 6026.682936709007,
+    "east_nt": 1636.9677707382443,
+    "down_nt": 57195.357669855955,
+    "source": "geomag"
+  },
+  "70.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": -2.281998410115181,
+    "inclination_deg": 85.18987402976352,
+    "total_intensity_nt": 57567.99689422829,
+    "horizontal_intensity_nt": 4827.304147486849,
+    "north_nt": 4823.475876550181,
+    "east_nt": -192.212904567284,
+    "down_nt": 57365.24558547217,
+    "source": "geomag"
+  },
+  "70.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": -25.638404690087167,
+    "inclination_deg": 84.3338189535779,
+    "total_intensity_nt": 57014.18109483354,
+    "horizontal_intensity_nt": 5629.146867791018,
+    "north_nt": 5074.9162761212965,
+    "east_nt": -2435.6763433429705,
+    "down_nt": 56735.61096397317,
+    "source": "geomag"
+  },
+  "70.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -30.162766903268366,
+    "inclination_deg": 82.05578121296513,
+    "total_intensity_nt": 55836.8742194992,
+    "horizontal_intensity_nt": 7717.155422407325,
+    "north_nt": 6672.2641692982515,
+    "east_nt": -3877.5480227444637,
+    "down_nt": 55301.01296351255,
+    "source": "geomag"
+  },
+  "70.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -23.342983577140846,
+    "inclination_deg": 79.96576054046203,
+    "total_intensity_nt": 54444.64527373319,
+    "horizontal_intensity_nt": 9486.253102411754,
+    "north_nt": 8709.797430348159,
+    "east_nt": -3758.7799410602947,
+    "down_nt": 53611.849446364206,
+    "source": "geomag"
+  },
+  "70.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -12.449980017456868,
+    "inclination_deg": 78.68400825192857,
+    "total_intensity_nt": 53401.687484110975,
+    "horizontal_intensity_nt": 10478.470288007213,
+    "north_nt": 10232.06476021705,
+    "east_nt": -2259.024196279082,
+    "down_nt": 52363.55494591639,
+    "source": "geomag"
+  },
+  "70.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.4035780186526808,
+    "inclination_deg": 78.26720243657786,
+    "total_intensity_nt": 53115.369882621235,
+    "horizontal_intensity_nt": 10800.893302587014,
+    "north_nt": 10800.625362541074,
+    "east_nt": -76.07832742336454,
+    "down_nt": 52005.60759796772,
+    "source": "geomag"
+  },
+  "70.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": 11.424139850483503,
+    "inclination_deg": 78.58880192271918,
+    "total_intensity_nt": 53770.25732218101,
+    "horizontal_intensity_nt": 10638.38755731002,
+    "north_nt": 10427.617808695717,
+    "east_nt": 2107.1489399899024,
+    "down_nt": 52707.35510983293,
+    "source": "geomag"
+  },
+  "70.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": 21.877955397206474,
+    "inclination_deg": 79.61111632850799,
+    "total_intensity_nt": 55358.7049745572,
+    "horizontal_intensity_nt": 9982.741862827499,
+    "north_nt": 9263.781725226649,
+    "east_nt": 3719.8767784975676,
+    "down_nt": 54451.18071594238,
+    "source": "geomag"
+  },
+  "70.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": 28.50628935269746,
+    "inclination_deg": 81.36957647872866,
+    "total_intensity_nt": 57560.33658433913,
+    "horizontal_intensity_nt": 8637.523833675126,
+    "north_nt": 7590.35129690891,
+    "east_nt": 4122.303381220151,
+    "down_nt": 56908.5716718062,
+    "source": "geomag"
+  },
+  "70.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": 25.297212805594835,
+    "inclination_deg": 83.51209698370648,
+    "total_intensity_nt": 59614.1962354362,
+    "horizontal_intensity_nt": 6736.012881287701,
+    "north_nt": 6090.051728908605,
+    "east_nt": 2878.391821154853,
+    "down_nt": 59232.41108768257,
+    "source": "geomag"
+  },
+  "70.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": 4.409979544824893,
+    "inclination_deg": 84.60308444872638,
+    "total_intensity_nt": 60659.523908742485,
+    "horizontal_intensity_nt": 5705.314434209368,
+    "north_nt": 5688.423134787928,
+    "east_nt": 438.6969715045363,
+    "down_nt": 60390.622020659,
+    "source": "geomag"
+  },
+  "70.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": -14.881934359217015,
+    "inclination_deg": 83.32242278337864,
+    "total_intensity_nt": 60397.700097256195,
+    "horizontal_intensity_nt": 7023.168349573263,
+    "north_nt": 6787.5909617019415,
+    "east_nt": -1803.7468234399628,
+    "down_nt": 59987.97615665704,
+    "source": "geomag"
+  },
+  "70.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": -16.367768325567972,
+    "inclination_deg": 81.1785354242754,
+    "total_intensity_nt": 59321.4356157002,
+    "horizontal_intensity_nt": 9097.300636240634,
+    "north_nt": 8728.611182037399,
+    "east_nt": -2563.6352507632478,
+    "down_nt": 58619.72231801785,
+    "source": "geomag"
+  },
+  "70.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": -9.400133549065297,
+    "inclination_deg": 79.65582960146003,
+    "total_intensity_nt": 58193.40732460729,
+    "horizontal_intensity_nt": 10449.246479425132,
+    "north_nt": 10308.931708400713,
+    "east_nt": -1706.6572647455832,
+    "down_nt": 57247.584263965924,
+    "source": "geomag"
+  },
+  "70.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": -0.14506033713173339,
+    "inclination_deg": 79.23932153231307,
+    "total_intensity_nt": 57447.150574010666,
+    "horizontal_intensity_nt": 10725.792977521105,
+    "north_nt": 10725.758601842308,
+    "east_nt": -27.155324464802185,
+    "down_nt": 56436.977896379365,
+    "source": "geomag"
+  },
+  "90.000000|-180.000000|1000.000|2026-03-24": {
+    "declination_deg": -168.4388309606878,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189353,
+    "north_nt": -1876.863452134082,
+    "east_nt": -383.93932127621827,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-160.000000|1000.000|2026-03-24": {
+    "declination_deg": -148.43883096068782,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.731145118936,
+    "north_nt": -1632.3597545019113,
+    "east_nt": -1002.7100539344209,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-140.000000|1000.000|2026-03-24": {
+    "declination_deg": -128.4388309606878,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189373,
+    "north_nt": -1190.9693794126042,
+    "east_nt": -1500.539155663814,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-120.000000|1000.000|2026-03-24": {
+    "declination_deg": -108.43883096068781,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189366,
+    "north_nt": -605.9305203300813,
+    "east_nt": -1817.3810896207842,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-100.000000|1000.000|2026-03-24": {
+    "declination_deg": -88.43883096068781,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.731145118937,
+    "north_nt": 52.19250208631742,
+    "east_nt": -1915.0200424811965,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-80.000000|1000.000|2026-03-24": {
+    "declination_deg": -68.43883096068784,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189366,
+    "north_nt": 704.0203384718114,
+    "east_nt": -1781.6793155326095,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-60.000000|1000.000|2026-03-24": {
+    "declination_deg": -48.438830960687824,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189364,
+    "north_nt": 1270.9329318040016,
+    "east_nt": -1433.4417683445658,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-40.000000|1000.000|2026-03-24": {
+    "declination_deg": -28.438830960687813,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.731145118935,
+    "north_nt": 1684.552256588228,
+    "east_nt": -912.3099885467743,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|-20.000000|1000.000|2026-03-24": {
+    "declination_deg": -8.438830960687813,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189364,
+    "north_nt": 1894.989717884416,
+    "east_nt": -281.14015986879616,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|0.000000|1000.000|2026-03-24": {
+    "declination_deg": 11.561169039312173,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189355,
+    "north_nt": 1876.8634521340825,
+    "east_nt": 383.9393212762176,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|20.000000|1000.000|2026-03-24": {
+    "declination_deg": 31.561169039312183,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189353,
+    "north_nt": 1632.3597545019109,
+    "east_nt": 1002.7100539344202,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|40.000000|1000.000|2026-03-24": {
+    "declination_deg": 51.56116903931218,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189369,
+    "north_nt": 1190.9693794126044,
+    "east_nt": 1500.539155663813,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|60.000000|1000.000|2026-03-24": {
+    "declination_deg": 71.56116903931218,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189357,
+    "north_nt": 605.9305203300812,
+    "east_nt": 1817.3810896207833,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|80.000000|1000.000|2026-03-24": {
+    "declination_deg": 91.5611690393122,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.731145118937,
+    "north_nt": -52.19250208631766,
+    "east_nt": 1915.0200424811965,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|100.000000|1000.000|2026-03-24": {
+    "declination_deg": 111.56116903931218,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189364,
+    "north_nt": -704.0203384718117,
+    "east_nt": 1781.6793155326093,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|120.000000|1000.000|2026-03-24": {
+    "declination_deg": 131.56116903931215,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189366,
+    "north_nt": -1270.9329318040006,
+    "east_nt": 1433.441768344567,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|140.000000|1000.000|2026-03-24": {
+    "declination_deg": 151.56116903931218,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189355,
+    "north_nt": -1684.552256588228,
+    "east_nt": 912.309988546775,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|160.000000|1000.000|2026-03-24": {
+    "declination_deg": 171.5611690393122,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189375,
+    "north_nt": -1894.9897178844174,
+    "east_nt": 281.1401598687964,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  },
+  "90.000000|180.000000|1000.000|2026-03-24": {
+    "declination_deg": -168.43883096068785,
+    "inclination_deg": 88.05929836758212,
+    "total_intensity_nt": 56569.386359584154,
+    "horizontal_intensity_nt": 1915.7311451189357,
+    "north_nt": -1876.863452134083,
+    "east_nt": -383.939321276217,
+    "down_nt": 56536.93878589048,
+    "source": "geomag"
+  }
+}

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 import unittest
+from datetime import datetime
 
 import pandas as pd
 
 from mad_ai.tracking import ConstantVelocityMagneticTracker, MultiHypothesisMagneticTracker, observations_from_bahamas_frame
+from mad_ai.tracking.tracker import _stabilize_motion
+from mad_ai.tracking.types import MagneticTrackingObservation, SensorState, VesselState
 
 
 class TrackingTrackerTestCase(unittest.TestCase):
@@ -75,6 +78,36 @@ class TrackingTrackerTestCase(unittest.TestCase):
         self.assertIn("rolling_innovation_cost", second.metadata)
         self.assertIsInstance(second.innovation_nt, float)
         self.assertGreater(second.vessel_state.magnetic_moment_am2, 0.0)
+
+    def test_motion_stabilization_limits_speed_and_turn_rate(self) -> None:
+        previous_state = VesselState(latitude_deg=24.5, longitude_deg=-76.0, speed_mps=5.0, heading_deg=90.0)
+        observation = MagneticTrackingObservation(
+            sensor_state=SensorState(
+                latitude_deg=24.7,
+                longitude_deg=-76.8,
+                altitude_m=1000.0,
+                timestamp=datetime(2008, 2, 19, 15, 32, 10),
+                heading_deg=0.0,
+                speed_mps=80.0,
+            ),
+            observed_total_nt=25.0,
+            baseline_total_nt=20.0,
+            residual_total_nt=5.0,
+            anomaly_score=0.8,
+        )
+        speed_mps, heading_deg = _stabilize_motion(
+            previous_state=previous_state,
+            observation=observation,
+            candidate_speed_mps=120.0,
+            candidate_heading_deg=270.0,
+            dt_seconds=1.0,
+            motion_blend_alpha=0.5,
+            max_speed_mps=12.0,
+            max_turn_rate_deg_per_s=10.0,
+        )
+
+        self.assertLessEqual(speed_mps, 12.0)
+        self.assertAlmostEqual(heading_deg, 80.0)
 
 
 if __name__ == "__main__":
