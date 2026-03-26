@@ -47,6 +47,7 @@ Completed so far:
 - real-data folder ingestion now supports schema mapping, split-aware batch loading, batch scoring, and a real-batch Cesium review path
 - the real-batch review path now supports baseline-only residual anomaly overlays, fused anomaly overlays, robustness reports, and CI-backed regression checks
 - quality-scaling support now includes a larger mixed-format real-batch dataset generator, stronger real nominal calibration, broader model-tuning sweeps, and JSONL/SQLite source connectors
+- bundled dataset manifests now carry documented provenance, split paths, schema mappings, coordinate conventions, units, and data-quality notes for the real-batch workflows
 - the repo now includes a Bahamas real-data workflow with aircraft state, vessel state, and aircraft-borne magnetic total field ingestion from `.asc` data
 - the Bahamas review path now includes a combined NOAA-only / NOAA-plus-anomaly globe plus a linked four-view realtime dashboard
 - the Bahamas dashboard now links strip-chart, vessel-range, synchronized globe, and along-track residual views with a shared time cursor

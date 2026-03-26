@@ -144,6 +144,7 @@ Responsibilities:
 - map non-canonical sensor schemas into the project schema
 - batch-load folders of files
 - load split-based real-data workflows
+- carry dataset-manifest provenance, split definitions, schema mapping, and data-quality notes alongside those workflows
 
 Primary implementations:
 
@@ -277,11 +278,12 @@ Main scripts:
 ### Real Batch Flow
 
 1. Load split folders from [config/real_batch.yaml](c:/Users/MrSit/source/repos/MAD-AI/config/real_batch.yaml).
-2. Train on nominal real-batch splits.
-3. Calibrate on nominal calibration splits.
-4. Evaluate anomalous splits.
-5. Score a target folder.
-6. Review baseline-only and fused anomaly overlays in the real-batch globe.
+2. Load the dataset manifest that documents provenance, split paths, units, coordinate conventions, and schema mapping.
+3. Train on nominal real-batch splits.
+4. Calibrate on nominal calibration splits.
+5. Evaluate anomalous splits.
+6. Score a target folder.
+7. Review baseline-only and fused anomaly overlays in the real-batch globe.
 
 Main scripts:
 

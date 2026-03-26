@@ -4,26 +4,121 @@
   "provenance": {
     "source_type": "generated_dataset",
     "source_location": "data/raw/real_batch_large",
-    "time_span": "generated",
+    "source_formats": [
+      "csv",
+      "jsonl",
+      "sqlite"
+    ],
+    "time_span": {
+      "start": "2026-03-24T00:00:00",
+      "end": "2026-04-01T23:55:00",
+      "timestamp_encodings": [
+        "ISO8601 string",
+        "Unix epoch milliseconds"
+      ]
+    },
     "platforms": [
-      "synthetic_platform_family"
+      "synthetic_platform_family",
+      "42 generated track ids across train, calibration, nominal_eval, and anomalous_eval splits"
     ],
     "altitude_range_m": [
       0,
-      1000
+      750
     ],
+    "coordinate_convention": "WGS84 latitude/longitude in decimal degrees with altitude above mean sea level in meters.",
+    "units": {
+      "latitude_deg": "decimal_degrees",
+      "longitude_deg": "decimal_degrees",
+      "altitude_m": "meters",
+      "timestamp": "mixed ISO8601 UTC string or Unix epoch milliseconds",
+      "observed_total_nt": "nanotesla",
+      "observed_declination_deg": "degrees",
+      "observed_inclination_deg": "degrees"
+    },
     "label_quality": "synthetic_labels",
     "notes": "Generated mixed-format dataset used for scaling, calibration, and tuning checks."
   },
   "split_definitions": {
-    "train": "Synthetic nominal runs used for model fitting.",
-    "calibration": "Synthetic nominal runs used for threshold calibration.",
-    "nominal_eval": "Synthetic held-out nominal runs used for false-positive inspection.",
-    "anomalous_eval": "Synthetic abnormal runs with injected disturbances used for evaluation."
+    "train": {
+      "description": "Synthetic nominal runs used for model fitting.",
+      "source_path": "data/raw/real_batch_large/train",
+      "label_expectation": "normal"
+    },
+    "calibration": {
+      "description": "Synthetic nominal runs used for threshold calibration.",
+      "source_path": "data/raw/real_batch_large/calibration",
+      "label_expectation": "normal"
+    },
+    "nominal_eval": {
+      "description": "Synthetic held-out nominal runs used for false-positive inspection.",
+      "source_path": "data/raw/real_batch_large/nominal_eval",
+      "label_expectation": "normal"
+    },
+    "anomalous_eval": {
+      "description": "Synthetic abnormal runs with injected disturbances used for evaluation.",
+      "source_path": "data/raw/real_batch_large/anomalous_eval",
+      "label_expectation": "abnormal_or_injected"
+    }
   },
-  "schema_mapping_ref": "config/real_batch_large.yaml",
+  "schema_mapping": {
+    "latitude_deg": [
+      "latitude",
+      "lat",
+      "latitude_deg"
+    ],
+    "longitude_deg": [
+      "longitude",
+      "lon",
+      "longitude_deg"
+    ],
+    "altitude_m": [
+      "altitude",
+      "alt_m",
+      "altitude_m"
+    ],
+    "timestamp": [
+      "time",
+      "timestamp"
+    ],
+    "observed_total_nt": [
+      "total_field_nt",
+      "observed_total_nt"
+    ],
+    "observed_declination_deg": [
+      "declination_deg",
+      "observed_declination_deg"
+    ],
+    "observed_inclination_deg": [
+      "inclination_deg",
+      "observed_inclination_deg"
+    ],
+    "track_id": [
+      "platform_id",
+      "track_id"
+    ],
+    "is_injected_anomaly": [
+      "label_anomaly",
+      "is_injected_anomaly"
+    ]
+  },
   "data_quality_issues": [
-    "Synthetic signals do not establish operational detection performance.",
-    "Runtime and workflow findings are more trustworthy than metric quality."
-  ]
+    {
+      "issue": "Synthetic labels and disturbances",
+      "impact": "Useful for scaling and regression coverage, but not for operational detection claims.",
+      "mitigation": "Treat metrics as workflow checks until real labeled datasets are available."
+    },
+    {
+      "issue": "Mixed timestamp encodings across formats",
+      "impact": "Exercises ingestion robustness, but can hide parsing regressions if undocumented.",
+      "mitigation": "Keep timestamp encoding details explicit in the manifest and covered by ingest tests."
+    },
+    {
+      "issue": "No parquet files in the shipped generator output",
+      "impact": "CSV, JSONL, and SQLite connectors are exercised here, but parquet coverage still depends on separate tests or external data.",
+      "mitigation": "Keep parquet regression coverage in unit tests or add a parquet-backed dataset when a real source requires it."
+    }
+  ],
+  "source_options": {
+    "sqlite_table_name": "sensor_readings"
+  }
 }

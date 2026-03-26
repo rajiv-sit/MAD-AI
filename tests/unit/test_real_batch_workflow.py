@@ -44,6 +44,8 @@ class RealBatchWorkflowTestCase(unittest.TestCase):
         payload = json.loads(Path("outputs/evaluation/real_batch_metrics.json").read_text(encoding="utf-8"))
         self.assertIn("dataset_manifest", payload)
         self.assertEqual(payload["dataset_manifest"]["dataset_name"], "real_batch_sample")
+        self.assertIn("schema_mapping", payload["dataset_manifest"])
+        self.assertIn("coordinate_convention", payload["dataset_manifest"]["provenance"])
 
     def test_large_real_batch_generator_writes_mixed_formats(self) -> None:
         with workspace_temp_dir() as tmp_dir:

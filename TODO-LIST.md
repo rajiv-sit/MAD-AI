@@ -90,6 +90,7 @@ Done so far:
 
 - Bahamas `.asc` ingestion is implemented
 - real-batch manifests are implemented
+- bundled real-batch manifests now include explicit split paths, inline schema mappings, coordinate conventions, units, and documented data quality issues
 
 Exit criteria:
 

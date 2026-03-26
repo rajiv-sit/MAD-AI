@@ -1,5 +1,5 @@
 {
-  "threshold": 0.5600365996360779,
+  "threshold": 0.5274348258972168,
   "baseline_threshold": 873.745117726788,
   "training_summary": {
     "spatial_sample_count": 2,
@@ -7,24 +7,24 @@
   },
   "nominal_eval": {
     "rows": 4,
-    "threshold": 0.5600365996360779,
+    "threshold": 0.5274348258972168,
     "spatial_scale": 1.0,
     "temporal_scale": 1.0,
-    "spatial_mean": 0.5023984909057617,
-    "temporal_mean": 0.7084130644798279,
-    "final_mean": 0.6054057776927948,
+    "spatial_mean": 0.5045270919799805,
+    "temporal_mean": 0.6390611529350281,
+    "final_mean": 0.5717941224575043,
     "anomaly_count": 4,
     "calibration": {
-      "threshold": 0.5600365996360779,
+      "threshold": 0.5274348258972168,
       "percentile": 97.5,
-      "mean_score": 0.5600365996360779,
+      "mean_score": 0.5274348258972168,
       "std_score": 0.0,
-      "min_score": 0.5600365996360779,
-      "max_score": 0.5600365996360779,
+      "min_score": 0.5274348258972168,
+      "max_score": 0.5274348258972168,
       "sample_count": 4
     },
     "metrics": {
-      "threshold": 0.5600365996360779,
+      "threshold": 0.5274348258972168,
       "true_positives": 0,
       "true_negatives": 0,
       "false_positives": 4,
@@ -37,15 +37,15 @@
   },
   "anomalous_eval": {
     "rows": 4,
-    "threshold": 0.5600365996360779,
+    "threshold": 0.5274348258972168,
     "spatial_scale": 1.0,
     "temporal_scale": 1.0,
-    "spatial_mean": 0.4747171103954315,
-    "temporal_mean": 6.373733997344971,
-    "final_mean": 3.424225553870201,
+    "spatial_mean": 0.48049283027648926,
+    "temporal_mean": 6.449225902557373,
+    "final_mean": 3.464859366416931,
     "anomaly_count": 4,
     "metrics": {
-      "threshold": 0.5600365996360779,
+      "threshold": 0.5274348258972168,
       "true_positives": 2,
       "true_negatives": 0,
       "false_positives": 2,
@@ -63,27 +63,114 @@
     "provenance": {
       "source_type": "repository_sample",
       "source_location": "data/raw/real_batch",
-      "time_span": "sample-bundled",
+      "source_formats": [
+        "csv"
+      ],
+      "time_span": {
+        "start": "2026-03-24T00:00:00",
+        "end": "2026-03-24T04:15:00",
+        "timestamp_encodings": [
+          "ISO8601 string"
+        ]
+      },
       "platforms": [
-        "sample_platform"
+        "alpha",
+        "beta",
+        "gamma",
+        "delta",
+        "epsilon"
       ],
       "altitude_range_m": [
-        0,
-        1000
+        150,
+        300
       ],
+      "coordinate_convention": "WGS84 latitude/longitude in decimal degrees with altitude above mean sea level in meters.",
+      "units": {
+        "latitude_deg": "decimal_degrees",
+        "longitude_deg": "decimal_degrees",
+        "altitude_m": "meters",
+        "timestamp": "ISO8601 UTC string",
+        "observed_total_nt": "nanotesla",
+        "observed_declination_deg": "degrees",
+        "observed_inclination_deg": "degrees"
+      },
       "label_quality": "synthetic_or_demo_level",
       "notes": "Small bundled real-batch example used for pipeline verification rather than performance claims."
     },
     "split_definitions": {
-      "train": "Nominal runs used for model fitting.",
-      "calibration": "Nominal runs used for threshold calibration.",
-      "nominal_eval": "Held-out nominal runs used for false-positive inspection.",
-      "anomalous_eval": "Held-out abnormal or injected-anomaly runs used for evaluation."
+      "train": {
+        "description": "Nominal runs used for model fitting.",
+        "source_path": "data/raw/real_batch/train",
+        "label_expectation": "normal"
+      },
+      "calibration": {
+        "description": "Nominal runs used for threshold calibration.",
+        "source_path": "data/raw/real_batch/calibration",
+        "label_expectation": "normal"
+      },
+      "nominal_eval": {
+        "description": "Held-out nominal runs used for false-positive inspection.",
+        "source_path": "data/raw/real_batch/nominal_eval",
+        "label_expectation": "normal"
+      },
+      "anomalous_eval": {
+        "description": "Held-out abnormal or injected-anomaly runs used for evaluation.",
+        "source_path": "data/raw/real_batch/anomalous_eval",
+        "label_expectation": "abnormal_or_injected"
+      }
     },
-    "schema_mapping_ref": "config/real_batch.yaml",
+    "schema_mapping": {
+      "latitude_deg": [
+        "latitude",
+        "lat",
+        "latitude_deg"
+      ],
+      "longitude_deg": [
+        "longitude",
+        "lon",
+        "longitude_deg"
+      ],
+      "altitude_m": [
+        "altitude",
+        "alt_m",
+        "altitude_m"
+      ],
+      "timestamp": [
+        "time",
+        "timestamp"
+      ],
+      "observed_total_nt": [
+        "total_field_nt",
+        "observed_total_nt"
+      ],
+      "observed_declination_deg": [
+        "declination_deg",
+        "observed_declination_deg"
+      ],
+      "observed_inclination_deg": [
+        "inclination_deg",
+        "observed_inclination_deg"
+      ],
+      "track_id": [
+        "platform_id",
+        "track_id"
+      ],
+      "is_injected_anomaly": [
+        "label_anomaly",
+        "is_injected_anomaly"
+      ]
+    },
     "data_quality_issues": [
-      "Bundled sample only; not operationally representative.",
-      "Scale is too small for performance claims."
+      {
+        "issue": "Bundled sample only",
+        "impact": "Not operationally representative and too small for calibration claims.",
+        "mitigation": "Use only for smoke tests and workflow verification."
+      },
+      {
+        "issue": "Single source format",
+        "impact": "Does not exercise mixed-format timestamp and ingestion edge cases.",
+        "mitigation": "Use the larger mixed-format dataset for connector and scaling checks."
+      }
     ]
   }
 }

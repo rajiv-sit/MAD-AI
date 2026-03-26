@@ -4,26 +4,113 @@
   "provenance": {
     "source_type": "repository_sample",
     "source_location": "data/raw/real_batch",
-    "time_span": "sample-bundled",
+    "source_formats": [
+      "csv"
+    ],
+    "time_span": {
+      "start": "2026-03-24T00:00:00",
+      "end": "2026-03-24T04:15:00",
+      "timestamp_encodings": [
+        "ISO8601 string"
+      ]
+    },
     "platforms": [
-      "sample_platform"
+      "alpha",
+      "beta",
+      "gamma",
+      "delta",
+      "epsilon"
     ],
     "altitude_range_m": [
-      0,
-      1000
+      150,
+      300
     ],
+    "coordinate_convention": "WGS84 latitude/longitude in decimal degrees with altitude above mean sea level in meters.",
+    "units": {
+      "latitude_deg": "decimal_degrees",
+      "longitude_deg": "decimal_degrees",
+      "altitude_m": "meters",
+      "timestamp": "ISO8601 UTC string",
+      "observed_total_nt": "nanotesla",
+      "observed_declination_deg": "degrees",
+      "observed_inclination_deg": "degrees"
+    },
     "label_quality": "synthetic_or_demo_level",
     "notes": "Small bundled real-batch example used for pipeline verification rather than performance claims."
   },
   "split_definitions": {
-    "train": "Nominal runs used for model fitting.",
-    "calibration": "Nominal runs used for threshold calibration.",
-    "nominal_eval": "Held-out nominal runs used for false-positive inspection.",
-    "anomalous_eval": "Held-out abnormal or injected-anomaly runs used for evaluation."
+    "train": {
+      "description": "Nominal runs used for model fitting.",
+      "source_path": "data/raw/real_batch/train",
+      "label_expectation": "normal"
+    },
+    "calibration": {
+      "description": "Nominal runs used for threshold calibration.",
+      "source_path": "data/raw/real_batch/calibration",
+      "label_expectation": "normal"
+    },
+    "nominal_eval": {
+      "description": "Held-out nominal runs used for false-positive inspection.",
+      "source_path": "data/raw/real_batch/nominal_eval",
+      "label_expectation": "normal"
+    },
+    "anomalous_eval": {
+      "description": "Held-out abnormal or injected-anomaly runs used for evaluation.",
+      "source_path": "data/raw/real_batch/anomalous_eval",
+      "label_expectation": "abnormal_or_injected"
+    }
   },
-  "schema_mapping_ref": "config/real_batch.yaml",
+  "schema_mapping": {
+    "latitude_deg": [
+      "latitude",
+      "lat",
+      "latitude_deg"
+    ],
+    "longitude_deg": [
+      "longitude",
+      "lon",
+      "longitude_deg"
+    ],
+    "altitude_m": [
+      "altitude",
+      "alt_m",
+      "altitude_m"
+    ],
+    "timestamp": [
+      "time",
+      "timestamp"
+    ],
+    "observed_total_nt": [
+      "total_field_nt",
+      "observed_total_nt"
+    ],
+    "observed_declination_deg": [
+      "declination_deg",
+      "observed_declination_deg"
+    ],
+    "observed_inclination_deg": [
+      "inclination_deg",
+      "observed_inclination_deg"
+    ],
+    "track_id": [
+      "platform_id",
+      "track_id"
+    ],
+    "is_injected_anomaly": [
+      "label_anomaly",
+      "is_injected_anomaly"
+    ]
+  },
   "data_quality_issues": [
-    "Bundled sample only; not operationally representative.",
-    "Scale is too small for performance claims."
+    {
+      "issue": "Bundled sample only",
+      "impact": "Not operationally representative and too small for calibration claims.",
+      "mitigation": "Use only for smoke tests and workflow verification."
+    },
+    {
+      "issue": "Single source format",
+      "impact": "Does not exercise mixed-format timestamp and ingestion edge cases.",
+      "mitigation": "Use the larger mixed-format dataset for connector and scaling checks."
+    }
   ]
 }

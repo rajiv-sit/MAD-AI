@@ -329,6 +329,7 @@ This workflow supports:
 - multi-file folder ingestion
 - mixed source formats across a batch, including CSV, Parquet, JSONL, and SQLite
 - schema mapping into the project's canonical sensor columns
+- per-dataset manifest metadata for provenance, split definitions, units, coordinate convention, and known data-quality issues
 - nominal-train, calibration, nominal-eval, and anomalous-eval splits
 - real-data recalibration from nominal data
 - evaluation on abnormal segments
@@ -406,6 +407,7 @@ Notes:
 - this does not replace the NOAA/WMM-backed workflow; it only makes the larger sample scaling run finish quickly
 - the operational NOAA/WMM-backed path remains available through the default WMM workflows and is the reference baseline path
 - the generated large dataset is still synthetic and intended for pipeline scaling checks, not production claims
+- the bundled dataset manifests now record source formats, timestamp encoding, schema mapping, split paths, and documented data-quality limits
 
 ### Current Global Viewer Data
 
