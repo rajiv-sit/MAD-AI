@@ -1,5 +1,5 @@
 {
-  "threshold": 0.5274348258972168,
+  "threshold": 0.5049400925636292,
   "baseline_threshold": 873.745117726788,
   "training_summary": {
     "spatial_sample_count": 2,
@@ -7,24 +7,24 @@
   },
   "nominal_eval": {
     "rows": 4,
-    "threshold": 0.5274348258972168,
+    "threshold": 0.5049400925636292,
     "spatial_scale": 1.0,
     "temporal_scale": 1.0,
-    "spatial_mean": 0.5045270919799805,
-    "temporal_mean": 0.6390611529350281,
-    "final_mean": 0.5717941224575043,
+    "spatial_mean": 0.4575673043727875,
+    "temporal_mean": 0.6593318581581116,
+    "final_mean": 0.5584495812654495,
     "anomaly_count": 4,
     "calibration": {
-      "threshold": 0.5274348258972168,
+      "threshold": 0.5049400925636292,
       "percentile": 97.5,
-      "mean_score": 0.5274348258972168,
+      "mean_score": 0.5049400925636292,
       "std_score": 0.0,
-      "min_score": 0.5274348258972168,
-      "max_score": 0.5274348258972168,
+      "min_score": 0.5049400925636292,
+      "max_score": 0.5049400925636292,
       "sample_count": 4
     },
     "metrics": {
-      "threshold": 0.5274348258972168,
+      "threshold": 0.5049400925636292,
       "true_positives": 0,
       "true_negatives": 0,
       "false_positives": 4,
@@ -37,15 +37,15 @@
   },
   "anomalous_eval": {
     "rows": 4,
-    "threshold": 0.5274348258972168,
+    "threshold": 0.5049400925636292,
     "spatial_scale": 1.0,
     "temporal_scale": 1.0,
-    "spatial_mean": 0.48049283027648926,
-    "temporal_mean": 6.449225902557373,
-    "final_mean": 3.464859366416931,
+    "spatial_mean": 0.43213215470314026,
+    "temporal_mean": 6.366486549377441,
+    "final_mean": 3.399309352040291,
     "anomaly_count": 4,
     "metrics": {
-      "threshold": 0.5274348258972168,
+      "threshold": 0.5049400925636292,
       "true_positives": 2,
       "true_negatives": 0,
       "false_positives": 2,
@@ -54,6 +54,160 @@
       "recall": 1.0,
       "accuracy": 0.5,
       "f1_score": 0.6666666666666666
+    }
+  },
+  "false_positive_analysis": {
+    "nominal_row_count": 4,
+    "sweeps": [
+      {
+        "percentile": 90.0,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 872.9455842185904,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      },
+      {
+        "percentile": 95.0,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 873.4786065573887,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      },
+      {
+        "percentile": 97.5,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 873.745117726788,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      },
+      {
+        "percentile": 99.0,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 873.9050244284275,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      }
+    ],
+    "review_threshold_percentile": 99.0,
+    "track_breakdown": [
+      {
+        "track_id": "delta",
+        "row_count": 4,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      }
+    ],
+    "source_file_breakdown": [
+      {
+        "source_file": "nominal_eval_run_1.csv",
+        "row_count": 4,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      }
+    ]
+  },
+  "baseline_fused_comparison": {
+    "baseline_threshold": 873.745117726788,
+    "fused_threshold": 0.5049400925636292,
+    "nominal_eval": {
+      "baseline": {
+        "rows": 4,
+        "score_column": "residual_total_nt",
+        "threshold": 873.745117726788,
+        "anomaly_count": 4,
+        "anomaly_rate": 1.0,
+        "mean_score": 881.4537154223253,
+        "max_score": 886.4164409759542,
+        "metrics": {
+          "threshold": 873.745117726788,
+          "true_positives": 0,
+          "true_negatives": 0,
+          "false_positives": 4,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.0,
+          "f1_score": 0.0
+        }
+      },
+      "fused": {
+        "rows": 4,
+        "score_column": "final_anomaly_score",
+        "threshold": 0.5049400925636292,
+        "anomaly_count": 4,
+        "anomaly_rate": 1.0,
+        "mean_score": 0.5584495812654495,
+        "max_score": 0.5584495812654495,
+        "metrics": {
+          "threshold": 0.5049400925636292,
+          "true_positives": 0,
+          "true_negatives": 0,
+          "false_positives": 4,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.0,
+          "f1_score": 0.0
+        }
+      },
+      "delta_anomaly_count": 0,
+      "delta_anomaly_rate": 0.0
+    },
+    "anomalous_eval": {
+      "baseline": {
+        "rows": 4,
+        "score_column": "residual_total_nt",
+        "threshold": 873.745117726788,
+        "anomaly_count": 2,
+        "anomaly_rate": 0.5,
+        "mean_score": 566.4011126973892,
+        "max_score": 895.8677806761189,
+        "metrics": {
+          "threshold": 873.745117726788,
+          "true_positives": 0,
+          "true_negatives": 0,
+          "false_positives": 2,
+          "false_negatives": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.0,
+          "f1_score": 0.0
+        }
+      },
+      "fused": {
+        "rows": 4,
+        "score_column": "final_anomaly_score",
+        "threshold": 0.5049400925636292,
+        "anomaly_count": 4,
+        "anomaly_rate": 1.0,
+        "mean_score": 3.399309352040291,
+        "max_score": 3.399309352040291,
+        "metrics": {
+          "threshold": 0.5049400925636292,
+          "true_positives": 2,
+          "true_negatives": 0,
+          "false_positives": 2,
+          "false_negatives": 0,
+          "precision": 0.5,
+          "recall": 1.0,
+          "accuracy": 0.5,
+          "f1_score": 0.6666666666666666
+        }
+      },
+      "delta_anomaly_count": 2,
+      "delta_anomaly_rate": 0.5
     }
   },
   "dataset_manifest_path": "data/manifests/real_batch.sample.json",

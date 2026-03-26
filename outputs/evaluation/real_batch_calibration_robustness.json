@@ -1,15 +1,169 @@
 {
   "calibration_percentile": 97.5,
   "fusion_thresholds": {
-    "90.0": 0.5717941224575043,
-    "95.0": 0.5717941224575043,
-    "97.5": 0.5717941224575043,
-    "99.0": 0.5717941224575043
+    "90.0": 0.5584495812654495,
+    "95.0": 0.5584495812654495,
+    "97.5": 0.5584495812654495,
+    "99.0": 0.5584495812654495
   },
   "baseline_thresholds": {
     "90.0": 872.9455842185904,
     "95.0": 873.4786065573887,
     "97.5": 873.745117726788,
     "99.0": 873.9050244284275
+  },
+  "false_positive_analysis": {
+    "nominal_row_count": 4,
+    "sweeps": [
+      {
+        "percentile": 90.0,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 872.9455842185904,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      },
+      {
+        "percentile": 95.0,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 873.4786065573887,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      },
+      {
+        "percentile": 97.5,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 873.745117726788,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      },
+      {
+        "percentile": 99.0,
+        "fusion_threshold": 0.5584495812654495,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_threshold": 873.9050244284275,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      }
+    ],
+    "review_threshold_percentile": 99.0,
+    "track_breakdown": [
+      {
+        "track_id": "delta",
+        "row_count": 4,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      }
+    ],
+    "source_file_breakdown": [
+      {
+        "source_file": "nominal_eval_run_1.csv",
+        "row_count": 4,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 1.0,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 1.0
+      }
+    ]
+  },
+  "baseline_fused_comparison": {
+    "baseline_threshold": 873.745117726788,
+    "fused_threshold": 0.5049400925636292,
+    "nominal_eval": {
+      "baseline": {
+        "rows": 4,
+        "score_column": "residual_total_nt",
+        "threshold": 873.745117726788,
+        "anomaly_count": 4,
+        "anomaly_rate": 1.0,
+        "mean_score": 881.4537154223253,
+        "max_score": 886.4164409759542,
+        "metrics": {
+          "threshold": 873.745117726788,
+          "true_positives": 0,
+          "true_negatives": 0,
+          "false_positives": 4,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.0,
+          "f1_score": 0.0
+        }
+      },
+      "fused": {
+        "rows": 4,
+        "score_column": "final_anomaly_score",
+        "threshold": 0.5049400925636292,
+        "anomaly_count": 4,
+        "anomaly_rate": 1.0,
+        "mean_score": 0.5584495812654495,
+        "max_score": 0.5584495812654495,
+        "metrics": {
+          "threshold": 0.5049400925636292,
+          "true_positives": 0,
+          "true_negatives": 0,
+          "false_positives": 4,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.0,
+          "f1_score": 0.0
+        }
+      },
+      "delta_anomaly_count": 0,
+      "delta_anomaly_rate": 0.0
+    },
+    "anomalous_eval": {
+      "baseline": {
+        "rows": 4,
+        "score_column": "residual_total_nt",
+        "threshold": 873.745117726788,
+        "anomaly_count": 2,
+        "anomaly_rate": 0.5,
+        "mean_score": 566.4011126973892,
+        "max_score": 895.8677806761189,
+        "metrics": {
+          "threshold": 873.745117726788,
+          "true_positives": 0,
+          "true_negatives": 0,
+          "false_positives": 2,
+          "false_negatives": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.0,
+          "f1_score": 0.0
+        }
+      },
+      "fused": {
+        "rows": 4,
+        "score_column": "final_anomaly_score",
+        "threshold": 0.5049400925636292,
+        "anomaly_count": 4,
+        "anomaly_rate": 1.0,
+        "mean_score": 3.399309352040291,
+        "max_score": 3.399309352040291,
+        "metrics": {
+          "threshold": 0.5049400925636292,
+          "true_positives": 2,
+          "true_negatives": 0,
+          "false_positives": 2,
+          "false_negatives": 0,
+          "precision": 0.5,
+          "recall": 1.0,
+          "accuracy": 0.5,
+          "f1_score": 0.6666666666666666
+        }
+      },
+      "delta_anomaly_count": 2,
+      "delta_anomaly_rate": 0.5
+    }
   }
 }

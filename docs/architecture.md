@@ -284,6 +284,8 @@ Main scripts:
 5. Evaluate anomalous splits.
 6. Score a target folder.
 7. Review baseline-only and fused anomaly overlays in the real-batch globe.
+8. Save dataset-specific calibration, metrics, and nominal false-positive review artifacts so repeated runs remain comparable.
+9. Save a baseline-versus-fused evaluation summary artifact for each split so reviewer tradeoffs do not have to be reconstructed from row-level CSVs.
 
 Main scripts:
 

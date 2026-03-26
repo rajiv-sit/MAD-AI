@@ -321,6 +321,8 @@ Generated artifacts:
 - [outputs/models/real_batch_temporal.pt](c:/Users/MrSit/source/repos/MAD-AI/outputs/models/real_batch_temporal.pt)
 - [outputs/calibration/real_batch_thresholds.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/calibration/real_batch_thresholds.json)
 - [outputs/evaluation/real_batch_metrics.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_metrics.json)
+- [outputs/evaluation/real_batch_false_positive_analysis.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_false_positive_analysis.json)
+- [outputs/evaluation/real_batch_baseline_fused_comparison.json](c:/Users/MrSit/source/repos/MAD-AI/outputs/evaluation/real_batch_baseline_fused_comparison.json)
 - [data/processed/real_batch_scored/real_batch_scored.csv](c:/Users/MrSit/source/repos/MAD-AI/data/processed/real_batch_scored/real_batch_scored.csv)
 - [outputs/viewer/cesium_real_batch_globe.html](c:/Users/MrSit/source/repos/MAD-AI/outputs/viewer/cesium_real_batch_globe.html)
 
@@ -334,6 +336,8 @@ This workflow supports:
 - real-data recalibration from nominal data
 - evaluation on abnormal segments
 - calibration robustness reporting across multiple percentiles
+- explicit nominal false-positive analysis with percentile sweeps plus per-track and per-source breakdowns
+- explicit baseline-only versus fused evaluation summaries for nominal and anomalous splits
 - baseline-only residual anomaly scoring alongside fused anomaly scoring
 - viewer generation from the scored real batch output
 - comparison swipe mode between baseline-only and fused anomaly overlays in the globe
@@ -408,6 +412,7 @@ Notes:
 - the operational NOAA/WMM-backed path remains available through the default WMM workflows and is the reference baseline path
 - the generated large dataset is still synthetic and intended for pipeline scaling checks, not production claims
 - the bundled dataset manifests now record source formats, timestamp encoding, schema mapping, split paths, and documented data-quality limits
+- non-default real-batch configs now save dataset-specific evaluation artifact names such as `real_batch_large_synthetic_metrics.json` so runs do not overwrite the default sample outputs
 
 ### Current Global Viewer Data
 

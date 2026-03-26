@@ -1,0 +1,450 @@
+{
+  "threshold": 0.19455793499946594,
+  "baseline_threshold": 1299.7755471009318,
+  "training_summary": {
+    "spatial_sample_count": 432,
+    "temporal_sample_count": 450
+  },
+  "nominal_eval": {
+    "rows": 864,
+    "threshold": 0.19455793499946594,
+    "spatial_scale": 1.0,
+    "temporal_scale": 1.0,
+    "spatial_mean": 0.11150788515806198,
+    "temporal_mean": 0.15444433689117432,
+    "final_mean": 0.13512293556360183,
+    "anomaly_count": 20,
+    "calibration": {
+      "threshold": 0.19455793499946594,
+      "percentile": 97.5,
+      "mean_score": 0.13512293580505583,
+      "std_score": 0.02827236249454878,
+      "min_score": 0.08567165583372116,
+      "max_score": 0.24898280203342438,
+      "sample_count": 864
+    },
+    "metrics": {
+      "threshold": 0.19455793499946594,
+      "true_positives": 0,
+      "true_negatives": 844,
+      "false_positives": 20,
+      "false_negatives": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "accuracy": 0.9768518518518519,
+      "f1_score": 0.0
+    }
+  },
+  "anomalous_eval": {
+    "rows": 864,
+    "threshold": 0.19455793499946594,
+    "spatial_scale": 1.0,
+    "temporal_scale": 1.0,
+    "spatial_mean": 0.12403235584497452,
+    "temporal_mean": 0.269157350063324,
+    "final_mean": 0.20385109563013196,
+    "anomaly_count": 164,
+    "metrics": {
+      "threshold": 0.19455793499946594,
+      "true_positives": 56,
+      "true_negatives": 700,
+      "false_positives": 108,
+      "false_negatives": 0,
+      "precision": 0.34146341463414637,
+      "recall": 1.0,
+      "accuracy": 0.875,
+      "f1_score": 0.5090909090909091
+    }
+  },
+  "false_positive_analysis": {
+    "nominal_row_count": 864,
+    "sweeps": [
+      {
+        "percentile": 90.0,
+        "fusion_threshold": 0.17395033910870553,
+        "fusion_false_positive_count": 88,
+        "fusion_false_positive_rate": 0.10185185185185185,
+        "baseline_threshold": 1209.2244433083374,
+        "baseline_false_positive_count": 87,
+        "baseline_false_positive_rate": 0.10069444444444445
+      },
+      {
+        "percentile": 95.0,
+        "fusion_threshold": 0.18790090581402183,
+        "fusion_false_positive_count": 44,
+        "fusion_false_positive_rate": 0.05092592592592592,
+        "baseline_threshold": 1255.796458607019,
+        "baseline_false_positive_count": 44,
+        "baseline_false_positive_rate": 0.05092592592592592
+      },
+      {
+        "percentile": 97.5,
+        "fusion_threshold": 0.19455793201923371,
+        "fusion_false_positive_count": 24,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_threshold": 1299.7755471009318,
+        "baseline_false_positive_count": 22,
+        "baseline_false_positive_rate": 0.02546296296296296
+      },
+      {
+        "percentile": 99.0,
+        "fusion_threshold": 0.22018519937992098,
+        "fusion_false_positive_count": 12,
+        "fusion_false_positive_rate": 0.013888888888888888,
+        "baseline_threshold": 1341.637201749312,
+        "baseline_false_positive_count": 9,
+        "baseline_false_positive_rate": 0.010416666666666666
+      }
+    ],
+    "review_threshold_percentile": 99.0,
+    "track_breakdown": [
+      {
+        "track_id": "nominal_eval_run_5",
+        "row_count": 144,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "track_id": "nominal_eval_run_7",
+        "row_count": 144,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "track_id": "nominal_eval_run_8",
+        "row_count": 144,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "track_id": "nominal_eval_run_1",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 5,
+        "baseline_false_positive_rate": 0.06944444444444445
+      },
+      {
+        "track_id": "nominal_eval_run_2",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 0.05555555555555555
+      },
+      {
+        "track_id": "nominal_eval_run_6",
+        "row_count": 144,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "track_id": "nominal_eval_run_3",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "track_id": "nominal_eval_run_4",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      }
+    ],
+    "source_file_breakdown": [
+      {
+        "source_file": "nominal_eval_run_5.csv",
+        "row_count": 144,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "source_file": "nominal_eval_run_7_fallback.jsonl",
+        "row_count": 144,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "source_file": "nominal_eval_run_8.sqlite",
+        "row_count": 144,
+        "fusion_false_positive_count": 4,
+        "fusion_false_positive_rate": 0.027777777777777776,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "source_file": "nominal_eval_run_1.csv",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 5,
+        "baseline_false_positive_rate": 0.06944444444444445
+      },
+      {
+        "source_file": "nominal_eval_run_2.jsonl",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 4,
+        "baseline_false_positive_rate": 0.05555555555555555
+      },
+      {
+        "source_file": "nominal_eval_run_6.jsonl",
+        "row_count": 144,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "source_file": "nominal_eval_run_3_fallback.jsonl",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      },
+      {
+        "source_file": "nominal_eval_run_4.sqlite",
+        "row_count": 72,
+        "fusion_false_positive_count": 0,
+        "fusion_false_positive_rate": 0.0,
+        "baseline_false_positive_count": 0,
+        "baseline_false_positive_rate": 0.0
+      }
+    ]
+  },
+  "baseline_fused_comparison": {
+    "baseline_threshold": 1299.7755471009318,
+    "fused_threshold": 0.19455793499946594,
+    "nominal_eval": {
+      "baseline": {
+        "rows": 864,
+        "score_column": "residual_total_nt",
+        "threshold": 1299.7755471009318,
+        "anomaly_count": 22,
+        "anomaly_rate": 0.02546296296296296,
+        "mean_score": 705.9048215150443,
+        "max_score": 1385.6642353414209,
+        "metrics": {
+          "threshold": 1299.7755471009318,
+          "true_positives": 0,
+          "true_negatives": 842,
+          "false_positives": 22,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.9745370370370371,
+          "f1_score": 0.0
+        }
+      },
+      "fused": {
+        "rows": 864,
+        "score_column": "final_anomaly_score",
+        "threshold": 0.19455793499946594,
+        "anomaly_count": 20,
+        "anomaly_rate": 0.023148148148148147,
+        "mean_score": 0.13512293556360183,
+        "max_score": 0.2489828068763018,
+        "metrics": {
+          "threshold": 0.19455793499946594,
+          "true_positives": 0,
+          "true_negatives": 844,
+          "false_positives": 20,
+          "false_negatives": 0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.9768518518518519,
+          "f1_score": 0.0
+        }
+      },
+      "delta_anomaly_count": -2,
+      "delta_anomaly_rate": -0.0023148148148148147
+    },
+    "anomalous_eval": {
+      "baseline": {
+        "rows": 864,
+        "score_column": "residual_total_nt",
+        "threshold": 1299.7755471009318,
+        "anomaly_count": 22,
+        "anomaly_rate": 0.02546296296296296,
+        "mean_score": 703.2109906898633,
+        "max_score": 1385.6642353414209,
+        "metrics": {
+          "threshold": 1299.7755471009318,
+          "true_positives": 0,
+          "true_negatives": 786,
+          "false_positives": 22,
+          "false_negatives": 56,
+          "precision": 0.0,
+          "recall": 0.0,
+          "accuracy": 0.9097222222222222,
+          "f1_score": 0.0
+        }
+      },
+      "fused": {
+        "rows": 864,
+        "score_column": "final_anomaly_score",
+        "threshold": 0.19455793499946594,
+        "anomaly_count": 164,
+        "anomaly_rate": 0.18981481481481483,
+        "mean_score": 0.20385109563013196,
+        "max_score": 1.1168452188372613,
+        "metrics": {
+          "threshold": 0.19455793499946594,
+          "true_positives": 56,
+          "true_negatives": 700,
+          "false_positives": 108,
+          "false_negatives": 0,
+          "precision": 0.34146341463414637,
+          "recall": 1.0,
+          "accuracy": 0.875,
+          "f1_score": 0.5090909090909091
+        }
+      },
+      "delta_anomaly_count": 142,
+      "delta_anomaly_rate": 0.16435185185185186
+    }
+  },
+  "dataset_manifest_path": "data/manifests/real_batch_large.synthetic.json",
+  "dataset_manifest": {
+    "dataset_name": "real_batch_large_synthetic",
+    "dataset_kind": "synthetic_scaling",
+    "provenance": {
+      "source_type": "generated_dataset",
+      "source_location": "data/raw/real_batch_large",
+      "source_formats": [
+        "csv",
+        "jsonl",
+        "sqlite"
+      ],
+      "time_span": {
+        "start": "2026-03-24T00:00:00",
+        "end": "2026-04-01T23:55:00",
+        "timestamp_encodings": [
+          "ISO8601 string",
+          "Unix epoch milliseconds"
+        ]
+      },
+      "platforms": [
+        "synthetic_platform_family",
+        "42 generated track ids across train, calibration, nominal_eval, and anomalous_eval splits"
+      ],
+      "altitude_range_m": [
+        0,
+        750
+      ],
+      "coordinate_convention": "WGS84 latitude/longitude in decimal degrees with altitude above mean sea level in meters.",
+      "units": {
+        "latitude_deg": "decimal_degrees",
+        "longitude_deg": "decimal_degrees",
+        "altitude_m": "meters",
+        "timestamp": "mixed ISO8601 UTC string or Unix epoch milliseconds",
+        "observed_total_nt": "nanotesla",
+        "observed_declination_deg": "degrees",
+        "observed_inclination_deg": "degrees"
+      },
+      "label_quality": "synthetic_labels",
+      "notes": "Generated mixed-format dataset used for scaling, calibration, and tuning checks."
+    },
+    "split_definitions": {
+      "train": {
+        "description": "Synthetic nominal runs used for model fitting.",
+        "source_path": "data/raw/real_batch_large/train",
+        "label_expectation": "normal"
+      },
+      "calibration": {
+        "description": "Synthetic nominal runs used for threshold calibration.",
+        "source_path": "data/raw/real_batch_large/calibration",
+        "label_expectation": "normal"
+      },
+      "nominal_eval": {
+        "description": "Synthetic held-out nominal runs used for false-positive inspection.",
+        "source_path": "data/raw/real_batch_large/nominal_eval",
+        "label_expectation": "normal"
+      },
+      "anomalous_eval": {
+        "description": "Synthetic abnormal runs with injected disturbances used for evaluation.",
+        "source_path": "data/raw/real_batch_large/anomalous_eval",
+        "label_expectation": "abnormal_or_injected"
+      }
+    },
+    "schema_mapping": {
+      "latitude_deg": [
+        "latitude",
+        "lat",
+        "latitude_deg"
+      ],
+      "longitude_deg": [
+        "longitude",
+        "lon",
+        "longitude_deg"
+      ],
+      "altitude_m": [
+        "altitude",
+        "alt_m",
+        "altitude_m"
+      ],
+      "timestamp": [
+        "time",
+        "timestamp"
+      ],
+      "observed_total_nt": [
+        "total_field_nt",
+        "observed_total_nt"
+      ],
+      "observed_declination_deg": [
+        "declination_deg",
+        "observed_declination_deg"
+      ],
+      "observed_inclination_deg": [
+        "inclination_deg",
+        "observed_inclination_deg"
+      ],
+      "track_id": [
+        "platform_id",
+        "track_id"
+      ],
+      "is_injected_anomaly": [
+        "label_anomaly",
+        "is_injected_anomaly"
+      ]
+    },
+    "data_quality_issues": [
+      {
+        "issue": "Synthetic labels and disturbances",
+        "impact": "Useful for scaling and regression coverage, but not for operational detection claims.",
+        "mitigation": "Treat metrics as workflow checks until real labeled datasets are available."
+      },
+      {
+        "issue": "Mixed timestamp encodings across formats",
+        "impact": "Exercises ingestion robustness, but can hide parsing regressions if undocumented.",
+        "mitigation": "Keep timestamp encoding details explicit in the manifest and covered by ingest tests."
+      },
+      {
+        "issue": "No parquet files in the shipped generator output",
+        "impact": "CSV, JSONL, and SQLite connectors are exercised here, but parquet coverage still depends on separate tests or external data.",
+        "mitigation": "Keep parquet regression coverage in unit tests or add a parquet-backed dataset when a real source requires it."
+      }
+    ],
+    "source_options": {
+      "sqlite_table_name": "sensor_readings"
+    }
+  }
+}

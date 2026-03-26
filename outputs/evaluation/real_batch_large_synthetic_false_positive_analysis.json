@@ -1,0 +1,174 @@
+{
+  "nominal_row_count": 864,
+  "sweeps": [
+    {
+      "percentile": 90.0,
+      "fusion_threshold": 0.17395033910870553,
+      "fusion_false_positive_count": 88,
+      "fusion_false_positive_rate": 0.10185185185185185,
+      "baseline_threshold": 1209.2244433083374,
+      "baseline_false_positive_count": 87,
+      "baseline_false_positive_rate": 0.10069444444444445
+    },
+    {
+      "percentile": 95.0,
+      "fusion_threshold": 0.18790090581402183,
+      "fusion_false_positive_count": 44,
+      "fusion_false_positive_rate": 0.05092592592592592,
+      "baseline_threshold": 1255.796458607019,
+      "baseline_false_positive_count": 44,
+      "baseline_false_positive_rate": 0.05092592592592592
+    },
+    {
+      "percentile": 97.5,
+      "fusion_threshold": 0.19455793201923371,
+      "fusion_false_positive_count": 24,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_threshold": 1299.7755471009318,
+      "baseline_false_positive_count": 22,
+      "baseline_false_positive_rate": 0.02546296296296296
+    },
+    {
+      "percentile": 99.0,
+      "fusion_threshold": 0.22018519937992098,
+      "fusion_false_positive_count": 12,
+      "fusion_false_positive_rate": 0.013888888888888888,
+      "baseline_threshold": 1341.637201749312,
+      "baseline_false_positive_count": 9,
+      "baseline_false_positive_rate": 0.010416666666666666
+    }
+  ],
+  "review_threshold_percentile": 99.0,
+  "track_breakdown": [
+    {
+      "track_id": "nominal_eval_run_5",
+      "row_count": 144,
+      "fusion_false_positive_count": 4,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "track_id": "nominal_eval_run_7",
+      "row_count": 144,
+      "fusion_false_positive_count": 4,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "track_id": "nominal_eval_run_8",
+      "row_count": 144,
+      "fusion_false_positive_count": 4,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "track_id": "nominal_eval_run_1",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 5,
+      "baseline_false_positive_rate": 0.06944444444444445
+    },
+    {
+      "track_id": "nominal_eval_run_2",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 4,
+      "baseline_false_positive_rate": 0.05555555555555555
+    },
+    {
+      "track_id": "nominal_eval_run_6",
+      "row_count": 144,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "track_id": "nominal_eval_run_3",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "track_id": "nominal_eval_run_4",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    }
+  ],
+  "source_file_breakdown": [
+    {
+      "source_file": "nominal_eval_run_5.csv",
+      "row_count": 144,
+      "fusion_false_positive_count": 4,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "source_file": "nominal_eval_run_7_fallback.jsonl",
+      "row_count": 144,
+      "fusion_false_positive_count": 4,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "source_file": "nominal_eval_run_8.sqlite",
+      "row_count": 144,
+      "fusion_false_positive_count": 4,
+      "fusion_false_positive_rate": 0.027777777777777776,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "source_file": "nominal_eval_run_1.csv",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 5,
+      "baseline_false_positive_rate": 0.06944444444444445
+    },
+    {
+      "source_file": "nominal_eval_run_2.jsonl",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 4,
+      "baseline_false_positive_rate": 0.05555555555555555
+    },
+    {
+      "source_file": "nominal_eval_run_6.jsonl",
+      "row_count": 144,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "source_file": "nominal_eval_run_3_fallback.jsonl",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    },
+    {
+      "source_file": "nominal_eval_run_4.sqlite",
+      "row_count": 72,
+      "fusion_false_positive_count": 0,
+      "fusion_false_positive_rate": 0.0,
+      "baseline_false_positive_count": 0,
+      "baseline_false_positive_rate": 0.0
+    }
+  ]
+}

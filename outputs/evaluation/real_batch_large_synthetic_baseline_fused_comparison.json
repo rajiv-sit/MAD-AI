@@ -1,0 +1,92 @@
+{
+  "baseline_threshold": 1299.7755471009318,
+  "fused_threshold": 0.19455793499946594,
+  "nominal_eval": {
+    "baseline": {
+      "rows": 864,
+      "score_column": "residual_total_nt",
+      "threshold": 1299.7755471009318,
+      "anomaly_count": 22,
+      "anomaly_rate": 0.02546296296296296,
+      "mean_score": 705.9048215150443,
+      "max_score": 1385.6642353414209,
+      "metrics": {
+        "threshold": 1299.7755471009318,
+        "true_positives": 0,
+        "true_negatives": 842,
+        "false_positives": 22,
+        "false_negatives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "accuracy": 0.9745370370370371,
+        "f1_score": 0.0
+      }
+    },
+    "fused": {
+      "rows": 864,
+      "score_column": "final_anomaly_score",
+      "threshold": 0.19455793499946594,
+      "anomaly_count": 20,
+      "anomaly_rate": 0.023148148148148147,
+      "mean_score": 0.13512293556360183,
+      "max_score": 0.2489828068763018,
+      "metrics": {
+        "threshold": 0.19455793499946594,
+        "true_positives": 0,
+        "true_negatives": 844,
+        "false_positives": 20,
+        "false_negatives": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "accuracy": 0.9768518518518519,
+        "f1_score": 0.0
+      }
+    },
+    "delta_anomaly_count": -2,
+    "delta_anomaly_rate": -0.0023148148148148147
+  },
+  "anomalous_eval": {
+    "baseline": {
+      "rows": 864,
+      "score_column": "residual_total_nt",
+      "threshold": 1299.7755471009318,
+      "anomaly_count": 22,
+      "anomaly_rate": 0.02546296296296296,
+      "mean_score": 703.2109906898633,
+      "max_score": 1385.6642353414209,
+      "metrics": {
+        "threshold": 1299.7755471009318,
+        "true_positives": 0,
+        "true_negatives": 786,
+        "false_positives": 22,
+        "false_negatives": 56,
+        "precision": 0.0,
+        "recall": 0.0,
+        "accuracy": 0.9097222222222222,
+        "f1_score": 0.0
+      }
+    },
+    "fused": {
+      "rows": 864,
+      "score_column": "final_anomaly_score",
+      "threshold": 0.19455793499946594,
+      "anomaly_count": 164,
+      "anomaly_rate": 0.18981481481481483,
+      "mean_score": 0.20385109563013196,
+      "max_score": 1.1168452188372613,
+      "metrics": {
+        "threshold": 0.19455793499946594,
+        "true_positives": 56,
+        "true_negatives": 700,
+        "false_positives": 108,
+        "false_negatives": 0,
+        "precision": 0.34146341463414637,
+        "recall": 1.0,
+        "accuracy": 0.875,
+        "f1_score": 0.5090909090909091
+      }
+    },
+    "delta_anomaly_count": 142,
+    "delta_anomaly_rate": 0.16435185185185186
+  }
+}

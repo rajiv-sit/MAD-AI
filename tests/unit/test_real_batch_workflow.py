@@ -39,6 +39,7 @@ class RealBatchWorkflowTestCase(unittest.TestCase):
         self.assertIn("robustness", payload)
         self.assertIn("fusion_thresholds", payload["robustness"])
         self.assertIn("baseline_thresholds", payload["robustness"])
+        self.assertIn("false_positive_analysis", payload)
 
     def test_real_batch_metrics_include_dataset_manifest_metadata(self) -> None:
         payload = json.loads(Path("outputs/evaluation/real_batch_metrics.json").read_text(encoding="utf-8"))
@@ -46,6 +47,36 @@ class RealBatchWorkflowTestCase(unittest.TestCase):
         self.assertEqual(payload["dataset_manifest"]["dataset_name"], "real_batch_sample")
         self.assertIn("schema_mapping", payload["dataset_manifest"])
         self.assertIn("coordinate_convention", payload["dataset_manifest"]["provenance"])
+
+    def test_real_batch_false_positive_analysis_is_saved(self) -> None:
+        payload = json.loads(Path("outputs/evaluation/real_batch_false_positive_analysis.json").read_text(encoding="utf-8"))
+        self.assertIn("sweeps", payload)
+        self.assertTrue(payload["sweeps"])
+        self.assertIn("track_breakdown", payload)
+        self.assertIn("source_file_breakdown", payload)
+
+    def test_real_batch_baseline_fused_comparison_is_saved(self) -> None:
+        payload = json.loads(Path("outputs/evaluation/real_batch_baseline_fused_comparison.json").read_text(encoding="utf-8"))
+        self.assertIn("nominal_eval", payload)
+        self.assertIn("anomalous_eval", payload)
+        self.assertIn("baseline", payload["nominal_eval"])
+        self.assertIn("fused", payload["nominal_eval"])
+
+    def test_large_real_batch_metrics_use_dataset_specific_name(self) -> None:
+        payload = json.loads(
+            Path("outputs/evaluation/real_batch_large_synthetic_metrics.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(payload["dataset_manifest"]["dataset_name"], "real_batch_large_synthetic")
+
+    def test_large_real_batch_comparison_is_saved(self) -> None:
+        payload = json.loads(
+            Path("outputs/evaluation/real_batch_large_synthetic_baseline_fused_comparison.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertIn("nominal_eval", payload)
+        self.assertIn("anomalous_eval", payload)
+        self.assertIn("delta_anomaly_rate", payload["nominal_eval"])
 
     def test_large_real_batch_generator_writes_mixed_formats(self) -> None:
         with workspace_temp_dir() as tmp_dir:

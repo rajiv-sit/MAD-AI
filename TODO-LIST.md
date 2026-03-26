@@ -111,6 +111,7 @@ Current state:
 
 - `[done]` threshold calibration exists in the repo
 - `[done]` calibration artifacts are saved for current example workflows
+- `[done]` bundled real-batch workflows now save explicit nominal false-positive analysis artifacts
 - `[blocked]` calibration is still too dependent on bundled examples and limited real nominal evidence
 
 Remaining work:
@@ -140,6 +141,7 @@ Current state:
 
 - `[done]` evaluation scripts and artifacts exist
 - `[done]` baseline-only versus fused comparison exists in the real-batch path
+- `[done]` real-batch evaluation now saves explicit baseline-only versus fused summary artifacts per dataset config
 - `[blocked]` evaluation still needs stronger real abnormal labels or confirmed anomaly windows
 
 Remaining work:
