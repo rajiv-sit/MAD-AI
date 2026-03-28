@@ -4,21 +4,21 @@
   "analytic": {
     "backend": "analytic",
     "rows": 2000,
-    "runtime_seconds": 3.663396299816668,
+    "runtime_seconds": 3.6102179996669292,
     "mean_tracking_error_m": 82956.91523769582,
     "median_tracking_error_m": 82929.86030140085,
     "mean_innovation_nt": -50609.937933518755,
-    "fused_anomaly_count": 1260,
+    "fused_anomaly_count": 1220,
     "baseline_anomaly_count": 1854
   },
   "wmm": {
     "backend": "wmm",
     "rows": 2000,
-    "runtime_seconds": 5.076338900253177,
+    "runtime_seconds": 5.340116899926215,
     "mean_tracking_error_m": 82956.70714718966,
     "median_tracking_error_m": 82927.97874403567,
     "mean_innovation_nt": -43795.63046203374,
-    "fused_anomaly_count": 1224,
+    "fused_anomaly_count": 1250,
     "baseline_anomaly_count": 1854
   },
   "delta_mean_tracking_error_m": -0.2080905061593512

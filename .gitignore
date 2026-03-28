@@ -13,3 +13,5 @@ outputs/test_artifacts/
 data/processed/bahamas/
 outputs/viewer/magnetic_overlay_*.png
 outputs/evaluation/bahamas_tracking_estimates*.csv
+outputs/viewer_server.err.log
+outputs/viewer_server.out.log
