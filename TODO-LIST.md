@@ -8,6 +8,11 @@ The repo already has a working prototype. The remaining work is mostly about:
 - making the WMM-backed path practical at scale
 - clarifying what is already done versus what is still only a next step
 
+Session checkpoint:
+
+- the repo status below has been updated through the latest local implementation pass
+- remaining blocked or larger-scope items are intentionally left for later work rather than treated as complete
+
 ## How To Read This File
 
 Status meanings:
@@ -190,6 +195,8 @@ Done so far:
 - multi-hypothesis magnetic tracker
 - estimated-versus-reference vessel evaluation artifacts
 - linked visual comparison of true vessel track versus estimated magnetic track
+- segment-level Bahamas tracking metrics and confidence-bucket summaries
+- bounded Bahamas subset comparison for `analytic` versus `WMM` tracking inputs
 
 Remaining work:
 
@@ -307,6 +314,7 @@ Current state:
 - `[done]` CI exists
 - `[done]` unit coverage is around `85%`
 - `[done]` targeted tests now cover config-format rejection, evaluation helper error branches, abstract base class instantiation, and WMM fallback behavior
+- `[done]` script-level regression coverage now includes scored real-batch output generation and real-batch viewer generation
 - `[active]` a few important inference, config, and WMM fallback areas still need better protection
 
 Remaining work:
@@ -381,6 +389,10 @@ Remaining work:
 - [ ] Add an experiment or results summary if tuning work becomes deeper.
 - [ ] Add data-governance notes before bringing in real operational datasets.
 - [ ] Keep the docs explicit that the current Bahamas workflow is anomaly detection with known vessel reference, not magnetometer-only vessel tracking.
+
+Status note:
+
+- remaining items here are intentionally deferred to later passes once new results, real datasets, or operational requirements justify the changes
 
 ## Next Execution Sprint `[next]`
 
