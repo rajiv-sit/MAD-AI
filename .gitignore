@@ -15,3 +15,5 @@ outputs/viewer/magnetic_overlay_*.png
 outputs/evaluation/bahamas_tracking_estimates*.csv
 outputs/viewer_server.err.log
 outputs/viewer_server.out.log
+server_stderr.log
+server_stdout.log

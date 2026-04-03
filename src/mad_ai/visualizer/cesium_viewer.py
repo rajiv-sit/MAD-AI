@@ -100,6 +100,9 @@ class CesiumGlobeViewerBuilder:
                     "anomalyScore": float(getattr(row, self.anomaly_score_column, 0.0))
                     if hasattr(row, self.anomaly_score_column)
                     else 0.0,
+                    "anomalyConfidence": float(getattr(row, self.anomaly_score_column, 0.0))
+                    if hasattr(row, self.anomaly_score_column)
+                    else 0.0,
                     "isAnomaly": bool(getattr(row, self.anomaly_flag_column))
                     if hasattr(row, self.anomaly_flag_column)
                     else abs(residual) >= self.anomaly_threshold,
@@ -206,6 +209,13 @@ class CesiumGlobeViewerBuilder:
     <h1>{title}</h1>
     <p>Interactive Cesium globe adapted from the ConstellationVizFrontend approach.</p>
     <p>Magnetic values are draped across the full earth surface. Click the globe to inspect the nearest magnetic sample at the active time and altitude.</p>
+    <label for="basemapSelect">Basemap</label>
+    <select id="basemapSelect">
+      <option value="openstreetmap" selected>OpenStreetMap</option>
+      <option value="carto_positron">Carto Positron</option>
+      <option value="esri_world_imagery">Esri World Imagery</option>
+      <option value="local_texture">Local Fallback</option>
+    </select>
     <label for="componentSelect">Displayed Component</label>
     <select id="componentSelect"></select>
     <div class="checkbox-row">
@@ -257,7 +267,10 @@ class CesiumGlobeViewerBuilder:
       <button id="jumpHotspotBtn" type="button">Jump To Hotspot</button>
     </div>
     <div class="time-row">
-      <button id="spinToggleBtn" type="button">Pause Earth Spin</button>
+      <button id="spinToggleBtn" type="button">Pause Earth Rotation</button>
+    </div>
+    <div class="time-row">
+      <div id="clockInfo">Clock sync: loading...</div>
     </div>
     <div class="time-row">
       <button id="exportSelectedBtn" type="button">Export Selected Anomalies CSV</button>
@@ -279,6 +292,9 @@ class CesiumGlobeViewerBuilder:
     <div class="legend">
       <span><span class="swatch" style="background:#4fc3f7"></span> Magnetic overlay</span>
       <span><span class="swatch" style="background:#ffd166"></span> Aircraft track</span>
+      <span><span class="swatch" style="background:#d2a8ff"></span> Anomaly window</span>
+      <span><span class="swatch" style="background:#f778ba"></span> Peak anomaly</span>
+      <span><span class="swatch" style="background:#ffa657"></span> Closest approach</span>
       <span><span class="swatch" style="background:#ff7b72"></span> Vessel track</span>
       <span><span class="swatch" style="background:#7ee787"></span> Estimated magnetic track</span>
       <span><span class="swatch" style="background:#ffffff"></span> Surface selection</span>
@@ -314,6 +330,8 @@ class CesiumGlobeViewerBuilder:
     let playTimer = null;
     let primaryMagneticOverlayLayer = null;
     let secondaryMagneticOverlayLayer = null;
+    let baseImageryLayer = null;
+    let currentBasemap = "openstreetmap";
     let hotspotIndex = -1;
     function findNearestTimeIndex(timestamp) {{
       if (!timestamp || timeKeys.length === 0) {{
@@ -354,37 +372,67 @@ class CesiumGlobeViewerBuilder:
     viewer.shadows = true;
     viewer.terrainShadows = Cesium.ShadowMode.RECEIVE_ONLY;
     viewer.clock.clockRange = Cesium.ClockRange.UNBOUNDED;
-    viewer.clock.multiplier = 600;
+    viewer.clock.multiplier = 1;
     viewer.clock.shouldAnimate = true;
     viewer.clock.currentTime = Cesium.JulianDate.fromDate(new Date());
-    let globeSpinEnabled = true;
-    let lastSpinTime = viewer.clock.currentTime;
-
-    try {{
-      const layers = viewer.scene.globe.imageryLayers;
-      layers.removeAll();
-      layers.addImageryProvider(new Cesium.OpenStreetMapImageryProvider({{
-        url: "https://a.tile.openstreetmap.org/"
-      }}));
-    }} catch (err) {{
-      console.warn("OpenStreetMap imagery failed", err);
-      if (worldTexturePath) {{
-        try {{
-          viewer.scene.globe.imageryLayers.addImageryProvider(new Cesium.SingleTileImageryProvider({{
-            url: worldTexturePath,
-            rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
-          }}));
-        }} catch (fallbackErr) {{
-          console.warn("Local texture fallback failed", fallbackErr);
-        }}
-      }}
-    }}
+    let timeSyncEnabled = true;
 
     function removeOverlay(layer) {{
       if (layer) {{
         viewer.scene.globe.imageryLayers.remove(layer, true);
       }}
       return null;
+    }}
+
+    function createBasemapProvider(basemap) {{
+      if (basemap === "esri_world_imagery") {{
+        return new Cesium.UrlTemplateImageryProvider({{
+          url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{{z}}/{{y}}/{{x}}",
+          credit: "Esri, Maxar, Earthstar Geographics, and the GIS User Community"
+        }});
+      }}
+      if (basemap === "carto_positron") {{
+        return new Cesium.UrlTemplateImageryProvider({{
+          url: "https://a.basemaps.cartocdn.com/light_all/{{z}}/{{x}}/{{y}}.png",
+          credit: "CARTO, OpenStreetMap contributors"
+        }});
+      }}
+      if (basemap === "local_texture" && worldTexturePath) {{
+        return new Cesium.SingleTileImageryProvider({{
+          url: worldTexturePath,
+          rectangle: Cesium.Rectangle.fromDegrees(-180.0, -90.0, 180.0, 90.0)
+        }});
+      }}
+      return new Cesium.OpenStreetMapImageryProvider({{
+        url: "https://a.tile.openstreetmap.org/"
+      }});
+    }}
+
+    function loadBasemap(basemap) {{
+      const layers = viewer.scene.globe.imageryLayers;
+      if (baseImageryLayer) {{
+        layers.remove(baseImageryLayer, true);
+        baseImageryLayer = null;
+      }}
+      try {{
+        baseImageryLayer = layers.addImageryProvider(createBasemapProvider(basemap), 0);
+        currentBasemap = basemap;
+      }} catch (err) {{
+        console.warn(`Basemap load failed for ${{basemap}}`, err);
+        if (basemap !== "local_texture" && worldTexturePath) {{
+          try {{
+            baseImageryLayer = layers.addImageryProvider(createBasemapProvider("local_texture"), 0);
+            currentBasemap = "local_texture";
+            const basemapSelect = document.getElementById("basemapSelect");
+            if (basemapSelect) {{
+              basemapSelect.value = "local_texture";
+            }}
+            return;
+          }} catch (fallbackErr) {{
+            console.warn("Local texture fallback failed", fallbackErr);
+          }}
+        }}
+      }}
     }}
 
     function refreshMagneticOverlay() {{
@@ -472,15 +520,45 @@ class CesiumGlobeViewerBuilder:
       maxEl.textContent = maxValue.toFixed(2);
     }}
 
-    function spinCamera(clock) {{
-      if (!globeSpinEnabled) {{
-        lastSpinTime = clock.currentTime;
+    function formatClockTime(date) {{
+      try {{
+        return new Intl.DateTimeFormat(undefined, {{
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+          timeZoneName: "short"
+        }}).format(date);
+      }} catch (error) {{
+        return date.toISOString();
+      }}
+    }}
+
+    function currentUtcOffsetLabel(date) {{
+      const totalMinutes = -date.getTimezoneOffset();
+      const sign = totalMinutes >= 0 ? "+" : "-";
+      const absMinutes = Math.abs(totalMinutes);
+      const hours = String(Math.floor(absMinutes / 60)).padStart(2, "0");
+      const minutes = String(absMinutes % 60).padStart(2, "0");
+      return `UTC${{sign}}${{hours}}:${{minutes}}`;
+    }}
+
+    function refreshClockInfo() {{
+      const clockInfo = document.getElementById("clockInfo");
+      if (!clockInfo) {{
         return;
       }}
-      const elapsedSeconds = Cesium.JulianDate.secondsDifference(clock.currentTime, lastSpinTime);
-      lastSpinTime = clock.currentTime;
-      const spinRateRadiansPerSecond = (2.0 * Math.PI) / 86400.0;
-      viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, -spinRateRadiansPerSecond * elapsedSeconds);
+      const systemNow = new Date();
+      const cesiumNow = Cesium.JulianDate.toDate(viewer.clock.currentTime);
+      clockInfo.innerHTML = `
+        <div><b>Clock Sync:</b> ${{timeSyncEnabled ? "live system clock" : "paused"}}</div>
+        <div><b>System Time:</b> ${{formatClockTime(systemNow)}}</div>
+        <div><b>Cesium Time:</b> ${{formatClockTime(cesiumNow)}}</div>
+        <div><b>Local Offset:</b> ${{currentUtcOffsetLabel(systemNow)}}</div>
+      `;
     }}
 
     function getActivePoints() {{
@@ -515,6 +593,7 @@ class CesiumGlobeViewerBuilder:
           <p><b>Baseline:</b> ${{point.baseline.toFixed(2)}} nT</p>
           <p><b>Residual:</b> ${{point.residual.toFixed(2)}} nT</p>
           <p><b>Anomaly Score:</b> ${{Number(point.anomalyScore).toFixed(4)}}</p>
+          <p><b>Anomaly Confidence:</b> ${{Number(point.anomalyConfidence || 0.0).toFixed(4)}}</p>
           <p><b>Anomaly:</b> ${{point.isAnomaly}}</p>
           <p><b>Timestamp:</b> ${{point.timestamp}}</p>
           <p><b>Track ID:</b> ${{point.trackId || "Untracked"}}</p>
@@ -533,6 +612,9 @@ class CesiumGlobeViewerBuilder:
     let trackEntities = [];
     let vesselTrackEntities = [];
     let estimatedVesselTrackEntities = [];
+    let anomalyWindowEntities = [];
+    let anomalyPeakEntities = [];
+    let closestApproachEntities = [];
     let trackLabelEntities = [];
     let currentAircraftEntities = [];
     let currentVesselEntities = [];
@@ -555,6 +637,12 @@ class CesiumGlobeViewerBuilder:
       vesselTrackEntities = [];
       estimatedVesselTrackEntities.forEach((entity) => viewer.entities.remove(entity));
       estimatedVesselTrackEntities = [];
+      anomalyWindowEntities.forEach((entity) => viewer.entities.remove(entity));
+      anomalyWindowEntities = [];
+      anomalyPeakEntities.forEach((entity) => viewer.entities.remove(entity));
+      anomalyPeakEntities = [];
+      closestApproachEntities.forEach((entity) => viewer.entities.remove(entity));
+      closestApproachEntities = [];
       trackLabelEntities.forEach((entity) => viewer.entities.remove(entity));
       trackLabelEntities = [];
       currentAircraftEntities.forEach((entity) => viewer.entities.remove(entity));
@@ -576,6 +664,33 @@ class CesiumGlobeViewerBuilder:
     function colorForAnomalyScore(score) {{
       const normalized = Math.min(Math.max(Number(score || 0.0) / Math.max(maxAnomalyScore, 0.001), 0.0), 1.0);
       return Cesium.Color.fromHsl(0.66 * (1.0 - normalized), 0.88, 0.56, 0.96);
+    }}
+
+    function normalizeAnomalyConfidence(score) {{
+      return Math.min(Math.max(Number(score || 0.0) / Math.max(maxAnomalyScore, 0.001), 0.0), 1.0);
+    }}
+
+    function sequenceGroups(points) {{
+      if (points.length === 0) {{
+        return [];
+      }}
+      const ordered = points.slice().sort((left, right) => parseTimeValue(left) - parseTimeValue(right));
+      const groups = [];
+      let currentGroup = [ordered[0]];
+      for (let index = 1; index < ordered.length; index += 1) {{
+        const previous = ordered[index - 1];
+        const current = ordered[index];
+        const timeGapMs = Math.abs(parseTimeValue(current) - parseTimeValue(previous));
+        const altitudeChanged = Number(current.alt).toFixed(1) !== Number(previous.alt).toFixed(1);
+        if (timeGapMs > 120000 || altitudeChanged) {{
+          groups.push(currentGroup);
+          currentGroup = [current];
+          continue;
+        }}
+        currentGroup.push(current);
+      }}
+      groups.push(currentGroup);
+      return groups;
     }}
 
     function buildCurrentMarkers() {{
@@ -826,12 +941,133 @@ class CesiumGlobeViewerBuilder:
       }});
     }}
 
+    function buildAnomalyOutcomeOverlays() {{
+      if (currentViewMode === "noaa_only") {{
+        return;
+      }}
+      const historicalPoints = getHistoricalTrackPoints();
+      if (historicalPoints.length === 0) {{
+        return;
+      }}
+      const threshold = Number(document.getElementById("scoreThresholdSlider").value || 0.0);
+      const anomalyQualifiedPoints = historicalPoints.filter((point) => {{
+        const passesThreshold = Number(point.anomalyScore || 0.0) >= threshold;
+        const passesFlag = Boolean(point.isAnomaly) || Number(point.anomalyScore || 0.0) >= threshold;
+        return passesThreshold && passesFlag;
+      }});
+      if (anomalyQualifiedPoints.length === 0) {{
+        return;
+      }}
+
+      const groupedByTrack = new Map();
+      anomalyQualifiedPoints.forEach((point) => {{
+        if (!point.trackId) {{
+          return;
+        }}
+        if (!groupedByTrack.has(point.trackId)) {{
+          groupedByTrack.set(point.trackId, []);
+        }}
+        groupedByTrack.get(point.trackId).push(point);
+      }});
+
+      Array.from(groupedByTrack.entries()).forEach(([trackId, points], index) => {{
+        sequenceGroups(points)
+          .filter((group) => group.length >= 2)
+          .forEach((group, groupIndex) => {{
+            const positions = group.map((point) => Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt + 40.0));
+            const maxScore = Math.max(...group.map((point) => Number(point.anomalyScore || 0.0)));
+            anomalyWindowEntities.push(
+              viewer.entities.add({{
+                id: `anomaly_window_${{index}}_${{groupIndex}}_${{trackId}}`,
+                name: `Anomaly Window ${{trackId}}`,
+                polyline: {{
+                  positions,
+                  width: 9,
+                  material: new Cesium.PolylineGlowMaterialProperty({{
+                    glowPower: 0.28,
+                    taperPower: 0.75,
+                    color: Cesium.Color.fromCssColorString("#d2a8ff").withAlpha(0.72)
+                  }}),
+                  clampToGround: false
+                }},
+                description: `<h3>Anomaly Window ${{trackId}}</h3><p><b>Samples:</b> ${{group.length}}</p><p><b>Start:</b> ${{group[0].timestamp}}</p><p><b>End:</b> ${{group[group.length - 1].timestamp}}</p><p><b>Peak Score:</b> ${{Number(maxScore).toFixed(4)}}</p>`
+              }})
+            );
+          }});
+      }});
+
+      anomalyQualifiedPoints
+        .slice()
+        .sort((left, right) => Number(right.anomalyScore || 0.0) - Number(left.anomalyScore || 0.0))
+        .slice(0, 5)
+        .forEach((point, index) => {{
+          anomalyPeakEntities.push(
+            viewer.entities.add({{
+              id: `anomaly_peak_${{index}}`,
+              position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt + 120.0),
+              point: {{
+                pixelSize: 16,
+                color: Cesium.Color.fromCssColorString("#f778ba"),
+                outlineColor: Cesium.Color.WHITE,
+                outlineWidth: 2
+              }},
+              label: {{
+                text: `Peak ${{index + 1}}\\nConf ${{normalizeAnomalyConfidence(point.anomalyScore).toFixed(2)}}`,
+                font: "13px Segoe UI",
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                pixelOffset: new Cesium.Cartesian2(0, -30),
+                showBackground: true,
+                backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.82)")
+              }},
+              description: `<h3>Peak Anomaly Candidate</h3><p><b>Timestamp:</b> ${{point.timestamp}}</p><p><b>Anomaly Score:</b> ${{Number(point.anomalyScore).toFixed(4)}}</p><p><b>Anomaly Confidence:</b> ${{normalizeAnomalyConfidence(point.anomalyScore).toFixed(4)}}</p><p><b>Residual:</b> ${{Number(point.residual).toFixed(2)}} nT</p><p><b>Aircraft Position:</b> ${{Number(point.lat).toFixed(3)}}, ${{Number(point.lon).toFixed(3)}} @ ${{Number(point.alt).toFixed(1)}} m</p>`
+            }})
+          );
+        }});
+
+      historicalPoints
+        .filter((point) => point.rangeToVesselM != null && Number.isFinite(Number(point.rangeToVesselM)))
+        .slice()
+        .sort((left, right) => Number(left.rangeToVesselM) - Number(right.rangeToVesselM))
+        .slice(0, 3)
+        .forEach((point, index) => {{
+          closestApproachEntities.push(
+            viewer.entities.add({{
+              id: `closest_approach_${{index}}`,
+              position: Cesium.Cartesian3.fromDegrees(point.lon, point.lat, point.alt + 80.0),
+              point: {{
+                pixelSize: 14,
+                color: Cesium.Color.fromCssColorString("#ffa657"),
+                outlineColor: Cesium.Color.WHITE,
+                outlineWidth: 2
+              }},
+              label: {{
+                text: `Closest ${{index + 1}}\\n${{(Number(point.rangeToVesselM) / 1000.0).toFixed(2)}} km`,
+                font: "13px Segoe UI",
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                pixelOffset: new Cesium.Cartesian2(0, -28),
+                showBackground: true,
+                backgroundColor: Cesium.Color.fromCssColorString("rgba(8,16,28,0.82)")
+              }},
+              description: `<h3>Closest-Approach Candidate</h3><p><b>Timestamp:</b> ${{point.timestamp}}</p><p><b>Range To Vessel:</b> ${{(Number(point.rangeToVesselM) / 1000.0).toFixed(3)}} km</p><p><b>Anomaly Score:</b> ${{Number(point.anomalyScore || 0.0).toFixed(4)}}</p><p><b>Residual:</b> ${{Number(point.residual).toFixed(2)}} nT</p><p><b>Aircraft Position:</b> ${{Number(point.lat).toFixed(3)}}, ${{Number(point.lon).toFixed(3)}} @ ${{Number(point.alt).toFixed(1)}} m</p>`
+            }})
+          );
+        }});
+    }}
+
     function refreshScene() {{
       clearDynamicEntities();
       buildTracks();
+      buildAnomalyOutcomeOverlays();
       buildCurrentMarkers();
       document.getElementById("timeLabel").textContent = timeKeys[currentTimeIndex];
       refreshColorLegend();
+      refreshClockInfo();
       notifyTimeChange();
     }}
 
@@ -878,6 +1114,7 @@ class CesiumGlobeViewerBuilder:
         <div><b>Baseline:</b> ${{point.baseline.toFixed(2)}} nT</div>
         <div><b>Residual:</b> ${{point.residual.toFixed(2)}} nT</div>
         <div><b>Anomaly Score:</b> ${{Number(point.anomalyScore).toFixed(4)}}</div>
+        <div><b>Anomaly Confidence:</b> ${{normalizeAnomalyConfidence(point.anomalyScore).toFixed(4)}}</div>
         <div><b>Anomaly:</b> ${{point.isAnomaly}}</div>
         <div><b>Aircraft Heading:</b> ${{point.aircraftHeadingDeg == null ? "n/a" : Number(point.aircraftHeadingDeg).toFixed(2) + " deg"}}</div>
         <div><b>Aircraft Speed:</b> ${{point.aircraftSpeedMps == null ? "n/a" : Number(point.aircraftSpeedMps).toFixed(2) + " m/s (" + Number(point.aircraftSpeedKnots).toFixed(2) + " kn)"}}</div>
@@ -986,6 +1223,10 @@ class CesiumGlobeViewerBuilder:
 
     const componentSelect = document.getElementById("componentSelect");
     const secondaryComponentSelect = document.getElementById("secondaryComponentSelect");
+    const basemapSelect = document.getElementById("basemapSelect");
+    basemapSelect.addEventListener("change", (event) => {{
+      loadBasemap(event.target.value);
+    }});
     componentOptions.forEach((label) => {{
       const option = document.createElement("option");
       option.value = label;
@@ -1086,9 +1327,14 @@ class CesiumGlobeViewerBuilder:
 
     const spinToggleBtn = document.getElementById("spinToggleBtn");
     spinToggleBtn.addEventListener("click", () => {{
-      globeSpinEnabled = !globeSpinEnabled;
-      spinToggleBtn.textContent = globeSpinEnabled ? "Pause Earth Spin" : "Resume Earth Spin";
-      lastSpinTime = viewer.clock.currentTime;
+      timeSyncEnabled = !timeSyncEnabled;
+      if (timeSyncEnabled) {{
+        viewer.clock.shouldAnimate = true;
+      }} else {{
+        viewer.clock.shouldAnimate = false;
+      }}
+      spinToggleBtn.textContent = timeSyncEnabled ? "Pause Earth Rotation" : "Resume Earth Rotation";
+      refreshClockInfo();
     }});
 
     document.getElementById("goToLatLonBtn").addEventListener("click", () => {{
@@ -1180,7 +1426,6 @@ class CesiumGlobeViewerBuilder:
       }}
     }});
 
-    viewer.clock.onTick.addEventListener(spinCamera);
     const clickHandler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
     clickHandler.setInputAction((movement) => {{
       const ellipsoid = viewer.scene.globe.ellipsoid;
@@ -1192,8 +1437,10 @@ class CesiumGlobeViewerBuilder:
       updateSurfaceSelection(cartographic);
     }}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
+    loadBasemap(currentBasemap);
     refreshMagneticOverlay();
     refreshScene();
+    window.setInterval(refreshClockInfo, 1000);
 
     if (sampleData.length > 0) {{
       viewer.flyTo(viewer.entities, {{
