@@ -14,7 +14,7 @@ The repo currently includes a working end-to-end prototype with:
 - trainable reference anomaly models
 - evaluation and threshold calibration
 - a globe visualizer with:
-  - OpenStreetMap earth layer
+  - selectable earth basemaps including OpenStreetMap, Carto Positron, Esri World Imagery, and a local fallback texture
   - day/night lighting
   - earth rotation
   - full-earth magnetic overlay
@@ -77,7 +77,7 @@ Important docs:
 
 - Python `3.10+`
 - Windows PowerShell commands below assume Windows, but the Python code is portable
-- internet access is useful for the Cesium/OpenStreetMap viewer layer
+- internet access is useful for the Cesium viewer basemap layers such as OpenStreetMap, Carto, and Esri imagery
 
 ## Installation
 
@@ -162,9 +162,13 @@ What the 3D globe is for:
 
 What you see in the globe:
 
-- the earth rendered with OpenStreetMap imagery
+- the earth rendered with a selectable basemap:
+  - `OpenStreetMap`
+  - `Carto Positron`
+  - `Esri World Imagery`
+  - `Local Fallback`
 - a draped magnetic overlay across the world surface
-- a left-side control panel for component, altitude, time, comparison mode, filtering, and export
+- a left-side control panel for basemap, component, altitude, time, comparison mode, filtering, and export
 - track overlays when the loaded dataset contains aircraft or anomaly paths
 - click-based inspection of the nearest sample under the cursor
 
@@ -191,15 +195,18 @@ How to use the 3D globe:
 
 1. Use `Displayed Component` to choose what the surface overlay means.
    `Total Field` shows the baseline magnetic field, while `Residual` or anomaly-score layers show deviation from the baseline.
-2. Use `Altitude Layer` to move between the available magnetic surfaces.
-3. Use `Time Slice` when the loaded data has temporal samples.
-4. Click on the globe to inspect the nearest magnetic sample and read the values in the side panel.
-5. Use `Compare` mode if you want to swipe between two magnetic layers.
-6. Use `Score Threshold Filter` and `Anomaly-only` when reviewing scored anomaly outputs.
-7. Use `Jump To Hotspot` to move between the strongest currently visible anomaly points.
+2. Use `Basemap` to switch the earth reference layer between street, light, imagery, and local fallback styles.
+3. Use `Altitude Layer` to move between the available magnetic surfaces.
+4. Use `Time Slice` when the loaded data has temporal samples.
+5. Click on the globe to inspect the nearest magnetic sample and read the values in the side panel.
+6. Use `Compare` mode if you want to swipe between two magnetic layers.
+7. Use `Score Threshold Filter` and `Anomaly-only` when reviewing scored anomaly outputs.
+8. Use `Jump To Hotspot` to move between the strongest currently visible anomaly points.
 
 What the main globe controls mean:
 
+- `Basemap`
+  selects the earth reference layer used under the magnetic overlay
 - `Displayed Component`
   selects the surface or anomaly quantity being colored on the globe
 - `Secondary Component`
@@ -550,7 +557,7 @@ Important output areas:
 
 - The global viewer currently runs from a `2 deg` global grid across four altitude layers.
 - The interactive globe is best run through `localhost`, not by double-clicking the HTML file.
-- The viewer uses OpenStreetMap as the primary earth layer and falls back to local assets where needed.
+- The viewer now supports selectable earth basemaps including OpenStreetMap, Carto Positron, Esri World Imagery, and a local fallback texture.
 - The large real-batch scaling config is designed to run quickly by using the analytic backend instead of WMM.
 - The NOAA/WMM-backed workflow remains the correct path for real magnetic baseline interpretation.
 - The current Bahamas workflow now includes first-pass inverse vessel tracking, but it is still prototype-quality rather than operational-quality tracking.
