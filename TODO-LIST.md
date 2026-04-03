@@ -261,14 +261,26 @@ Current state:
   window size, sequence length, fusion weighting, latent channels, hidden size, dropout, learning rate, and batch size
 - `[done]` tuning now saves a reusable best-config artifact in addition to the leaderboard
 - `[active]` stronger tuning and real-data comparison are still needed
+- `[active]` better anomaly-model families are worth evaluating, but they are not an immediate replacement requirement until the current baselines clearly plateau on real Bahamas or other real-data evaluation loops
 
 Remaining work:
 
+- [ ] First prefer stronger tuning of the current spatial and temporal autoencoder baselines before introducing a new model family.
+- [ ] Add a gradient-boosted residual-feature baseline as a lower-risk comparison model for real-data anomaly scoring.
+- [ ] Consider a TCN-style temporal model if the current LSTM baseline still plateaus after tuning.
+- [ ] Treat Transformer-style temporal models as later experiments only if simpler tuned baselines and TCN-style models still plateau.
 - [ ] Tune the CNN architecture beyond the current baseline autoencoder if the broader hyperparameter search still plateaus.
 - [ ] Tune the LSTM architecture beyond the current baseline autoencoder if the broader hyperparameter search still plateaus.
 - [ ] Run the expanded structured experiments on real datasets that matter operationally, not only the bundled large synthetic batch.
 - [ ] Compare alternative anomaly strategies only if the current baselines plateau on real evaluation data.
 - [ ] Track best-performing configurations per dataset family with reproducible config files and saved metrics.
+
+Recommended evaluation order:
+
+1. better-tuned current autoencoders
+2. gradient-boosted models on engineered residual features
+3. TCN-style temporal anomaly models
+4. Transformer-style temporal models only if the simpler options fail to improve saved metrics
 
 Exit criteria:
 
